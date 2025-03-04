@@ -1,12 +1,13 @@
 package main.kotlin.api
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.json.*
 import org.apache.hc.client5.http.classic.methods.HttpGet
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient
 import org.apache.hc.client5.http.impl.classic.HttpClients
 
 object ZoomApiClient {
-    private val objectMapper = jacksonObjectMapper()
+    private val objectMapper = ObjectMapper()
 
     fun getUserInfo(accessToken: String): String {
         val httpClient: CloseableHttpClient = HttpClients.createDefault()
