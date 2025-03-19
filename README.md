@@ -9,7 +9,7 @@
  - [Попов Виталий](https://github.com/blacklavilass "") - Backend-разработчик, аналитик
  - [Андреев Никита](https://github.com/Neonchikk "") - технический писатель, тестировщик
  - [Агафонов Никита](https://github.com/Fatomartyr "") - Backend-разработчик
- - [Парамонова Полина](https://github.com/Paramon2003 "") - Backend-разработчик, дизайнер
+ - [Парамонова Полина](https://github.com/Paramon2003 "") - Frontend-разработчик, дизайнер
  
  ## Навигация по проекту
 
