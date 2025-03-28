@@ -24,3 +24,7 @@
 #### Бенчмаркинг
 - [Таблица со сравнением конкурентов](https://docs.google.com/spreadsheets/d/1KgxXAT3yKG2p9U9uystbFEpZi8OgdDPAydQapy9Zvhs/edit?usp=sharing), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
 - [Анализ рынка; модель моонетизации](https://docs.google.com/document/d/1jfIdJHrxyY5WKx6mXkANy5MCOoNlUMZZ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
+
+ ## Материалы по аттестациям
+ ### Аттестация 1
+ - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
