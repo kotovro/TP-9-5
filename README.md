@@ -27,9 +27,10 @@
 - [Анализ рынка; модель моонетизации](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Анализ%20рынка%20и%20модель%20монетизации.pdf)
 - [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
 
-### Диаграммы
+### Диаграммы, usert storty & use case
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM)
 - ER [PDF](https://shorturl.at/GvHCe) [DOCX](https://bit.ly/erd_docx)
+- [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing)
  ## Материалы по аттестациям
  ### Аттестация 1
  - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
