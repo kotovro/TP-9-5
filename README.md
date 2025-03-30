@@ -5,11 +5,11 @@
 Репозиторий проекта пятой команды девятой группы
 ### Команда
  - [Бондарева Софья](https://github.com/bebrusova "") - Project Manager
- - [Воронецкий Константин](https://github.com/kotovro "") - Backend-разработчик,системный аналитик, 
- - [Попов Виталий](https://github.com/blacklavilass "") - Backend-разработчик, бизнес аналитик
+ - [Воронецкий Константин](https://github.com/kotovro "") - Разработчик,системный аналитик, 
+ - [Попов Виталий](https://github.com/blacklavilass "") - Lead разработки, бизнес аналитик
  - [Андреев Никита](https://github.com/Neonchikk "") - технический писатель, тестировщик
- - [Агафонов Никита](https://github.com/Fatomartyr "") - Backend-разработчик
- - [Парамонова Полина](https://github.com/Paramon2003 "") - Frontend-разработчик, дизайнер
+ - [Агафонов Никита](https://github.com/Fatomartyr "") - Разработчик
+ - [Парамонова Полина](https://github.com/Paramon2003 "") - Разработчик интерфейса, дизайнер
  
  ## Навигация по проекту
 
