@@ -5,7 +5,7 @@
 Репозиторий проекта пятой команды девятой группы
 ### Команда
  - [Бондарева Софья](https://github.com/bebrusova "") - Project Manager
- - [Воронецкий Константин](https://github.com/kotovro "") - Разработчик,системный аналитик, 
+ - [Воронецкий Константин](https://github.com/kotovro "") - Разработчик, системный аналитик
  - [Попов Виталий](https://github.com/blacklavilass "") - Lead разработки, бизнес аналитик
  - [Андреев Никита](https://github.com/Neonchikk "") - технический писатель, тестировщик
  - [Агафонов Никита](https://github.com/Fatomartyr "") - Разработчик
@@ -19,10 +19,10 @@
 - [Figma](https://www.figma.com/file/tgjyOfaAtJQgewFkinZqpI?node-id=0:1&locale=en&type=design) - дизайн-макеты проекта
 ### Документация
 
-- [Техническое задание](https://drive.google.com/file/d/1zAtoJfQjOSNTb7c_FqT3SR3TCsarfKQU/view?usp=sharing)
+- [Техническое задание](https://drive.google.com/file/d/1zAtoJfQjOSNTb7c_FqT3SR3TCsarfKQU/view?usp=sharing), [DOCX](https:/linkcuts.org/7xi8rhk2), [PDF](https://bit.ly/tech_spec_pdf)
 ### Материалы предпроектного исследования
 #### Бенчмаркинг
-- Таблица со сравнением конкурентов [диск](https://docs.google.com/spreadsheets/d/1KgxXAT3yKG2p9U9uystbFEpZi8OgdDPAydQapy9Zvhs/edit?usp=sharing), [XLSX](https://shorturl.at/X3Igz) [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
+- Таблица со сравнением конкурентов [диск](https://docs.google.com/spreadsheets/d/1KgxXAT3yKG2p9U9uystbFEpZi8OgdDPAydQapy9Zvhs/edit?usp=sharing), [XLSX](https://shorturl.at/X3Igz), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
 - SWOT анализ [диск](https://docs.google.com/spreadsheets/d/1KVj8xeLBt4VRQTFNz5_vGcOmfxS_6SGk/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true),  [XLSX](https://shorturl.at/58z0T)
 - [Анализ рынка; модель моонетизации](https://docs.google.com/document/d/1jfIdJHrxyY5WKx6mXkANy5MCOoNlUMZZ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
 
