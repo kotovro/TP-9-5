@@ -35,3 +35,4 @@
  ## Материалы по аттестациям
  ### Аттестация 1
  - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
+ - [Защита тех задания](https://drive.google.com/file/d/1Fx6a6WyuxJ6CGGZiUwpdNjLTP9FReBP4/view?usp=drivesdk)
