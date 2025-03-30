@@ -28,7 +28,7 @@
 
 ### Диаграммы
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM)
-- ER [PDF](https://shorturl.at/GvHCe) [DOCX](https://shorturl.at/vV4J7)
+- ER [PDF](https://shorturl.at/GvHCe) [DOCX](https://bit.ly/erd_docx)
  ## Материалы по аттестациям
  ### Аттестация 1
  - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
