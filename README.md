@@ -16,7 +16,7 @@
 
 ### Сервисы
 
-- [YouGile](https://ru.yougile.com/team/11d7830a7f01/%D0%90%D0%BD%D0%B0%D0%BB%D0%BE%D0%B3-ReadAi) - таск-трекер
+- [YouGile](https://ru.yougile.com/board/icqgfj2i9nk9) - таск-трекер
 - [Figma](https://www.figma.com/file/tgjyOfaAtJQgewFkinZqpI?node-id=0:1&locale=en&type=design) - дизайн-макеты проекта
 ### Документация
 
