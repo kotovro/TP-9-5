@@ -21,10 +21,11 @@
 
 - [Техническое задание](https://drive.google.com/file/d/1zAtoJfQjOSNTb7c_FqT3SR3TCsarfKQU/view?usp=sharing), [DOCX](https://bit.ly/tech_spec_docx), [PDF](https://bit.ly/tech_spec_pdf)
 ### Материалы предпроектного исследования
-#### Бенчмаркинг
-- Таблица со сравнением конкурентов [диск](https://docs.google.com/spreadsheets/d/1KgxXAT3yKG2p9U9uystbFEpZi8OgdDPAydQapy9Zvhs/edit?usp=sharing), [XLSX](https://shorturl.at/X3Igz), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
-- SWOT анализ [диск](https://docs.google.com/spreadsheets/d/1KVj8xeLBt4VRQTFNz5_vGcOmfxS_6SGk/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true),  [XLSX](https://shorturl.at/58z0T)
-- [Анализ рынка; модель моонетизации](https://docs.google.com/document/d/1jfIdJHrxyY5WKx6mXkANy5MCOoNlUMZZ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
+#### Аналитика
+- Бенчмаркинг [XLSX](https://shorturl.at/X3Igz), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
+- SWOT анализ [XLSX](https://shorturl.at/58z0T)
+- [Анализ рынка; модель моонетизации]([https://docs.google.com/document/d/1jfIdJHrxyY5WKx6mXkANy5MCOoNlUMZZ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Анализ%20рынка%20и%20модель%20монетизации.pdf))
+- [Портрет целевой аудитории]([https://github.com/kotovro/TP-9-5/tree/main/Documents/Предпроектные%20исследования](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
 
 ### Диаграммы
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM)
