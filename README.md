@@ -24,8 +24,8 @@
 #### Аналитика
 - Бенчмаркинг [XLSX](https://shorturl.at/X3Igz), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
 - SWOT анализ [XLSX](https://shorturl.at/58z0T)
-- [Анализ рынка; модель моонетизации]([https://docs.google.com/document/d/1jfIdJHrxyY5WKx6mXkANy5MCOoNlUMZZ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Анализ%20рынка%20и%20модель%20монетизации.pdf)
-- [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/tree/main/Documents/Предпроектные%20исследования](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
+- [Анализ рынка; модель моонетизации](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Анализ%20рынка%20и%20модель%20монетизации.pdf)
+- [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
 
 ### Диаграммы
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM)
