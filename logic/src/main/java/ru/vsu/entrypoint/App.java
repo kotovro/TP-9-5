@@ -1,6 +1,9 @@
 package ru.vsu.entrypoint;
 
-import ru.vsu.VideoUploadSubSystem.VideoUploader;
+import ru.vsu.video_handler_sub_system.VideoToAudioExtractor;
+import ru.vsu.video_upload_sub_system.VideoUploader;
+
+import java.io.File;
 
 public class App {
     public String getGreeting() {
@@ -8,6 +11,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        VideoUploader.loadVideo();
+        File videoFile = VideoUploader.loadVideo();
+        VideoToAudioExtractor.extractAudio(videoFile, "C:\\Users\\1next\\Downloads\\extracted_audio.mp3");
     }
 }

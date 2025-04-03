@@ -1,4 +1,4 @@
-package ru.vsu.VideoUploadSubSystem;
+package ru.vsu.video_upload_sub_system;
 import java.io.File;
 import java.util.Scanner;
 
