@@ -1,0 +1,22 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'org.vosk.demo.DecoderDemo'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'net.java.dev.jna:jna:5.13.0'
+    implementation group: 'com.alphacephei', name: 'vosk', version: '0.3.45'
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'net.java.dev.jna:jna:5.13.0'
+    }
+}
