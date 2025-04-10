@@ -2,9 +2,13 @@ package logic.general;
 
 import logic.text_edit.Buffer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Transcript {
-    public Iterable<Replica> getReplicas() {
-        return null;
+    List<Replica> transcript = new ArrayList<Replica>();
+    public List<Replica> getReplicas() {
+        return transcript;
     }
 
     public void removeReplica(int index) {
