@@ -1,9 +1,10 @@
 package logic.general;
 
-public class Speaker {
+public class Participant {
     String name;
 
     public String getName() {
         return name;
     }
+
 }
