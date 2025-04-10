@@ -16,11 +16,11 @@ public class AddText implements Executable {
 
     @Override
     public void unapply() {
-
+        replica.setText(replica.getText().substring(0, position) + replica.getText().substring(position + text.length()));
     }
 
     @Override
     public void apply() {
-        replica.setText(replica.getText().substring(0, position) + text + replica.getText().substring(position + 1, text.length()));
+        replica.setText(replica.getText().substring(0, position) + text + replica.getText().substring(position));
     }
 }

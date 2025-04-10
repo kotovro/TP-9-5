@@ -1,4 +1,4 @@
 package logic.text_edit;
-
-public class Buffer {
+/// here I can store some info that was acquired via ctrl+x
+public class Buffer  {
 }
