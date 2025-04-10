@@ -1,4 +1,4 @@
-package ui.buttons;
+package ui.hotkeys;
 
 public interface IAction {
     void execute();
