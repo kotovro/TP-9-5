@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import logic.text_edit.EditStory;
 import javafx.scene.layout.AnchorPane;
-import ui.hotkeys.ButtonPressedActionProvider;
+import ui.hotkeys.HotkeysPressedActionProvider;
 
 public class EditController {
     public EditStory editStory = new EditStory();
@@ -23,7 +23,7 @@ public class EditController {
 
     @FXML
     public void initialize() {
-        ButtonPressedActionProvider actionProvider = new ButtonPressedActionProvider();
+        HotkeysPressedActionProvider actionProvider = new HotkeysPressedActionProvider();
         rootPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 actionProvider.attachHotkeys(newScene);
