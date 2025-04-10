@@ -21,6 +21,9 @@
 ### Документация
 
 - Техническое задание, [DOCX](https://bit.ly/tech_spec_docx), [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20(3).pdf)
+###Работа с репозиторием
+
+- Правила коммитов [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/commitrules.txt)
 ### Материалы предпроектного исследования
 #### Аналитика
 - Бенчмаркинг [XLSX](https://shorturl.at/X3Igz), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
