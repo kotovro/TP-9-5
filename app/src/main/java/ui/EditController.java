@@ -10,10 +10,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+import javafx.scene.control.Label;
+import logic.text_edit.EditStory;
+import javafx.scene.layout.AnchorPane;
+import ui.hotkeys.HotkeysPressedActionProvider;
 
 public class EditController {
+    public EditStory editStory = new EditStory();
+
+    @FXML
+    private AnchorPane rootPane;
+
     @FXML
     private VBox textAreaContainer;
+
 
     @FXML
     public void initialize() {
@@ -79,6 +89,13 @@ public class EditController {
             textArea.setPrefRowCount(3);
             VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 50, 0));
             textAreaContainer.getChildren().add(textArea);
+
+            HotkeysPressedActionProvider actionProvider = new HotkeysPressedActionProvider();
+            rootPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    actionProvider.attachHotkeys(newScene);
+                }
+            });
         }
     }
 }
