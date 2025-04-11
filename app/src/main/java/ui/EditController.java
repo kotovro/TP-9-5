@@ -19,7 +19,7 @@ public class EditController {
     public EditStory editStory = new EditStory();
 
     @FXML
-    private AnchorPane rootPane;
+    private AnchorPane rootPane = new AnchorPane();
 
     @FXML
     private VBox textAreaContainer;
