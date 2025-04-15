@@ -2,15 +2,13 @@ package ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import logic.text_edit.EditStory;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import ui.hotkeys.HotkeysPressedActionProvider;
 
 public class EditController {
-    public EditStory editStory = new EditStory();
 
     @FXML
-    private AnchorPane rootPane;
+    private VBox rootPane;
 
     @FXML
     private Label welcomeText;
