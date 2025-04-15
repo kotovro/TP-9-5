@@ -21,7 +21,7 @@ run {
 }
 
 application {
-    mainClass = 'ui.EditWindow'
+    mainClass = 'ui.DownloadingApp'
 }
 
 dependencies {

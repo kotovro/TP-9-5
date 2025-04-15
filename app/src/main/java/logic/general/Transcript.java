@@ -4,7 +4,10 @@ import javafx.util.Pair;
 import logic.text_edit.Buffer;
 
 import java.util.ArrayList;
+//<<<<<<< Updated upstream
+//=======
 import java.util.LinkedList;
+//>>>>>>> Stashed changes
 import java.util.List;
 
 public class Transcript {
