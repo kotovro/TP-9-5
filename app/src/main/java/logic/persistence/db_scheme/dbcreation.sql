@@ -1,5 +1,3 @@
-PRAGMA foreign_keys = ON;
-
 CREATE TABLE participant (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
@@ -18,9 +16,11 @@ CREATE TABLE meeting (
 CREATE TABLE replica (
     meeting_id INTEGER,
     order_number INTEGER,
+    participant_id INTEGER NOT NULL,
     content TEXT NOT NULL,
     PRIMARY KEY (meeting_id, order_number),
-    FOREIGN KEY (meeting_id) REFERENCES meeting(id) ON DELETE CASCADE
+    FOREIGN KEY (meeting_id) REFERENCES meeting(id) ON DELETE CASCADE,
+    FOREIGN KEY (participant_id) REFERENCES participant(id) ON DELETE CASCADE
 );
 
 CREATE TABLE protocol (

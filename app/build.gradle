@@ -30,15 +30,10 @@ run {
     }
 }
 
-
 tasks.register('initDatabase', JavaExec) {
     dependsOn classes
     group = "database"
     description = "Creates SQLite file and adds db scheme"
     mainClass = 'logic.persistence.InitDatabase'
     classpath = sourceSets.main.runtimeClasspath
-    doFirst {
-        def dbPath = project.file('db_examples/test.db').absolutePath
-        args = [dbPath]
-    }
 }

@@ -1,10 +1,15 @@
 package logic.general;
 
 public class Participant {
+    Long id;
+
     String name;
 
     public String getName() {
         return name;
     }
-
+    public Long getId() { return id;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
