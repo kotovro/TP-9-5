@@ -21,7 +21,12 @@
 ### Документация
 
 - Техническое задание, [DOCX](https://bit.ly/tech_spec_docx), [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20(3).pdf)
-###Работа с репозиторием
+
+### Отчеты
+- Очтет за период с 18.03 по 24.03 [PDF](https://bit.ly/4lC3QNT)
+- Отчет за период с 30.03 по 08.03 [PDF]() 
+
+### Работа с репозиторием
 
 - Правила коммитов [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/commitrules.txt)
 ### Материалы предпроектного исследования
@@ -39,3 +44,4 @@
  ### Аттестация 1
  - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
  - [Защита тех задания](https://drive.google.com/file/d/1Fx6a6WyuxJ6CGGZiUwpdNjLTP9FReBP4/view?usp=drivesdk)
+ - 
