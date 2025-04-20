@@ -1,8 +1,8 @@
-package logic.vosk.demo;
+package logic.audioInput;
 
 import javax.sound.sampled.AudioInputStream;
 
 @FunctionalInterface
-interface AudioStreamConsumer {
+public interface AudioStreamConsumer {
     void onAudioChunkReceived(AudioInputStream audioStream);
 }

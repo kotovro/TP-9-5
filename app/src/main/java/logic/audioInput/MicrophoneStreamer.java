@@ -1,4 +1,4 @@
-package logic.vosk.demo;
+package logic.audioInput;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
@@ -35,10 +35,8 @@ public class MicrophoneStreamer {
         isRunning = true;
         microphone.start();
 
-        // Буфер для аудиоданных (можно регулировать размер)
         byte[] buffer = new byte[4096];
 
-        // Поток для передачи данных
         new Thread(() -> {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 

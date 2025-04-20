@@ -13,6 +13,15 @@ repositories {
 dependencies {
     implementation 'net.java.dev.jna:jna:5.13.0'
     implementation group: 'com.alphacephei', name: 'vosk', version: '0.3.45'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
+}
+
+application {
+    mainClass = 'logic.vosk.MicroRecogniseDemo'
+    applicationDefaultJvmArgs = [
+            '-Xms5G',
+            '-Xmx5G'
+    ]
 }
 
 configurations.all {
