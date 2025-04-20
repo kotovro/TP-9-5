@@ -1,2 +1,2 @@
-resources/*
+resources/ai-models/speech-recognition-model/*
 gradle/*
