@@ -8,6 +8,12 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 javafx {
     version = "21"
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
@@ -15,25 +21,21 @@ javafx {
 
 application {
     mainClass = 'logic.persistence.InitDatabase'
+    applicationDefaultJvmArgs = [
+            "--add-modules=javafx.controls,javafx.fxml,javafx.graphics",
+            "-Dprism.verbose=true"
+    ]
 }
 
 dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'  // реализация SLF4J
 }
 
-run {
-    doFirst {
-        jvmArgs = [
-                "--module-path", classpath.asPath,
-                "--add-modules", "javafx.controls,javafx.graphics"
-        ]
-    }
-}
-
-tasks.register('initDatabase', JavaExec) {
-    dependsOn classes
-    group = "database"
-    description = "Creates SQLite file and adds db scheme"
-    mainClass = 'logic.persistence.InitDatabase'
-    classpath = sourceSets.main.runtimeClasspath
+tasks.withType(JavaExec) {
+    jvmArgs = [
+            "--module-path", classpath.asPath,
+            "--add-modules", "javafx.controls,javafx.fxml,javafx.graphics"
+    ]
 }
