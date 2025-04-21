@@ -2,41 +2,20 @@ package logic.audio_extractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class VideoToAudioExtractor {
 
-    private static String findFFmpeg() {
-        String[] paths = System.getenv("PATH").split(File.pathSeparator);
-        for (String path : paths) {
-            File ffmpeg = new File(path, "ffmpeg.exe");
-            if (ffmpeg.exists() && ffmpeg.canExecute()) {
-                return ffmpeg.getAbsolutePath();
-            }
-        }
-        return null;
-    }
-
-    public static void extractAudio(File video, String audioPath) {
-        String ffmpegPath = findFFmpeg();
-        if (ffmpegPath != null) {
-            String command = String.format("\"%s\" -i \"%s\" -vn -acodec libmp3lame \"%s\"",
-                    ffmpegPath, video.getAbsolutePath(), audioPath);
-            try {
-                ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
-                processBuilder.inheritIO();
-                Process process = processBuilder.start();
-                int exitCode = process.waitFor();
-                System.out.println("Audio extracted from " + video.getAbsolutePath());
-                if (exitCode == 0) {
-                    System.out.println("Audio extracted by Path: " + audioPath);
-                } else {
-                    System.out.println("Error: " + exitCode);
-                }
-            } catch (IOException | InterruptedException e) {
-                System.out.println("Error with audio extraction: " + e.getMessage());
-            }
-        } else {
-            System.out.println("FFmpeg hasn't been found");
+    public static InputStream extractAudio(File video) {
+        String command = String.format("ffmpeg -i \"%s\" -f wav -acodec pcm_s16le -ar 44100 -ac 2 -",
+                video.getAbsolutePath());
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+            processBuilder.inheritIO();
+            Process process = processBuilder.start();
+            return process.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException("Error during audio extraction: " + e.getMessage(), e);
         }
     }
 }
