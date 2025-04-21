@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import logic.audioInput.AudioStreamConsumer;
 import logic.vosk.analiseDTO.RawReplica;
 import logic.vosk.analiseDTO.RawSpeaker;
-import logic.vosk.analiseDTO.Pair;
 import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
 

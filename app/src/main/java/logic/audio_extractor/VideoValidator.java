@@ -18,12 +18,7 @@ public class VideoValidator {
         return false;
     }
 
-    private static void validateVideoFile(String filePath) throws InvalidVideoFileException {
-        if (!Files.exists(Path.of(filePath))) {
-            throw new InvalidVideoFileException("The file does not exist or is not a valid file.");
-        }
-        if (!isSupportedFormat(filePath)) {
-            throw new InvalidVideoFileException("Unsupported video format. Supported formats: MP4, MKV, MOV, AVI, WEBM.");
-        }
+    private static boolean isSupportVideoFile(String filePath) {
+        return Files.exists(Path.of(filePath)) && isSupportedFormat(filePath);
     }
 }

@@ -1,11 +1,9 @@
 package logic.vosk;
 
-import javax.sound.sampled.AudioInputStream;
-import java.io.IOException;
-
-import logic.audioInput.AudioStreamConsumer;
-import org.vosk.Recognizer;
 import org.vosk.Model;
+import org.vosk.Recognizer;
+
+import java.io.IOException;
 
 public class VoskAnalyzer {
     Recognizer recognizer;
