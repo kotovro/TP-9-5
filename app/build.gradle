@@ -2,7 +2,10 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '2.24.1'
 }
+
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -26,4 +29,23 @@ application {
 
 dependencies {
     // Другие зависимости, если нужны
+}
+
+jlink {
+    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'Vstrecheslav'
+    }
+
+    jpackage() {
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            imageOptions += ['--icon', 'src/main/resources/icon.ico']
+        }
+        imageOptions += ['--vendor', 'Vsu Production']
+        installerOptions += [
+                '--vendor', 'Vsu Production',
+                '--app-version', version
+        ]
+    }
 }
