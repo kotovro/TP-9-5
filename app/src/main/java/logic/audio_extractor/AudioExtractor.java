@@ -3,19 +3,41 @@ package logic.audio_extractor;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class AudioExtractor {
 
     public static AudioInputStream extractAudio(String fileAbsolutePath) {
-        String[] command = String.format("ffmpeg -i \"%s\" -f mp4 -acodec pcm_s16le -ar 44100 -ac 2 -",
-                fileAbsolutePath).split(" ");
+        String[] command = {
+                "ffmpeg",
+                "-i", fileAbsolutePath,
+                "-map", "0:a",
+                "-acodec", "pcm_s16le",
+                "-ac", "1",
+                "-ar", "16000",
+                "-f", "wav",
+                "-"
+        };
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
-            processBuilder.inheritIO();
             Process process = processBuilder.start();
-            return AudioSystem.getAudioInputStream(process.getInputStream());
+
+            new Thread(() -> {
+                try (BufferedReader err = new BufferedReader(
+                        new InputStreamReader(process.getErrorStream()))) {
+                    String line;
+                    while ((line = err.readLine()) != null) {
+                        System.err.println("FFmpeg: " + line);
+                    }
+                } catch (IOException ignored) {}
+            }).start();
+
+            BufferedInputStream audioStream = new BufferedInputStream(process.getInputStream());
+            return AudioSystem.getAudioInputStream(audioStream);
+
         } catch (IOException | UnsupportedAudioFileException e) {
             throw new RuntimeException("Error during audio extraction: " + e.getMessage(), e);
         }
