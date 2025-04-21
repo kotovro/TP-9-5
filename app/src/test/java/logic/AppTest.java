@@ -1,5 +1,6 @@
 package logic;
 
+import logic.audio_extractor.App;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

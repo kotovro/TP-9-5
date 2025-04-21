@@ -1,4 +1,4 @@
-package logic;
+package logic.audio_extractor;
 
 import java.io.File;
 
