@@ -1,45 +1,53 @@
 package logic.audio_extractor;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+
+import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.ShortBuffer;
 
 public class AudioExtractor {
 
-    public static AudioInputStream extractAudio(String fileAbsolutePath) {
-        String[] command = {
-                "ffmpeg",
-                "-i", fileAbsolutePath,
-                "-map", "0:a",
-                "-acodec", "pcm_s16le",
-                "-ac", "1",
-                "-ar", "16000",
-                "-f", "wav",
-                "-"
-        };
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
-            Process process = processBuilder.start();
+    public static AudioInputStream extractAudio(String filePath) {
+        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
+            grabber.setSampleRate(16000);
+            grabber.setAudioChannels(1);
 
-            new Thread(() -> {
-                try (BufferedReader err = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream()))) {
-                    String line;
-                    while ((line = err.readLine()) != null) {
-                        System.err.println("FFmpeg: " + line);
+            grabber.start();
+
+            AudioFormat format = new AudioFormat(
+                    grabber.getSampleRate(),
+                    16,
+                    grabber.getAudioChannels(),
+                    true,
+                    false
+            );
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            Frame frame;
+
+            while ((frame = grabber.grabSamples()) != null) {
+                if (frame.samples != null) {
+                    ShortBuffer sb = (ShortBuffer) frame.samples[0];
+                    sb.rewind();
+
+                    byte[] buffer = new byte[sb.remaining() * 2];
+                    for (int i = 0; i < sb.remaining(); i++) {
+                        short val = sb.get(i);
+                        buffer[i * 2] = (byte) (val & 0xFF);
+                        buffer[i * 2 + 1] = (byte) ((val >> 8) & 0xFF);
                     }
-                } catch (IOException ignored) {}
-            }).start();
-
-            BufferedInputStream audioStream = new BufferedInputStream(process.getInputStream());
-            return AudioSystem.getAudioInputStream(audioStream);
-
-        } catch (IOException | UnsupportedAudioFileException e) {
-            throw new RuntimeException("Error during audio extraction: " + e.getMessage(), e);
+                    out.write(buffer);
+                }
+            }
+            grabber.stop();
+            byte[] audioBytes = out.toByteArray();
+            ByteArrayInputStream bais = new ByteArrayInputStream(audioBytes);
+            return new AudioInputStream(bais, format, audioBytes.length / format.getFrameSize());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to extract audio: " + e.getMessage(), e);
         }
     }
 }
