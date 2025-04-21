@@ -14,8 +14,11 @@ public class AudioExtractor {
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
             grabber.setSampleRate(16000);
             grabber.setAudioChannels(1);
-
             grabber.start();
+
+            if (grabber.getAudioChannels() == 0) {
+                throw new RuntimeException("Файл не содержит аудио.");
+            }
 
             AudioFormat format = new AudioFormat(
                     grabber.getSampleRate(),
@@ -32,7 +35,6 @@ public class AudioExtractor {
                 if (frame.samples != null) {
                     ShortBuffer sb = (ShortBuffer) frame.samples[0];
                     sb.rewind();
-
                     byte[] buffer = new byte[sb.remaining() * 2];
                     for (int i = 0; i < sb.remaining(); i++) {
                         short val = sb.get(i);
@@ -42,12 +44,19 @@ public class AudioExtractor {
                     out.write(buffer);
                 }
             }
+
             grabber.stop();
+
             byte[] audioBytes = out.toByteArray();
             ByteArrayInputStream bais = new ByteArrayInputStream(audioBytes);
+
+            // Возвращаем аудио как AudioInputStream
             return new AudioInputStream(bais, format, audioBytes.length / format.getFrameSize());
+
         } catch (Exception e) {
-            throw new RuntimeException("Failed to extract audio: " + e.getMessage(), e);
+            System.err.println("Ошибка в процессе извлечения аудио: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Не удалось извлечь аудио: " + e.getMessage(), e);
         }
     }
 }

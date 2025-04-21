@@ -20,7 +20,7 @@ public class MicroRecogniseDemo {
     public static void main(String[] argv) throws LineUnavailableException, InterruptedException, IOException {
 //        LibVosk.setLogLevel(LogLevel.DEBUG);
         String path = "C:\\Users\\1next\\Downloads\\happy.mp4";
-        if (!VideoValidator.isSupportedFormat(path)) {
+        if (!VideoValidator.isSupportVideoFile(path)) {
             throw new RuntimeException("Unsupported format");
         }
         AudioInputStream audioInputStream = AudioExtractor.extractAudio(path);
