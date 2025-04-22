@@ -2,10 +2,10 @@ package logic.text_edit.action;
 
 import logic.general.Replica;
 
-public class AddText implements Executable {
-    private String text;
-    private Replica replica;
-    private int position;
+public class AddText implements StoryPoint {
+    private final String text;
+    private final Replica replica;
+    private final int position;
 
     public AddText(String text, Replica replica, int position) {
         this.text = text;
@@ -16,11 +16,11 @@ public class AddText implements Executable {
 
     @Override
     public void unapply() {
-        replica.setText(replica.getText().substring(0, position) + replica.getText().substring(position + text.length()));
+        replica.getText().insert(position, text);
     }
 
     @Override
     public void apply() {
-        replica.setText(replica.getText().substring(0, position) + text + replica.getText().substring(position));
+        replica.getText().delete(position, position + text.length());
     }
 }

@@ -1,6 +1,6 @@
 package logic.text_edit.action;
 
-public interface Executable {
+public interface StoryPoint {
     void unapply();
     void apply();
 }

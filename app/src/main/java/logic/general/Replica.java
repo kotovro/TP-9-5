@@ -2,7 +2,7 @@ package logic.general;
 
 public class Replica {
     private Participant participant;
-    private String text;
+    private StringBuilder text;
 
     public int getSize() {
         return 0;
@@ -16,11 +16,7 @@ public class Replica {
         this.participant = participant;
     }
 
-    public String getText() {
+    public StringBuilder getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

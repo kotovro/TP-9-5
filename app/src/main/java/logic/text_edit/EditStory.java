@@ -1,30 +1,29 @@
 package logic.text_edit;
 
-import logic.text_edit.action.Executable;
+import logic.text_edit.action.StoryPoint;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 //TODO add own double linked list for last action index tracking
 public class EditStory {
 
-    List<Executable> executables = new ArrayList<>();
+    List<StoryPoint> executables = new ArrayList<>();
     int currentActionIndex = -1;
 
-    public boolean isUndoPossible()
-    {
+    public boolean canUndo() {
         return  (!executables.isEmpty() && currentActionIndex >= 0);
     }
+
     public void undoLast() {
-        if (isUndoPossible()) {
-            Executable lastAction = executables.get(currentActionIndex);
+        if (canUndo()) {
+            StoryPoint lastAction = executables.get(currentActionIndex);
             lastAction.unapply();
             currentActionIndex--;
         }
     }
 
-    public void addLast(Executable action) {
+    public void addLast(StoryPoint action) {
         if (currentActionIndex < executables.size() - 1) {
             executables.subList(currentActionIndex + 1, executables.size()).clear();
         }
@@ -38,7 +37,7 @@ public class EditStory {
     public void redoLast() {
         if(isRedoPossible()) {
             currentActionIndex++;
-            Executable nextAction = executables.get(currentActionIndex);
+            StoryPoint nextAction = executables.get(currentActionIndex);
             nextAction.apply();
         }
     }
