@@ -11,7 +11,6 @@ import java.nio.ShortBuffer;
 
 public class AudioExtractorStreamer {
 
-    private volatile boolean isRunning = false;
     private final AudioFormat format;
 
     public AudioExtractorStreamer() {
@@ -24,8 +23,7 @@ public class AudioExtractorStreamer {
      * @param audioConsumer интерфейс обработки чанков
      * @return итоговый AudioInputStream после завершения
      */
-    public AudioInputStream streamAndReturnFullAudio(String filePath, AudioStreamConsumer audioConsumer) {
-        isRunning = true;
+    public void streamAndReturnFullAudio(String filePath, AudioStreamConsumer audioConsumer) {
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
             grabber.setSampleRate(16000);
@@ -35,7 +33,7 @@ public class AudioExtractorStreamer {
             Frame frame;
             ByteArrayOutputStream fullOut = new ByteArrayOutputStream();
 
-            while (isRunning && (frame = grabber.grabSamples()) != null) {
+            while ((frame = grabber.grabSamples()) != null) {
                 if (frame.samples != null && frame.samples.length > 0) {
                     ShortBuffer sb = (ShortBuffer) frame.samples[0];
                     sb.rewind();
@@ -47,10 +45,7 @@ public class AudioExtractorStreamer {
                         buffer[i * 2 + 1] = (byte) ((val >> 8) & 0xFF);
                     }
 
-                    // Сохраняем во всеобщий поток
                     fullOut.write(buffer);
-
-                    // Отправляем чанком
                     ByteArrayInputStream chunkStream = new ByteArrayInputStream(buffer);
                     AudioInputStream audioChunk = new AudioInputStream(chunkStream, format, buffer.length / format.getFrameSize());
                     audioConsumer.onAudioChunkReceived(audioChunk);
@@ -59,18 +54,10 @@ public class AudioExtractorStreamer {
 
             grabber.stop();
 
-            // Возвращаем финальный stream
-            byte[] audioBytes = fullOut.toByteArray();
-            ByteArrayInputStream finalStream = new ByteArrayInputStream(audioBytes);
-            return new AudioInputStream(finalStream, format, audioBytes.length / format.getFrameSize());
 
         } catch (Exception e) {
             System.err.println("Ошибка при извлечении аудио: " + e.getMessage());
             throw new RuntimeException("Не удалось извлечь аудио", e);
         }
-    }
-
-    public void stopStreaming() {
-        isRunning = false;
     }
 }
