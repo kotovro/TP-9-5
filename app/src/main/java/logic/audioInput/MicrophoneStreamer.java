@@ -7,7 +7,8 @@ import java.io.ByteArrayOutputStream;
 public class MicrophoneStreamer {
     private TargetDataLine microphone;
     private AudioFormat format;
-    private boolean isRunning = false;
+    private volatile boolean isRunning = false;
+    private Thread streamingThread;
 
     public MicrophoneStreamer() throws LineUnavailableException {
         // Настройка формата аудио (16-bit, 44100 Hz, моно)
@@ -37,7 +38,7 @@ public class MicrophoneStreamer {
 
         byte[] buffer = new byte[4096];
 
-        new Thread(() -> {
+        streamingThread = new Thread(() -> {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
 
             while (isRunning) {
@@ -58,10 +59,18 @@ public class MicrophoneStreamer {
 
             microphone.stop();
             microphone.close();
-        }).start();
+        });
+        streamingThread.start();
     }
 
     public void stopStreaming() {
         isRunning = false;
+        while (streamingThread.isAlive()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

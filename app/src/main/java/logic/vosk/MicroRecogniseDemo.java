@@ -3,17 +3,11 @@ package logic.vosk;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
-import logic.audioInput.MicrophoneStreamer;
-import logic.audio_extractor.AudioExtractor;
+import logic.audioInput.AudioStreamConsumer;
+import logic.audio_extractor.AudioExtractorStreamer;
 import logic.audio_extractor.VideoValidator;
-import org.vosk.LogLevel;
-import org.vosk.LibVosk;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class MicroRecogniseDemo {
 
@@ -23,11 +17,11 @@ public class MicroRecogniseDemo {
         if (!VideoValidator.isSupportVideoFile(path)) {
             throw new RuntimeException("Unsupported format");
         }
-        AudioInputStream audioInputStream = AudioExtractor.extractAudio(path);
-
         VoskAnalyzer analyzer = new VoskAnalyzer();
         VoskRecognizer recognizer = new VoskRecognizer(analyzer.getRecognizer());
-
+        AudioExtractorStreamer streamer = new AudioExtractorStreamer();
+        // Обрабатываем чанками
+        AudioInputStream fullStream = streamer.streamAndReturnFullAudio(path, recognizer::processStream);
 //        MicrophoneStreamer streamer = new MicrophoneStreamer();
 //        streamer.startStreaming(recognizer);
 //
@@ -38,10 +32,11 @@ public class MicroRecogniseDemo {
 //        System.out.println("MicroRecogniseDemo finished");
 
 
-        recognizer.processStream(audioInputStream);
+        recognizer.processStream(fullStream);
 
         for (var replica : recognizer.getFinalResult()) {
             System.out.println(replica);
         }
+
     }
 }
