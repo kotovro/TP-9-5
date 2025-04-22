@@ -59,6 +59,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
     }
 
     public List<RawReplica> getFinalResult() {
+
         correctSpeakers();
         return replicas;
     }
