@@ -19,7 +19,7 @@ public class MicroRecogniseDemo {
 
     public static void main(String[] argv) throws LineUnavailableException, InterruptedException, IOException {
 //        LibVosk.setLogLevel(LogLevel.DEBUG);
-        String path = "C:\\Users\\1next\\Downloads\\happy.mp4";
+        String path = "C:\\Users\\1next\\Downloads\\Гайд для вернувшихся в хср.mp4";
         if (!VideoValidator.isSupportVideoFile(path)) {
             throw new RuntimeException("Unsupported format");
         }
