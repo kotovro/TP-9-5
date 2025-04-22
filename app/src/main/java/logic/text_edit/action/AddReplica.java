@@ -3,11 +3,10 @@ package logic.text_edit.action;
 import logic.general.Replica;
 import logic.general.Transcript;
 
-public class AddReplica implements Executable {
-    public Transcript transcript;
-    public Replica replica;
-    public int replicaPosition;
-    private boolean inserted = false;
+public class AddReplica implements StoryPoint {
+    private final Transcript transcript;
+    private final Replica replica;
+    private final int replicaPosition;
 
     public AddReplica(Transcript transcript, Replica replica, int replicaPosition) {
         this.transcript = transcript;
@@ -17,19 +16,11 @@ public class AddReplica implements Executable {
 
     @Override
     public void apply() {
-        if (!inserted) {
-            if (replicaPosition >= 0 && replicaPosition <= transcript.getReplicas().size()) {
-                transcript.getReplicas().add(replicaPosition, replica);
-                inserted = true;
-            }
-        }
+        transcript.addReplica(replica, replicaPosition);
     }
 
     @Override
     public void unapply() {
-        if (inserted) {
-            transcript.getReplicas().remove(replicaPosition);
-            inserted = false;
-        }
+        transcript.removeReplica(replicaPosition);
     }
 }

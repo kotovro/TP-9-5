@@ -1,7 +1,8 @@
 package logic.general;
 
 import javafx.util.Pair;
-import logic.text_edit.Buffer;
+import logic.text_edit.ReplicaBuffer;
+import logic.text_edit.TextBuffer;
 
 import java.util.ArrayList;
 //<<<<<<< Updated upstream
@@ -11,26 +12,30 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Transcript {
-    List<Replica> transcript = new ArrayList<Replica>();
-    public List<Replica> getReplicas() {
-        return transcript;
+    List<Replica> replicas = new ArrayList<>();
+    public Iterable<Replica> getReplicas() {
+        return replicas;
     }
 
     public void removeReplica(int index) {
-
+        replicas.remove(index);
     }
 
-    public void cutReplica(int index, Buffer buffer) {
-
+    public void cutReplica(int index) {
+        ReplicaBuffer.setReplica(replicas.get(index));
+        removeReplica(index);
     }
 
-    List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
-    List<Pair<Replica, Integer>> getSearchResults() {
-        return searchResults;
+    public void addReplica(Replica replica, int index) {
+        replicas.add(index, replica);
     }
 
-    public List<Pair<Replica, Integer>> findText(Transcript transcript, String searchText)
-    {
+    public Replica getReplica(int index) {
+        return replicas.get(index);
+    }
+
+    public Iterable<Pair<Replica, Integer>> findText(Transcript transcript, String searchText) {
+        List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
         for (Replica replica : transcript.getReplicas()) {
             Integer searchedTextIndex =  replica.getText().indexOf(searchText);
             searchResults.add(new Pair<>(replica, searchedTextIndex));

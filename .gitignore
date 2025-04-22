@@ -37,3 +37,4 @@ replay_pid*
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
 /app/src/main/java/logic/text_edit/action/FindAction.java
+/app/src/main/java/logic/text_edit/action/Executable.java
