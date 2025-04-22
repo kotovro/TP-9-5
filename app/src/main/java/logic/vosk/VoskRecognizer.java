@@ -53,12 +53,16 @@ public class VoskRecognizer implements AudioStreamConsumer {
         }
     }
 
-    //закрывает поток после обработки
     public void processStream(AudioInputStream audioStream) {
         onAudioChunkReceived(audioStream);
     }
 
     public List<RawReplica> getFinalResult() {
+        try {
+            replicas.add(parseReplica(recognizer.getFinalResult()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         correctSpeakers();
         return replicas;
     }

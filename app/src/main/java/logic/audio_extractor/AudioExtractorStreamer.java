@@ -23,8 +23,7 @@ public class AudioExtractorStreamer {
      * @param audioConsumer интерфейс обработки чанков
      * @return итоговый AudioInputStream после завершения
      */
-    public void streamAndReturnFullAudio(String filePath, AudioStreamConsumer audioConsumer) {
-
+    public void processAudio(String filePath, AudioStreamConsumer audioConsumer) {
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
             grabber.setSampleRate(16000);
             grabber.setAudioChannels(1);
@@ -44,20 +43,22 @@ public class AudioExtractorStreamer {
                         buffer[i * 2] = (byte) (val & 0xFF);
                         buffer[i * 2 + 1] = (byte) ((val >> 8) & 0xFF);
                     }
-
                     fullOut.write(buffer);
-                    ByteArrayInputStream chunkStream = new ByteArrayInputStream(buffer);
-                    AudioInputStream audioChunk = new AudioInputStream(chunkStream, format, buffer.length / format.getFrameSize());
-                    audioConsumer.onAudioChunkReceived(audioChunk);
                 }
             }
 
             grabber.stop();
 
+            byte[] fullData = fullOut.toByteArray();
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(fullData);
+            AudioInputStream fullAudioStream = new AudioInputStream(inputStream, format, fullData.length / format.getFrameSize());
+
+            audioConsumer.onAudioChunkReceived(fullAudioStream);
 
         } catch (Exception e) {
             System.err.println("Ошибка при извлечении аудио: " + e.getMessage());
             throw new RuntimeException("Не удалось извлечь аудио", e);
         }
     }
+
 }

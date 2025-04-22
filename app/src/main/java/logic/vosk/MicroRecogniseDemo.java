@@ -20,10 +20,8 @@ public class MicroRecogniseDemo {
         VoskAnalyzer analyzer = new VoskAnalyzer();
         VoskRecognizer recognizer = new VoskRecognizer(analyzer.getRecognizer());
         AudioExtractorStreamer streamer = new AudioExtractorStreamer();
-        // Обрабатываем чанками
-        AudioInputStream fullStream = streamer.streamAndReturnFullAudio(path, recognizer::processStream);
-//        MicrophoneStreamer streamer = new MicrophoneStreamer();
-//        streamer.startStreaming(recognizer);
+        streamer.processAudio(path, recognizer::processStream);
+        //streamer.startStreaming(recognizer);
 //
 //        System.out.println("MicroRecogniseDemo started");
 //        Thread.sleep(30000);
@@ -31,12 +29,8 @@ public class MicroRecogniseDemo {
 //        streamer.stopStreaming();
 //        System.out.println("MicroRecogniseDemo finished");
 
-
-        recognizer.processStream(fullStream);
-
         for (var replica : recognizer.getFinalResult()) {
             System.out.println(replica);
         }
-
     }
 }
