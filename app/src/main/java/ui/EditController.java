@@ -9,6 +9,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -30,7 +31,7 @@ public class EditController {
     List<Pair<TextArea, Replica>> textAreas = new ArrayList<>();
     Replica currentReplica = null;
 
-    private Transcript transcript = new Transcript();
+    private Transcript transcript = new Transcript("fjwiefjsw", new Date());
     private HotkeysPressedActionProvider hotkeysPressedActionProvider = new HotkeysPressedActionProvider();
     public static TextEditUnit getDifferenceWithIndex(String oldText, String newText) {
         int minLength = Math.min(oldText.length(), newText.length());
@@ -165,7 +166,7 @@ public class EditController {
                 textArea.setPrefHeight(height);
             });
 
-            VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 20, 0));
+            VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 10, 0));
             textArea.setText("meimviece");
             textArea.setPrefRowCount(3);
 
@@ -215,7 +216,7 @@ public class EditController {
                     System.out.println("TextArea lost focus");
                 }
             });
-            VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 50, 0));
+            VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 20, 0));
             textAreaContainer.getChildren().add(textArea);
         }
 

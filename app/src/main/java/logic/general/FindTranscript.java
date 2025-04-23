@@ -2,10 +2,15 @@ package logic.general;
 
 import javafx.util.Pair;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FindTranscript extends Transcript {
+
+    public FindTranscript(String name, Date date) {
+        super(name, date);
+    }
 
     public Iterable<Pair<Replica, Integer>> findText(String searchText) {
         List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
