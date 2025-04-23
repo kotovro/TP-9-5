@@ -24,7 +24,7 @@ run {
 }
 
 application {
-    mainClass = 'ui.EditWindow'
+    mainClass = 'ui.LoadStenogrammApp'
 }
 
 dependencies {

@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /// here we can store some info that was acquired via ctrl+x/ctrl+v
 public class Buffer  {
-    public static Replica bufferedReplica = new Replica();
+    public static Replica bufferedReplica = new Replica("");
     public static String bufferedString = "";
     public static Clipboard clipboardForString = Toolkit.getDefaultToolkit().getSystemClipboard(); //support for system clipboard
 

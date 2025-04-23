@@ -27,7 +27,6 @@ import java.util.List;
 
 public class EditController {
 
-
     List<Pair<TextArea, Replica>> textAreas = new ArrayList<>();
     Replica currentReplica = null;
 
@@ -138,8 +137,9 @@ public class EditController {
             VBox.setMargin(comboBox, new javafx.geometry.Insets(0, 0, 5, 0));
             textAreaContainer.getChildren().add(comboBox);
 
-            Replica replica = new Replica();
-            replica.setText("meimviece");
+            Replica replica = new Replica("meimviece");
+
+            //replica.setText();
             TextArea textArea = new TextArea();
             textArea.setWrapText(true);
             textArea.setPrefRowCount(1);
@@ -186,14 +186,14 @@ public class EditController {
 
                 if (change.isContentChange()) {
                     String allText = textArea.getText();
-                    replica.setText(allText);
+                    //replica.setText(allText);
                     String allTextAfterEdit = change.getControlNewText();
 
-                    TextEditUnit edits = getDifferenceWithIndex(allText, allTextAfterEdit);
-                    if (edits.deletedText().isEmpty() && !edits.insertedText().isEmpty())
-                    {
-//                        editStory.addLast(new AddText(allText, replica, edits.textDifferenceStartIndex()));
-                    }
+                    //TextEditUnit edits = getDifferenceWithIndex(allText, allTextAfterEdit);
+                    //if (edits.deletedText().isEmpty() && !edits.insertedText().isEmpty())
+                    //{
+//                   //     editStory.addLast(new AddText(allText, replica, edits.textDifferenceStartIndex()));
+                   // }
 
                     return change;
                 } else {
