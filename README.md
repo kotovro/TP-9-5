@@ -24,8 +24,8 @@
 
 ### Отчеты
 - Очтет за период с 18.03 по 24.03 [PDF](https://bit.ly/4lC3QNT)
-- Отчет за период с 30.03 по 08.03 [PDF](https://bit.ly/3GcbfDe) 
-
+- Отчет за период с 30.03 по 08.04 [PDF](https://bit.ly/3GcbfDe) 
+- Отчет за период с 08.04 по 21.04 [PDF]
 ### Работа с репозиторием
 
 - Правила коммитов [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/commitrules.txt)
