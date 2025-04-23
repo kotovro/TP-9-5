@@ -8,7 +8,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
@@ -55,6 +54,34 @@ public class DownloadingController {
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
 
+        initImages();
+        initDropPaneEvents();
+    }
+
+    @FXML
+    protected void onFileButtonClick(ActionEvent event) {
+        errorPane.setVisible(false);
+        sucsessPane.setVisible(false);
+        FileChooser fileChooser = createFileChooser();
+        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            selectedFile = file;
+            DownloadButton.setDisable(false);
+            sucsessPane.setVisible(true);
+        }
+        else {
+            errorPane.setVisible(true);
+        }
+    }
+
+    @FXML
+    protected void onDownloadButtonClick() {
+        // то, что вам нужно сделать после загрузки файла
+    }
+
+    private void initImages() {
         Image image = new Image(getClass().getResource("/images/CloudDownload.png").toExternalForm());
         ImageViewDrop.setImage(image);
         Image image2 = new Image(getClass().getResource("/images/CheckCircle.png").toExternalForm());
@@ -63,7 +90,9 @@ public class DownloadingController {
         imgDangerCircle.setImage(image3);
         Image image4 = new Image(getClass().getResource("/images/UserSpeak2.png").toExternalForm());
         imgUserSpeak2.setImage(image4);
+    }
 
+    private void initDropPaneEvents() {
         dropPane.setOnDragOver(event -> {
             if (event.getGestureSource() != dropPane &&
                     event.getDragboard().hasFiles()) {
@@ -95,10 +124,7 @@ public class DownloadingController {
         });
     }
 
-    @FXML
-    protected void onFileButtonClick(ActionEvent event) {
-        errorPane.setVisible(false);
-        sucsessPane.setVisible(false);
+    private FileChooser createFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите файл");
         fileChooser.getExtensionFilters().addAll(
@@ -108,21 +134,6 @@ public class DownloadingController {
                 new FileChooser.ExtensionFilter("Видео файлы", "*.mov"),
                 new FileChooser.ExtensionFilter("Видео файлы", "*.webm")
         );
-        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-
-        File file = fileChooser.showOpenDialog(stage);
-        if (file != null) {
-            selectedFile = file;
-            DownloadButton.setDisable(false);
-            sucsessPane.setVisible(true);
-        }
-        else {
-            errorPane.setVisible(true);
-        }
-    }
-
-    @FXML
-    protected void onDownloadButtonClick() {
-        // то, что вам нужно сделать после загрузки файла
+        return fileChooser;
     }
 }
