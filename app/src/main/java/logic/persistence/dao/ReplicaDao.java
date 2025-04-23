@@ -41,12 +41,12 @@ public class ReplicaDao {
         }
     }
 
-    public List<Replica> getReplicasByMeetingId(int meetingId) throws SQLException {
-        String sql = "SELECT order_number, content FROM replica WHERE meeting_id = ? ORDER BY order_number";
+    public List<Replica> getReplicasByMeetingId(Long meetingId) throws SQLException {
+        String sql = "SELECT order_number, content, participant_id  FROM replica WHERE meeting_id = ? ORDER BY order_number";
         List<Replica> replicas = new ArrayList<>();
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, meetingId);
+            stmt.setLong(1, meetingId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

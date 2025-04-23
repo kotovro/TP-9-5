@@ -16,17 +16,19 @@ public class ParticipantDao {
 
     public void addParticipant(Participant participant) throws SQLException {
         String sql = "INSERT INTO participant (name) VALUES (?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, participant.getName());
             stmt.executeUpdate();
+        }
 
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    participant.setId(generatedKeys.getLong(1));
-                }
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
+            if (rs.next()) {
+                participant.setId(rs.getLong(1));
             }
         }
     }
+
 
     public void deleteParticipant(Long participantId) throws SQLException {
         String sql = "DELETE FROM participant WHERE id = ?";
