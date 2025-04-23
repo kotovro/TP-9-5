@@ -26,8 +26,6 @@ import ui.hotkeys.HotkeysPressedActionProvider;
 import java.util.List;
 
 public class EditController {
-
-
     List<Pair<TextArea, Replica>> textAreas = new ArrayList<>();
     Replica currentReplica = null;
 

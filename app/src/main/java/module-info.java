@@ -5,6 +5,7 @@ module vsrecheslav {
 
     requires java.sql;
     requires java.desktop;
+    requires java.xml.crypto;
 
     exports logic.general;
     exports logic.text_edit;

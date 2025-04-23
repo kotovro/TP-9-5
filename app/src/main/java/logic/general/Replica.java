@@ -1,5 +1,8 @@
 package logic.general;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Replica {
     private Participant participant;
     private StringBuilder text;
@@ -18,5 +21,34 @@ public class Replica {
 
     public StringBuilder getText() {
         return text;
+    }
+
+    public ArrayList<Integer> findAllOccurrences(String searchText) {
+        if (searchText.isEmpty())
+            return new ArrayList<>();
+
+        ArrayList<Integer> indices = new ArrayList<>();
+        int searchLength = searchText.length();
+        int textLength = text.length();
+        int index = 0;
+
+        while (index <= textLength - searchLength) {
+            boolean found = true;
+
+            for (int i = 0; i < searchLength; i++) {
+                if (text.charAt(index + i) != searchText.charAt(i)) {
+                    found = false;
+                    break;
+                }
+            }
+
+            if (found) {
+                indices.add(index);
+                index += searchLength;
+            } else {
+                index++;
+            }
+        }
+        return indices;
     }
 }

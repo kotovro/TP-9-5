@@ -7,7 +7,7 @@ import java.util.List;
 
 //TODO add own double linked list for last action index tracking
 public class EditStory {
-    private static final int BUFFER_MAX_SIZE = 50;
+    private static final int BUFFER_MAX_SIZE = 100;
 
     private final StoryPoint[] executables = new StoryPoint[BUFFER_MAX_SIZE * 2];
     //Указывает на позицию, следующую за текущим story point

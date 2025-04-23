@@ -2,19 +2,29 @@ package logic.general;
 
 import javafx.util.Pair;
 import logic.text_edit.ReplicaBuffer;
-import logic.text_edit.TextBuffer;
 
-import java.util.ArrayList;
-//<<<<<<< Updated upstream
-//=======
+import java.util.Date;
 import java.util.LinkedList;
-//>>>>>>> Stashed changes
+import java.util.ArrayList;
 import java.util.List;
 
 public class Transcript {
-    List<Replica> replicas = new ArrayList<>();
-    public Iterable<Replica> getReplicas() {
-        return replicas;
+    protected List<Replica> replicas = new ArrayList<>();
+    protected int currentIndex = 0;
+    private String name;
+    private Date date;
+
+    public Transcript(String name, Date date) {
+        this.name = name;
+        this.date = date;
+    }
+
+    public void addReplica(Replica replica, int index) {
+        replicas.add(index, replica);
+    }
+
+    public void addReplica(Replica replica) {
+        replicas.add(currentIndex + 1, replica);
     }
 
     public void removeReplica(int index) {
@@ -26,21 +36,23 @@ public class Transcript {
         removeReplica(index);
     }
 
-    public void addReplica(Replica replica, int index) {
-        replicas.add(index, replica);
+    public Iterable<Replica> getReplicas() {
+        return replicas;
     }
 
     public Replica getReplica(int index) {
         return replicas.get(index);
     }
 
-    public Iterable<Pair<Replica, Integer>> findText(Transcript transcript, String searchText) {
-        List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
-        for (Replica replica : transcript.getReplicas()) {
-            Integer searchedTextIndex =  replica.getText().indexOf(searchText);
-            searchResults.add(new Pair<>(replica, searchedTextIndex));
-        }
-        return searchResults;
+    public Replica getCurrentReplica() {
+        return replicas.get(currentIndex);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 }
