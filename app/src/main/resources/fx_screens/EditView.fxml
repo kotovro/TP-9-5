@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.BoxBlur?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.EditController" stylesheets="@/styles/slyles.css">
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" stylesheets="@/styles/slyles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.EditController">
     <children>
       <Circle fill="#14165a" layoutX="100.0" layoutY="350.0" radius="136.0" strokeType="INSIDE">
          <effect>
@@ -34,7 +35,7 @@
             <BoxBlur height="143.23" width="193.27" />
          </effect>
       </Circle>
-        <ScrollPane layoutX="22.0" layoutY="64.0" prefHeight="321.0" prefWidth="556.0" style="-fx-background-color: rgba(255, 255, 255, 0.3);">
+        <ScrollPane layoutX="23.0" layoutY="64.0" prefHeight="321.0" prefWidth="556.0" style="-fx-background-color: rgba(255, 255, 255, 0.3);">
             <content>
                 <VBox fx:id="textAreaContainer" prefHeight="306.0" prefWidth="534.0" style="-fx-background-color: rgba(255, 255, 255, 0.3);">
                <padding>
@@ -55,12 +56,17 @@
                   <Font name="Tilda Sans Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="367.0" layoutY="13.0" text="редактирование протокола встречи">
-               <font>
-                  <Font name="Tilda Sans Regular" size="14.0" />
-               </font>
-            </Label>
          </children>
       </Pane>
+      <Button fx:id="saveButton" layoutX="23.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
+         <font>
+            <Font name="Tilda Sans Medium" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="loadButton" layoutX="158.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Загрузить" textFill="WHITE">
+         <font>
+            <Font name="Tilda Sans Medium" size="13.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

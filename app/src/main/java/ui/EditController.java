@@ -1,6 +1,9 @@
 package ui;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -13,10 +16,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javafx.stage.Stage;
+import javafx.util.Pair;
 import logic.general.Speaker;
 import logic.general.Replica;
 import javafx.scene.layout.AnchorPane;
 import logic.general.Transcript;
+import logic.text_edit.EditStory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import logic.text_edit.EditStory;
 import logic.text_edit.action.AddReplica;
 import logic.text_edit.action.RemoveReplica;
@@ -36,6 +44,12 @@ public class EditController {
 
     @FXML
     private VBox textAreaContainer;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button loadButton;
 
     public void setTranscript(Transcript transcript) {
         this.transcript = transcript;
@@ -131,6 +145,28 @@ public class EditController {
         saveButton.setOnAction(event -> {
             // то, что вам нужно
         });
+
+        loadButton.setOnAction(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/LoadOptional.fxml"));
+                Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
+
+                Stage dialog = new Stage();
+                dialog.initOwner(loadButton.getScene().getWindow());
+                dialog.setTitle("Выбор источника загрузки");
+                dialog.setScene(scene);
+                dialog.setResizable(false);
+                dialog.showAndWait(); // или dialog.showAndWait();
+
+                Stage currentStage = (Stage) loadButton.getScene().getWindow();
+                currentStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        textAreaContainer.getStyleClass().add("vbox-transparent");
         VBox.setMargin(saveButton, new javafx.geometry.Insets(15, 0, 0, 0));
         return saveButton;
     }

@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
@@ -23,6 +24,27 @@ public class LoadStenogrammController {
     private Button confirmButton;
 
     private CardView selectedCard;
+
+    @FXML
+    private Button loadButton;
+
+    @FXML
+    private void loadFromVideo() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/downloading.fxml"));
+            Scene newScene = new Scene(loader.load());
+            Stage newStage = new Stage();
+            newStage.setScene(newScene);
+            newStage.setTitle("Загрузка стенограммы");
+            newStage.show();
+
+            Stage currentStage = (Stage) loadButton.getScene().getWindow();
+            currentStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public void initialize() {
         confirmButton.setDisable(true);

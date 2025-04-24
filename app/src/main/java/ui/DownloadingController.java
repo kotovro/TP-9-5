@@ -1,8 +1,7 @@
 package ui;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -22,7 +21,7 @@ import logic.vosk.VoskRecognizer;
 import logic.vosk.analiseDTO.RawReplica;
 
 import java.io.File;
-import java.util.Date;
+import java.io.IOException;
 import java.util.List;
 
 public class DownloadingController {
@@ -60,6 +59,27 @@ public class DownloadingController {
 
         initImages();
         initDropPaneEvents();
+    }
+
+    @FXML
+    private Button loadButton;
+
+    @FXML
+    private void loadFromDatabase() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/loadStenogramm.fxml"));
+            Scene newScene = new Scene(loader.load());
+            Stage newStage = new Stage();
+            newStage.setScene(newScene);
+            newStage.setTitle("Загрузка стенограммы");
+            newStage.show();
+
+            Stage currentStage = (Stage) loadButton.getScene().getWindow();
+            currentStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML

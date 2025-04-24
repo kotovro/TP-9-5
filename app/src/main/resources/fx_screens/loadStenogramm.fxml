@@ -35,6 +35,11 @@
                   <Font name="Tilda Sans Bold" size="18.0" />
                </font>
             </Label>
+            <Button fx:id="loadButton" layoutX="461.0" layoutY="17.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="127.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" onMouseClicked="#loadFromVideo" text="Загрузить из видео" textFill="WHITE">
+               <font>
+                  <Font name="Tilda Sans Medium" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <Circle fill="#0b0f85" layoutX="66.0" layoutY="344.0" radius="100.0" strokeType="INSIDE">
@@ -56,8 +61,6 @@
             </FlowPane>
          </content>
       </ScrollPane>
-      <Button fx:id="confirmButton" text="Сохранить выбор"
-              layoutX="225.0" layoutY="430.0" prefWidth="150.0"
-              style="-fx-background-color: #3338D5; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 16px" />
+      <Button fx:id="confirmButton" layoutX="225.0" layoutY="430.0" prefWidth="150.0" style="-fx-background-color: #3338D5; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 16px" text="Сохранить выбор" />
    </children>
 </AnchorPane>
