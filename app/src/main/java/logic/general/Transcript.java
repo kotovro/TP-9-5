@@ -23,12 +23,20 @@ public class Transcript {
         replicas.add(index, replica);
     }
 
+    public void addReplicaAfter(Replica replica, Replica marker) {
+        replicas.add(replicas.indexOf(marker), replica);
+    }
+
     public void addReplica(Replica replica) {
         replicas.add(currentIndex, replica);
     }
 
     public void removeReplica(int index) {
         replicas.remove(index);
+    }
+
+    public void removeReplica(Replica replica) {
+        replicas.remove(replica);
     }
 
     public void cutReplica(int index) {

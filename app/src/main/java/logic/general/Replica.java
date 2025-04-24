@@ -1,13 +1,17 @@
 package logic.general;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Replica {
+    private static int maxId = 0;
+    private int id;
     private Speaker speaker;
     private StringBuilder text;
 
     public Replica(String text, Speaker speaker) {
         this.text = new StringBuilder(text);
+        id = maxId++;
     }
 
     public int getSize() {
@@ -54,5 +58,11 @@ public class Replica {
             }
         }
         return indices;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Replica replica)) return false;
+        return id == replica.id;
     }
 }

@@ -56,9 +56,8 @@ public class LoadStenogrammController {
                 try {
                     // Здесь можешь сохранить selectedCard.getnameText() или что тебе там вообще нужно
                     confirmButton.setDisable(true);
-                    Thread.sleep(5000);
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-                    Scene secondScene = new Scene(loader.load(), 600, 400);
+                    Thread.sleep(500);
+                    Scene secondScene = EditWindow.getScene();
                     Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
                     stage.setScene(secondScene);
                 } catch (IOException ex) {
