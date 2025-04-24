@@ -2,6 +2,8 @@ package ui;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
+import javafx.stage.Stage;
 import javafx.util.Pair;
 import logic.general.Replica;
 import logic.general.Transcript;
@@ -67,6 +70,12 @@ public class EditController {
 
     @FXML
     private VBox textAreaContainer;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button loadButton;
 
     @FXML
     public void initialize() {
@@ -220,22 +229,30 @@ public class EditController {
             textAreaContainer.getChildren().add(textArea);
         }
 
-        Button saveButton = new Button("сохранить");
-        saveButton.setText("\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C");
-        saveButton.setStyle("""
-    -fx-background-color: #3338D5;
-    -fx-text-fill: white;
-    -fx-font-family: "Arial";
-    -fx-font-size: 14px;
-    -fx-background-radius: 12px;
-    -fx-padding: 6 16;
-        """);
         saveButton.setOnAction(event -> {
             // то, что вам нужно
         });
 
-        VBox.setMargin(saveButton, new javafx.geometry.Insets(15, 0, 0, 0));
-        textAreaContainer.getChildren().add(saveButton);
+        loadButton.setOnAction(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/LoadOptional.fxml"));
+                Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
+
+                Stage dialog = new Stage();
+                dialog.initOwner(loadButton.getScene().getWindow());
+                dialog.setTitle("Выбор источника загрузки");
+                dialog.setScene(scene);
+                dialog.setResizable(false);
+                dialog.showAndWait(); // или dialog.showAndWait();
+
+                Stage currentStage = (Stage) loadButton.getScene().getWindow();
+                currentStage.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         textAreaContainer.getStyleClass().add("vbox-transparent");
 
 

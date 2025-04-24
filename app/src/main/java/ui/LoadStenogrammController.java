@@ -24,6 +24,27 @@ public class LoadStenogrammController {
 
     private CardView selectedCard;
 
+    @FXML
+    private Button loadButton;
+
+    @FXML
+    private void loadFromVideo() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/downloading.fxml"));
+            Scene newScene = new Scene(loader.load());
+            Stage newStage = new Stage();
+            newStage.setScene(newScene);
+            newStage.setTitle("Загрузка стенограммы");
+            newStage.show();
+
+            Stage currentStage = (Stage) loadButton.getScene().getWindow();
+            currentStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void initialize() {
         confirmButton.setDisable(true);
         cardPane.setHgap(15);
@@ -58,7 +79,7 @@ public class LoadStenogrammController {
                     confirmButton.setDisable(true);
                     Thread.sleep(5000);
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-                    Scene secondScene = new Scene(loader.load(), 600, 400);
+                    Scene secondScene = new Scene(loader.load(), 600, 450);
                     Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
                     stage.setScene(secondScene);
                 } catch (IOException ex) {

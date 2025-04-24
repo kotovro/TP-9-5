@@ -1,6 +1,8 @@
 package ui;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class DownloadingController {
@@ -59,6 +62,27 @@ public class DownloadingController {
     }
 
     @FXML
+    private Button loadButton;
+
+    @FXML
+    private void loadFromDatabase() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/loadStenogramm.fxml"));
+            Scene newScene = new Scene(loader.load());
+            Stage newStage = new Stage();
+            newStage.setScene(newScene);
+            newStage.setTitle("Загрузка стенограммы");
+            newStage.show();
+
+            Stage currentStage = (Stage) loadButton.getScene().getWindow();
+            currentStage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @FXML
     protected void onFileButtonClick(ActionEvent event) {
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
@@ -79,6 +103,18 @@ public class DownloadingController {
     @FXML
     protected void onDownloadButtonClick() {
         // то, что вам нужно сделать после загрузки файла
+        try {
+            DownloadButton.setDisable(true);
+            Thread.sleep(5000);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
+            Scene secondScene = new Scene(loader.load(), 600, 450);
+            Stage stage = (Stage) DownloadButton.getScene().getWindow(); // Получаем текущую сцену
+            stage.setScene(secondScene);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private void initImages() {
