@@ -40,7 +40,7 @@ public class ParticipantDao {
                     return new Speaker(
                             rs.getString("name"),
                             null,
-                            rs.getLong("id"));
+                            rs.getInt("id"));
                 } else {
                     throw new ParticipantNotFoundException(participantId);                }
             }
@@ -58,7 +58,7 @@ public class ParticipantDao {
                 Speaker speaker = new Speaker(
                         rs.getString("name"),
                         null,
-                        rs.getLong("id"));
+                        rs.getInt("id"));
                 participants.add(speaker);
             }
         }

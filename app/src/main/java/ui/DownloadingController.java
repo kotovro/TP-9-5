@@ -10,8 +10,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import logic.audio_extractor.AudioExtractorStreamer;
+import logic.audio_extractor.VideoValidator;
+import logic.general.Replica;
+import logic.general.Speaker;
+import logic.general.Transcript;
+import logic.vosk.VoskRecognizer;
+import logic.vosk.analiseDTO.RawReplica;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 public class DownloadingController {
@@ -42,13 +50,6 @@ public class DownloadingController {
     @FXML
     private ImageView imgUserSpeak2;
 
-    private final List<String> allowed = List.of(".mp4", ".mov", ".avi", ".mkv", ".webm");
-
-    private boolean isAllowedFile(File file) {
-        String name = file.getName().toLowerCase();
-        return allowed.stream().anyMatch(name::endsWith);
-    }
-
     @FXML
     public void initialize() {
         errorPane.setVisible(false);
@@ -78,7 +79,15 @@ public class DownloadingController {
 
     @FXML
     protected void onDownloadButtonClick() {
-        // то, что вам нужно сделать после загрузки файла
+        VoskRecognizer recognizer = new VoskRecognizer();
+        AudioExtractorStreamer streamer = new AudioExtractorStreamer();
+        streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
+
+        Transcript transcript = new Transcript("untitled", new Date());
+        for (RawReplica replica : recognizer.getFinalResult()) {
+            Speaker speaker = new Speaker("Speaker" + replica.speaker.ID, getDefaultImage(), replica.speaker.ID);
+            transcript.addReplica(new Replica(replica.text, speaker));
+        }
     }
 
     private void initImages() {
@@ -96,8 +105,8 @@ public class DownloadingController {
         dropPane.setOnDragOver(event -> {
             if (event.getGestureSource() != dropPane &&
                     event.getDragboard().hasFiles()) {
-                boolean hasVideo = event.getDragboard().getFiles().stream()
-                        .anyMatch(this::isAllowedFile);
+                boolean hasVideo = event.getDragboard().getFiles().stream().map(File::getAbsolutePath)
+                        .anyMatch(VideoValidator::isSupportVideoFile);
                 if (hasVideo) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
@@ -110,7 +119,7 @@ public class DownloadingController {
             boolean success = false;
             if (db.hasFiles()) {
                 for (File file : db.getFiles()) {
-                    if (isAllowedFile(file)) {
+                    if (VideoValidator.isSupportVideoFile(file.getAbsolutePath())) {
                         selectedFile = file;
                         DownloadButton.setDisable(false);
                         sucsessPane.setVisible(true);
@@ -127,13 +136,13 @@ public class DownloadingController {
     private FileChooser createFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите файл");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Видео файлы", "*.mp4"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.mkv"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.avi"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.mov"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.webm")
-        );
+        for (String format : VideoValidator.getSupportedFormats()) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format, "*" + format));
+        }
         return fileChooser;
+    }
+
+    private Image getDefaultImage() { //TODO
+        return null;
     }
 }

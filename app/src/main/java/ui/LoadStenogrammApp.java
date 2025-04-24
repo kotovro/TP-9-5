@@ -17,6 +17,7 @@ public class LoadStenogrammApp extends Application {
         String stylesheet = getClass().getResource("/styles/load.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

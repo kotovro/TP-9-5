@@ -55,7 +55,7 @@ public class ReplicaDao {
                     Speaker speaker = new Speaker(
                             rs.getString("name"),
                             null,
-                            rs.getLong("participant_id")); //TODO: не работает
+                            rs.getInt("participant_id")); //TODO: не работает
                     Replica replica = new Replica(rs.getString("content"), speaker);
                     replicas.add(replica);
                 }

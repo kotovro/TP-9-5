@@ -21,7 +21,8 @@ public class DownloadingApp extends Application {
         Font.loadFont(getClass().getResourceAsStream("/fonts/TildaSans-Semibold.ttf"), 12);
         FXMLLoader fxmlLoader = new FXMLLoader(DownloadingApp.class.getResource("/fx_screens/downloading.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 850, 500);
-        stage.setTitle("звлечение аудио");
+        stage.setTitle("Извлечение аудио");
+        stage.setResizable(false);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         stage.setScene(scene);
         stage.show();

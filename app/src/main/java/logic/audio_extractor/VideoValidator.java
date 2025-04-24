@@ -19,4 +19,8 @@ public class VideoValidator {
     public static boolean isSupportVideoFile(String filePath) {
         return Files.exists(Path.of(filePath)) && isSupportedFormat(filePath);
     }
+
+    public static String[] getSupportedFormats() {
+        return SUPPORTED_FORMATS;
+    }
 }

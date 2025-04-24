@@ -51,7 +51,7 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainClass = 'ui.LoadStenogrammApp'
+    mainClass = 'ui.DownloadingApp'
 //    mainClass = 'logic.persistence.InitDatabase'
     applicationDefaultJvmArgs = [
             '-Xms5G',

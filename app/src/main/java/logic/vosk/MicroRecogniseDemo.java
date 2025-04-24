@@ -17,8 +17,7 @@ public class MicroRecogniseDemo {
         if (!VideoValidator.isSupportVideoFile(path)) {
             throw new RuntimeException("Unsupported format");
         }
-        VoskAnalyzer analyzer = new VoskAnalyzer();
-        VoskRecognizer recognizer = new VoskRecognizer(analyzer.getRecognizer());
+        VoskRecognizer recognizer = new VoskRecognizer();
         AudioExtractorStreamer streamer = new AudioExtractorStreamer();
         streamer.processAudio(path, recognizer::processStream);
         //streamer.startStreaming(recognizer);

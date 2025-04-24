@@ -40,10 +40,10 @@ public class EditController {
     @FXML
     public void initialize() {
         speakers = List.of(
-                new Speaker("Anna", getImage("/images/logo.png"), 1L),
-                new Speaker("Boris", getImage("/images/UserSpeak.png"), 2L),
-                new Speaker("Viktor", getImage("/images/UserSpeak2.png"), 3L),
-                new Speaker("Galina", getImage("/images/DangerCircle.png"), 4L)
+                new Speaker("Anna", getImage("/images/logo.png"), 1),
+                new Speaker("Boris", getImage("/images/UserSpeak.png"), 2),
+                new Speaker("Viktor", getImage("/images/UserSpeak2.png"), 3),
+                new Speaker("Galina", getImage("/images/DangerCircle.png"), 4)
         );
 
         transcript.addReplica(new Replica("meme", speakers.getFirst()));
@@ -95,7 +95,7 @@ public class EditController {
 
         textArea.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) {
-                activeTextArea.setEditable(false);
+                textArea.setEditable(false);
                 activeTextArea = null;
             }
         });

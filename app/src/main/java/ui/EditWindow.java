@@ -17,6 +17,7 @@ public class EditWindow extends Application {
         String stylesheet = getClass().getResource("/styles/slyles.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

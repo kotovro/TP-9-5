@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import logic.audioInput.AudioStreamConsumer;
 import logic.vosk.analiseDTO.RawReplica;
 import logic.vosk.analiseDTO.RawSpeaker;
+import org.vosk.Model;
 import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
 
@@ -21,17 +22,19 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private static final int CHUNK_SIZE = 4096;
     private static final int MINIMUM_FREQUENCY = 3;
 
+    private final Model model;
     private final Recognizer recognizer;
     private final List<RawSpeaker> speakers = new ArrayList<>();
     private final List<RawReplica> replicas = new ArrayList<>();
     private RawSpeaker currentSpeaker;
 
 
-    public VoskRecognizer(Recognizer recognizer) {
+    public VoskRecognizer() {
         try {
+            model = new Model("resources/ai-models/speech-recognition-model");
+            recognizer = new Recognizer(model, 16000);
             SpeakerModel model = new SpeakerModel("resources/ai-models/speaker-recognition-model");
             recognizer.setSpeakerModel(model);
-            this.recognizer = recognizer;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -65,6 +68,11 @@ public class VoskRecognizer implements AudioStreamConsumer {
         }
         correctSpeakers();
         return replicas;
+    }
+
+    public void freeResources() {
+        recognizer.close();
+        model.close();
     }
 
     //Не оптимально

@@ -3,11 +3,11 @@ package logic.general;
 import javafx.scene.image.Image;
 
 public class Speaker {
-    private Long id;
+    private int id;
     private final Image image;
     private final String name;
 
-    public Speaker(String name, Image image, Long id) {
+    public Speaker(String name, Image image, int id) {
         this.name = name;
         this.image =  image;
         this.id = id;
@@ -21,7 +21,7 @@ public class Speaker {
         return image;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
