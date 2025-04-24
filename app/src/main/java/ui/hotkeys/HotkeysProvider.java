@@ -6,7 +6,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import logic.text_edit.EditStory;
 
-public class HotkeysPressedActionProvider {
+public class HotkeysProvider {
     private final EditStory story = new EditStory();
     private final IAction findAction = new FindAction();
     private final IAction undoAction = new UndoAction(story);

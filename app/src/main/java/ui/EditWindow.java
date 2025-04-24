@@ -3,8 +3,8 @@ package ui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import ui.hotkeys.HotkeysProvider;
 
 import java.io.IOException;
 
@@ -16,6 +16,8 @@ public class EditWindow extends Application {
         String stylesheet = getClass().getResource("/styles/slyles.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setScene(scene);
+        HotkeysProvider hotkeysProvider = new HotkeysProvider();
+        hotkeysProvider.attachHotkeys(scene);
         stage.show();
     }
 

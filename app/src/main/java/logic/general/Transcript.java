@@ -24,7 +24,7 @@ public class Transcript {
     }
 
     public void addReplica(Replica replica) {
-        replicas.add(currentIndex + 1, replica);
+        replicas.add(currentIndex, replica);
     }
 
     public void removeReplica(int index) {
@@ -54,5 +54,13 @@ public class Transcript {
 
     public Date getDate() {
         return date;
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
     }
 }

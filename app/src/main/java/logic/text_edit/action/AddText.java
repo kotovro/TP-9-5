@@ -7,7 +7,7 @@ public class AddText implements StoryPoint {
     private final Replica replica;
     private final int position;
 
-    public AddText(String text, Replica replica, int position) {
+    public AddText(Replica replica, int position, String text) {
         this.text = text;
         this.replica = replica;
         this.position = position;

@@ -1,13 +1,12 @@
 package logic.general;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Replica {
-    private Participant participant;
+    private Speaker speaker;
     private StringBuilder text;
 
-    public Replica(String text) {
+    public Replica(String text, Speaker speaker) {
         this.text = new StringBuilder(text);
     }
 
@@ -15,13 +14,13 @@ public class Replica {
         return 0;
     }
 
-    public Participant getSpeaker() {
-        return participant;
+    public Speaker getSpeaker() {
+        return speaker;
     }
 
 
-    public void setSpeaker(Participant participant) {
-        this.participant = participant;
+    public void setSpeaker(Speaker speaker) {
+        this.speaker = speaker;
     }
 
     public StringBuilder getText() {
