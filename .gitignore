@@ -34,7 +34,26 @@ out/
 hs_err_pid*
 replay_pid*
 
-# Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
-.kotlin/
-/app/src/main/java/logic/text_edit/action/FindAction.java
-/app/src/main/java/logic/text_edit/action/Executable.java
+# macOS
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Eclipse project files
+.project
+.classpath
+.settings/
+
+# Gradle Wrapper files
+gradle-wrapper.jar
+
+# Java temporary files
+*.tmp
+*.bak
+
+# Ignore the .gradle directory for Kotlin-based dependencies
+.gradle/
