@@ -23,10 +23,6 @@ public class Transcript {
         replicas.add(index, replica);
     }
 
-    public void addReplicaAfter(Replica replica, Replica marker) {
-        replicas.add(replicas.indexOf(marker), replica);
-    }
-
     public void addReplica(Replica replica) {
         replicas.add(currentIndex, replica);
     }

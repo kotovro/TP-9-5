@@ -5,7 +5,6 @@ import logic.text_edit.action.StoryPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO add own double linked list for last action index tracking
 public class EditStory {
     private static final int BUFFER_MAX_SIZE = 100;
 
@@ -24,15 +23,17 @@ public class EditStory {
             currentActionIndex--;
             executables[currentActionIndex].unapply();
         }
+        System.out.println("undo last, current index : " + currentActionIndex);
     }
 
     public void addLast(StoryPoint action) {
-        executables[maxIndex] = action;
+        executables[currentActionIndex] = action;
         currentActionIndex++;
         maxIndex = currentActionIndex;
-        if (maxIndex == BUFFER_MAX_SIZE * 2) {
+        if (maxIndex >= BUFFER_MAX_SIZE * 2) {
             freeBufferSpace();
         }
+        System.out.println("added last, current index : " + currentActionIndex);
     }
 
     public boolean canRedo() {

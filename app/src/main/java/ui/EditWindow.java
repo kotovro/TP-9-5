@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import ui.hotkeys.HotkeysProvider;
 
 import java.io.IOException;
 

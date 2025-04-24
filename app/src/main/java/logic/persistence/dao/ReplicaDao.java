@@ -1,7 +1,9 @@
 package logic.persistence.dao;
 
-import logic.general.Participant;
 import logic.general.Replica;
+import logic.general.Speaker;
+import logic.general.Transcript;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +52,20 @@ public class ReplicaDao {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Replica replica = new Replica();
-                    Participant participant = new Participant();
-                    participant.setId(rs.getLong("participant_id"));
-                    replica.setSpeaker(participant);
-                    replica.setText(rs.getString("content"));
+                    Speaker speaker = new Speaker(
+                            rs.getString("name"),
+                            null,
+                            rs.getLong("participant_id")); //TODO: не работает
+                    Replica replica = new Replica(rs.getString("content"), speaker);
                     replicas.add(replica);
                 }
             }
         }
 
         return replicas;
+    }
+
+    public Transcript getTranscriptByMeetingId(int meetingId) throws SQLException {
+        return null; // TODO:
     }
 }

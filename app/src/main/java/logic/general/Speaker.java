@@ -7,9 +7,10 @@ public class Speaker {
     private final Image image;
     private final String name;
 
-    public Speaker(String name, Image image) {
+    public Speaker(String name, Image image, Long id) {
         this.name = name;
         this.image =  image;
+        this.id = id;
     }
 
     public String getName() {
@@ -20,14 +21,13 @@ public class Speaker {
         return image;
     }
 
-    public Long getId() { return id;}
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     @Override
     public String toString() {
-        return name; // для отображения по умолчанию
+        return name;
     }
 
 }

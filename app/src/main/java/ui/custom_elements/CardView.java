@@ -1,4 +1,4 @@
-package ui;
+package ui.custom_elements;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -7,8 +7,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
-
-import java.util.Date;
 
 public class CardView extends StackPane {
 

@@ -1,5 +1,8 @@
 package logic.persistence;
 
+import logic.persistence.dao.ParticipantDao;
+import logic.persistence.dao.ReplicaDao;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +17,6 @@ public class DBManager {
     private static final String SCHEMA_FILE = "src/main/resources/db_scheme/dbcreation.sql";
     private static final String DEFAULT_DB_PATH = "db_examples/test.db";
     private static Connection connection;
-
     static {
         try {
             if (!Files.exists(Paths.get(DEFAULT_DB_PATH).toAbsolutePath())) {
@@ -27,6 +29,8 @@ public class DBManager {
         }
 
     }
+    private static final ReplicaDao replicaDao = new ReplicaDao(connection);
+    private static final ParticipantDao participantDao = new ParticipantDao(connection);
 
     public static void initConnection() throws Exception {
         Path dbFile = Paths.get(DEFAULT_DB_PATH).toAbsolutePath();
@@ -70,5 +74,13 @@ public class DBManager {
 
     public static Connection getConnection() {
         return connection;
+    }
+
+    public static ReplicaDao getReplicaDao() {
+        return replicaDao;
+    }
+
+    public static ParticipantDao getParticipantDao() {
+        return participantDao;
     }
 }

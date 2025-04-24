@@ -1,26 +1,34 @@
 package logic.text_edit.action;
 
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import logic.general.Replica;
+import logic.general.Speaker;
 import logic.general.Transcript;
 
 public class RemoveReplica implements StoryPoint {
-    private final Transcript transcript;
-    private final int replicaPosition;
-    private Replica removedReplica;
+    private final VBox textAreaContainer;
+    private final ComboBox<Speaker> comboBox;
+    private final TextArea textArea;
+    private final int index;
 
-    public RemoveReplica(Transcript transcript, int replicaPosition) {
-        this.transcript = transcript;
-        this.replicaPosition = replicaPosition;
+    public RemoveReplica(VBox textAreaContainer, ComboBox<Speaker> comboBox, TextArea textArea, int index) {
+        this.textAreaContainer = textAreaContainer;
+        this.comboBox = comboBox;
+        this.textArea = textArea;
+        this.index = index;
     }
 
     @Override
     public void apply() {
-        if (removedReplica == null) removedReplica = transcript.getReplica(replicaPosition);
-        transcript.removeReplica(replicaPosition);
+        textAreaContainer.getChildren().remove(comboBox);
+        textAreaContainer.getChildren().remove(textArea);
     }
 
     @Override
     public void unapply() {
-        transcript.addReplica(removedReplica, replicaPosition);
+        textAreaContainer.getChildren().add(index, textArea);
+        textAreaContainer.getChildren().add(index, comboBox);
     }
 }

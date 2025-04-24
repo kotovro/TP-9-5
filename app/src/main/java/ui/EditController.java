@@ -3,11 +3,9 @@ package ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
@@ -18,9 +16,13 @@ import java.util.Objects;
 import logic.general.Speaker;
 import logic.general.Replica;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import logic.general.Transcript;
 import logic.text_edit.EditStory;
+import logic.text_edit.action.AddReplica;
+import logic.text_edit.action.RemoveReplica;
+import logic.text_edit.action.StoryPoint;
+import ui.custom_elements.CustomComboBox;
+import ui.custom_elements.CustomTextArea;
 
 public class EditController {
     private Transcript transcript = new Transcript("", new Date());
@@ -38,10 +40,10 @@ public class EditController {
     @FXML
     public void initialize() {
         speakers = List.of(
-                new Speaker("Anna", getImage("/images/logo.png")),
-                new Speaker("Boris", getImage("/images/UserSpeak.png")),
-                new Speaker("Viktor", getImage("/images/UserSpeak2.png")),
-                new Speaker("Galina", getImage("/images/DangerCircle.png"))
+                new Speaker("Anna", getImage("/images/logo.png"), 1L),
+                new Speaker("Boris", getImage("/images/UserSpeak.png"), 2L),
+                new Speaker("Viktor", getImage("/images/UserSpeak2.png"), 3L),
+                new Speaker("Galina", getImage("/images/DangerCircle.png"), 4L)
         );
 
         transcript.addReplica(new Replica("meme", speakers.getFirst()));
@@ -51,79 +53,30 @@ public class EditController {
         transcript.addReplica(new Replica("meme", speakers.getFirst()));
 
         for (Replica replica : transcript.getReplicas()) {
-            ComboBox<Speaker> comboBox = initComboBox();
+            ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
             textAreaContainer.getChildren().add(comboBox);
             TextArea textArea = initTextArea(replica, comboBox);
             textAreaContainer.getChildren().add(textArea);
         }
 
+        rootPane.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (activeTextArea != null) return;
+            if (event.getCode() == KeyCode.Z && event.isControlDown()) {
+                if (editStory.canUndo()) editStory.undoLast();
+                event.consume();
+            } else if (event.getCode() == KeyCode.Y && event.isControlDown()) {
+                if (editStory.canRedo()) editStory.redoLast();
+                event.consume();
+            }
+        });
+
         textAreaContainer.getChildren().add(createSaveButton());
         textAreaContainer.getStyleClass().add("vbox-transparent");
     }
 
-    private ComboBox<Speaker> initComboBox() {
-        ComboBox<Speaker> comboBox = new ComboBox<>();
-        comboBox.getItems().addAll(speakers);
-        comboBox.setPrefWidth(160);
-        comboBox.setPrefHeight(32);
-        comboBox.getStyleClass().add("custom-combobox");
-
-        comboBox.setCellFactory(lv -> new ListCell<>() {
-            private final ImageView imageView = new ImageView();
-            {
-                imageView.setFitHeight(20);
-                imageView.setFitWidth(20);
-                javafx.scene.shape.Circle clip = new javafx.scene.shape.Circle(10, 10, 10);
-                imageView.setClip(clip);
-            }
-
-            @Override
-            protected void updateItem(Speaker speaker, boolean empty) {
-                super.updateItem(speaker, empty);
-                if (empty || speaker == null) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    imageView.setImage(speaker.getImage());
-                    setGraphic(imageView);
-                    setText(speaker.getName());
-                    setStyle("-fx-background-color: #9DA0FA; -fx-text-fill: white; -fx-border-color: #6366B5; -fx-border-width: 0 0 1px 0;");
-                }
-            }
-        });
-
-        comboBox.setButtonCell(new ListCell<>() {
-            private final ImageView imageView = new ImageView();
-
-            {
-                imageView.setFitHeight(20);
-                imageView.setFitWidth(20);
-                javafx.scene.shape.Circle clip = new javafx.scene.shape.Circle(10, 10, 10);
-                imageView.setClip(clip);
-            }
-
-            @Override
-            protected void updateItem(Speaker speaker, boolean empty) {
-                super.updateItem(speaker, empty);
-                if (empty || speaker == null) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    imageView.setImage(speaker.getImage());
-                    setGraphic(imageView);
-                    setText(speaker.getName());
-                    setStyle("-fx-text-fill: white;");
-                }
-            }
-        });
-
-        VBox.setMargin(comboBox, new javafx.geometry.Insets(0, 0, 5, 0));
-        return comboBox;
-    }
-
     private TextArea initTextArea(Replica replica, ComboBox<Speaker> comboBox) {
         TextArea textArea = formTextArea(replica, comboBox);
-        textArea.setText(replica.getText().toString());
+        textArea.setText(replica.getText());
 
         VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 15, 0));
         textArea.setEditable(false);
@@ -149,9 +102,10 @@ public class EditController {
 
         textArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DELETE && !textArea.isEditable()) {
-                transcript.removeReplica(replica);
+                int index = textAreaContainer.getChildren().indexOf(comboBox);
                 textAreaContainer.getChildren().remove(comboBox);
                 textAreaContainer.getChildren().remove(textArea);
+                editStory.addLast(new RemoveReplica(textAreaContainer, comboBox, textArea, index));
             } else if (event.getCode() == KeyCode.N && event.isControlDown()) {
                 addNewReplica();
             }
@@ -179,12 +133,12 @@ public class EditController {
 
     private void addNewReplica() {
         Replica replica = new Replica("", speakers.getFirst());
-        transcript.addReplicaAfter(replica, activeTextArea.getReplica());
-        ComboBox<Speaker> comboBox = initComboBox();
+        ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
         TextArea textArea = initTextArea(replica, comboBox);
         int index = textAreaContainer.getChildren().indexOf(activeTextArea) + 1;
-        textAreaContainer.getChildren().add(index, textArea);
-        textAreaContainer.getChildren().add(index, comboBox);
+        StoryPoint storyPoint = new AddReplica(textAreaContainer, comboBox, textArea, index);
+        storyPoint.apply();
+        editStory.addLast(storyPoint);
     }
 
     private static Image getImage(String path) {

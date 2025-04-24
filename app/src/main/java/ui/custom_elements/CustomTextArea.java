@@ -1,20 +1,13 @@
-package ui;
+package ui.custom_elements;
 
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import logic.general.Replica;
 
 public class CustomTextArea extends TextArea {
-    private Replica replica;
 
     public CustomTextArea(Replica replica) {
-        this.replica = replica;
-
         setWrapText(true);
         setPrefRowCount(1);
         setMinHeight(Region.USE_PREF_SIZE);
@@ -38,9 +31,5 @@ public class CustomTextArea extends TextArea {
             setPrefHeight(height);
         });
         setPrefRowCount(3);
-    }
-
-    public Replica getReplica() {
-        return replica;
     }
 }

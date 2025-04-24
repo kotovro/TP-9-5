@@ -4,30 +4,22 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Replica {
-    private static int maxId = 0;
-    private int id;
     private Speaker speaker;
-    private StringBuilder text;
+    private String text;
 
     public Replica(String text, Speaker speaker) {
-        this.text = new StringBuilder(text);
-        id = maxId++;
-    }
-
-    public int getSize() {
-        return 0;
+        this.text = text;
     }
 
     public Speaker getSpeaker() {
         return speaker;
     }
 
-
     public void setSpeaker(Speaker speaker) {
         this.speaker = speaker;
     }
 
-    public StringBuilder getText() {
+    public String getText() {
         return text;
     }
 
@@ -58,11 +50,5 @@ public class Replica {
             }
         }
         return indices;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Replica replica)) return false;
-        return id == replica.id;
     }
 }
