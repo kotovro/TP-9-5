@@ -3,9 +3,8 @@ package ui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import logic.general.Transcript;
 
 import java.io.IOException;
 
@@ -25,11 +24,13 @@ public class EditWindow extends Application {
         launch(args);
     }
 
-    public static Scene getScene() throws IOException {
+    public static Scene getScene(Transcript transcript) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(EditWindow.class.getResource("/fx_screens/EditView.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         String stylesheet = EditWindow.class.getResource("/styles/slyles.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
+        EditController controller = fxmlLoader.getController();
+        controller.setTranscript(transcript);
         return scene;
     }
 }

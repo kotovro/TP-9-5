@@ -25,7 +25,7 @@ import ui.custom_elements.CustomComboBox;
 import ui.custom_elements.CustomTextArea;
 
 public class EditController {
-    private Transcript transcript = new Transcript("", new Date());
+    private Transcript transcript;
     private List<Speaker> speakers = new ArrayList<>();
 
     private final EditStory editStory = new EditStory();
@@ -36,6 +36,10 @@ public class EditController {
 
     @FXML
     private VBox textAreaContainer;
+
+    public void setTranscript(Transcript transcript) {
+        this.transcript = transcript;
+    }
 
     @FXML
     public void initialize() {

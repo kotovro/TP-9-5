@@ -28,13 +28,11 @@ public class LoadStenogrammController {
         confirmButton.setDisable(true);
         cardPane.setHgap(15);
         cardPane.setVgap(15);
-        Transcript t = new Transcript("loma", new Date());
-        Date date = t.getDate();
-        String name = t.getName();
+        Transcript transcript = new Transcript("loma", new Date());
         List<CardView> cards = new ArrayList<>();
 
         for (int i = 1; i <= 5; i++) { // типо количество стенограмм
-            CardView card = new CardView(name, "date");
+            CardView card = new CardView(transcript);
             cards.add(card);
 
             card.setOnSelected(() -> {
@@ -52,21 +50,18 @@ public class LoadStenogrammController {
 
 
         confirmButton.setOnAction(e -> {
-            if (selectedCard != null) {
-                try {
-                    // Здесь можешь сохранить selectedCard.getnameText() или что тебе там вообще нужно
-                    confirmButton.setDisable(true);
-                    Thread.sleep(500);
-                    Scene secondScene = EditWindow.getScene();
-                    Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
-                    stage.setScene(secondScene);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            } else {
-                //f,e;f,
+            if (selectedCard == null) return;
+
+            try {
+                confirmButton.setDisable(true);
+                Thread.sleep(500);
+                Scene secondScene = EditWindow.getScene(selectedCard.getTranscript());
+                Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
+                stage.setScene(secondScene);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         });
         cardPane.getStyleClass().add("flowpane-transparent");

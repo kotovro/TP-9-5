@@ -7,12 +7,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
+import logic.general.Transcript;
+
+import java.util.Date;
 
 public class CardView extends StackPane {
-
     private boolean selected = false;
+    private final Transcript transcript;
 
-    public CardView(String name, String date) {
+    public CardView(Transcript transcript) {
+        this.transcript = transcript;
         setPadding(new Insets(15));
         setPrefSize(520, 100);
         setMaxSize(520, 100);
@@ -23,10 +27,10 @@ public class CardView extends StackPane {
         VBox content = new VBox(10);
         content.setAlignment(Pos.TOP_LEFT);
 
-        Label namel = new Label(name);
+        Label namel = new Label(transcript.getName());
         namel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-        Label datel = new Label(date);
+        Label datel = new Label(transcript.getDate().toString());
         datel.setStyle("-fx-font-size: 16px; -fx-text-fill: #555; -fx-text-fill: black;");
 
         content.getChildren().addAll(namel, datel);
@@ -52,6 +56,10 @@ public class CardView extends StackPane {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public Transcript getTranscript() {
+        return transcript;
     }
 
     public String getnameText() {

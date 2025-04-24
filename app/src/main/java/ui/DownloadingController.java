@@ -1,6 +1,9 @@
 package ui;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -79,15 +82,40 @@ public class DownloadingController {
 
     @FXML
     protected void onDownloadButtonClick() {
-        VoskRecognizer recognizer = new VoskRecognizer();
-        AudioExtractorStreamer streamer = new AudioExtractorStreamer();
-        streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
+        // Добавить блокировку кнопки
+        Task<Void> recognitionTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                VoskRecognizer recognizer = new VoskRecognizer();
+                AudioExtractorStreamer streamer = new AudioExtractorStreamer();
+                streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
 
-        Transcript transcript = new Transcript("untitled", new Date());
-        for (RawReplica replica : recognizer.getFinalResult()) {
-            Speaker speaker = new Speaker("Speaker" + replica.speaker.ID, getDefaultImage(), replica.speaker.ID);
-            transcript.addReplica(new Replica(replica.text, speaker));
-        }
+                Transcript transcript = new Transcript("untitled", new Date());
+                for (RawReplica replica : recognizer.getFinalResult()) {
+                    Speaker speaker = new Speaker("Speaker" + replica.speaker.ID, getDefaultImage(), replica.speaker.ID);
+                    transcript.addReplica(new Replica(replica.text, speaker));
+                }
+
+                Platform.runLater(() -> {
+                    try {
+                        Scene secondScene = EditWindow.getScene(transcript);
+                        Stage stage = (Stage) sucsessPane.getScene().getWindow();
+                        stage.setScene(secondScene);
+                        recognizer.freeResources();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                return null;
+            }
+        };
+
+        recognitionTask.setOnFailed(event -> {
+            Throwable e = recognitionTask.getException();
+            e.printStackTrace();
+        });
+
+        new Thread(recognitionTask).start();
     }
 
     private void initImages() {

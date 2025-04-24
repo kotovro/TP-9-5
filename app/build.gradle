@@ -51,7 +51,7 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainClass = 'ui.DownloadingApp'
+    mainClass = 'ui.EditWindow'
 //    mainClass = 'logic.persistence.InitDatabase'
     applicationDefaultJvmArgs = [
             '-Xms5G',
