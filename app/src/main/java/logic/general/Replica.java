@@ -7,12 +7,19 @@ public class Replica {
     private Speaker speaker;
     private String text;
 
+    public Replica() {
+    }
+
     public Replica(String text, Speaker speaker) {
         this.text = text;
+        this.speaker = speaker;
     }
 
     public Speaker getSpeaker() {
         return speaker;
+    }
+    public void setText(String text) {
+        this.text = text;
     }
 
     public void setSpeaker(Speaker speaker) {

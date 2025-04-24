@@ -1,39 +1,46 @@
 package logic.persistence.dao;
 
 import logic.general.Speaker;
-import logic.persistence.exception.ParticipantNotFoundException;
+import logic.persistence.exception.SpeakerNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParticipantDao {
+public class SpeakerDao {
     private final Connection connection;
 
-    public ParticipantDao(Connection connection) {
+    public SpeakerDao(Connection connection) {
         this.connection = connection;
     }
 
     public void addParticipant(Speaker speaker) throws SQLException {
-        String sql = "INSERT INTO participant (name) VALUES (?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO speaker (name) VALUES (?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, speaker.getName());
             stmt.executeUpdate();
         }
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
+            if (rs.next()) {
+                speaker.setId(rs.getInt(1));
+            }
+        }
     }
 
-    public void deleteParticipant(Long participantId) throws SQLException {
-        String sql = "DELETE FROM participant WHERE id = ?";
+    public void deleteSpeaker(int speakerId) throws SQLException {
+        String sql = "DELETE FROM speaker WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, participantId);
+            stmt.setInt(1, speakerId);
             stmt.executeUpdate();
         }
     }
 
-    public Speaker getParticipantById(Long participantId) throws SQLException {
-        String sql = "SELECT id, name FROM participant WHERE id = ?";
+    public Speaker getSpeakerById(int speakerId) throws SQLException {
+        String sql = "SELECT id, name FROM speaker WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, participantId);
+            stmt.setInt(1, speakerId);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -42,14 +49,15 @@ public class ParticipantDao {
                             null,
                             rs.getInt("id"));
                 } else {
-                    throw new ParticipantNotFoundException(participantId);                }
+                    throw new SpeakerNotFoundException(speakerId);
+                }
             }
         }
     }
 
-    public List<Speaker> getAllParticipants() throws SQLException {
-        String sql = "SELECT id, name FROM participant";
-        List<Speaker> participants = new ArrayList<>();
+    public List<Speaker> getAllSpeakers() throws SQLException {
+        String sql = "SELECT id, name FROM speaker";
+        List<Speaker> speakers = new ArrayList<>();
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -59,10 +67,10 @@ public class ParticipantDao {
                         rs.getString("name"),
                         null,
                         rs.getInt("id"));
-                participants.add(speaker);
+                speakers.add(speaker);
             }
         }
 
-        return participants;
+        return speakers;
     }
 }

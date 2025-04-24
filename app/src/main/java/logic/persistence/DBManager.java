@@ -1,7 +1,7 @@
 package logic.persistence;
 
-import logic.persistence.dao.ParticipantDao;
-import logic.persistence.dao.ReplicaDao;
+import logic.persistence.dao.SpeakerDao;
+import logic.persistence.dao.TranscriptDao;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,8 +29,8 @@ public class DBManager {
         }
 
     }
-    private static final ReplicaDao replicaDao = new ReplicaDao(connection);
-    private static final ParticipantDao participantDao = new ParticipantDao(connection);
+    private static final TranscriptDao TRANSCRIPT_DAO = new TranscriptDao(connection);
+    private static final SpeakerDao participantDao = new SpeakerDao(connection);
 
     public static void initConnection() throws Exception {
         Path dbFile = Paths.get(DEFAULT_DB_PATH).toAbsolutePath();
@@ -76,11 +76,11 @@ public class DBManager {
         return connection;
     }
 
-    public static ReplicaDao getReplicaDao() {
-        return replicaDao;
+    public static TranscriptDao getReplicaDao() {
+        return TRANSCRIPT_DAO;
     }
 
-    public static ParticipantDao getParticipantDao() {
+    public static SpeakerDao getParticipantDao() {
         return participantDao;
     }
 }
