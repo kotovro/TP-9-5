@@ -18,7 +18,6 @@ public class DownloadingApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         setStage(stage);
-        mockInit();
         stage.setResizable(false);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         stage.show();
@@ -47,17 +46,5 @@ public class DownloadingApp extends Application {
     public static void setStage(Stage stage) {
         stage.setScene(getScene());
         stage.setTitle("Извлечение аудио");
-    }
-
-    private void mockInit() {
-        List<Speaker> speakers = List.of(
-                new Speaker("Не выбран", getImage("/images/UserSpeak2.png"), 0),
-                new Speaker("Anna", getImage("/images/logo.png"), 1),
-                new Speaker("Viktor", getImage("/images/UserSpeak2.png"), 2),
-                new Speaker("Galina", getImage("/images/DangerCircle.png"), 3)
-        );
-        for (Speaker speaker : speakers) {
-            DBManager.getSpeakerDao().addSpeaker(speaker);
-        }
     }
 }
