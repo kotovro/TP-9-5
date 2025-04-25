@@ -37,38 +37,41 @@ public class TranscriptDao {
         }
     }
 
-    public void addTranscript(Transcript transcript) throws SQLException {
-        String insertTranscriptSql = "INSERT INTO transcript (name, date) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(insertTranscriptSql)) {
-            stmt.setString(1, transcript.getName());
-            stmt.setString(2, sdf.format(transcript.getDate()));
-            stmt.executeUpdate();
-        }
-
-        int transcriptId = -1;
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
-            if (rs.next()) {
-                transcriptId = rs.getInt(1);
-            }
-        }
-
-        Iterable<Replica> replicas = transcript.getReplicas();
-
-        for (Replica replica : replicas) {
-            String sql = "INSERT INTO replica (meeting_id, order_number, speaker_id, content) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setInt(1,  transcriptId);
-                stmt.setInt(2, getNextOrderNumber(transcriptId));
-                stmt.setInt(3, replica.getSpeaker().getId());
-                stmt.setString(4, replica.getText());
+    public void addTranscript(Transcript transcript) {
+        try {
+            String insertTranscriptSql = "INSERT INTO transcript (name, date) VALUES (?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(insertTranscriptSql)) {
+                stmt.setString(1, transcript.getName());
+                stmt.setString(2, sdf.format(transcript.getDate()));
                 stmt.executeUpdate();
             }
-        }
 
+            int transcriptId = -1;
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
+                if (rs.next()) {
+                    transcriptId = rs.getInt(1);
+                }
+            }
+
+            Iterable<Replica> replicas = transcript.getReplicas();
+
+            for (Replica replica : replicas) {
+                String sql = "INSERT INTO replica (meeting_id, order_number, speaker_id, content) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                    stmt.setInt(1, transcriptId);
+                    stmt.setInt(2, getNextOrderNumber(transcriptId));
+                    stmt.setInt(3, replica.getSpeaker().getId());
+                    stmt.setString(4, replica.getText());
+                    stmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<Transcript> getTranscripts() throws SQLException {
+    public List<Transcript> getTranscripts() {
         List<Transcript> transcripts;
         String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
                 "FROM transcript t " +
@@ -82,11 +85,10 @@ public class TranscriptDao {
                 int transcriptId = rs.getInt("transcript_id");
                 Transcript transcript = transcriptMap.get(transcriptId);
                 if (transcript == null) {
-                    transcript = new Transcript();
-                    transcript.setName(rs.getString("name"));
                     String rawDate = rs.getString("date");
                     Date date = sdf.parse(rawDate);
-                    transcript.setDate(date);
+                    transcript = new Transcript(rs.getString("name"), date);
+
                     transcript.setReplicas(new ArrayList<>());
                     transcriptMap.put(transcriptId, transcript);
                 }
@@ -96,8 +98,8 @@ public class TranscriptDao {
                 transcript.addReplica(replica);
             }
             transcripts = new ArrayList<>(transcriptMap.values());
-        } catch (ParseException e) {
-            throw new SQLException("Ошибка преобразования даты", e);
+        } catch (ParseException | SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return transcripts;

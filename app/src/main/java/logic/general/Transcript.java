@@ -18,9 +18,6 @@ public class Transcript {
         this.replicas = replicas;
     }
 
-    public Transcript() {
-    }
-
     public Transcript(String name, Date date) {
         this.name = name;
         this.date = date;
@@ -87,13 +84,5 @@ public class Transcript {
             searchResults.add(new Pair<>(replica, searchedTextIndex));
         }
         return searchResults;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

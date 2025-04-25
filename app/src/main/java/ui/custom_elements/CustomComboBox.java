@@ -65,5 +65,6 @@ public class CustomComboBox extends ComboBox<Speaker> {
         });
 
         VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
+        getSelectionModel().select(0);
     }
 }

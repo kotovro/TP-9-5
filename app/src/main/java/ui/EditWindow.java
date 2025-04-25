@@ -24,13 +24,22 @@ public class EditWindow extends Application {
         launch(args);
     }
 
-    public static Scene getScene(Transcript transcript) throws IOException {
+    public static Scene getScene(Transcript transcript) {
         FXMLLoader fxmlLoader = new FXMLLoader(EditWindow.class.getResource("/fx_screens/EditView.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        fxmlLoader.setController(new EditController(transcript));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 600, 450);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         String stylesheet = EditWindow.class.getResource("/styles/slyles.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-        EditController controller = fxmlLoader.getController();
-        controller.setTranscript(transcript);
         return scene;
+    }
+
+    public static void setStage(Stage stage, Transcript transcript) {
+        stage.setScene(getScene(transcript));
+        stage.setTitle("Загрузка стенограммы");
     }
 }

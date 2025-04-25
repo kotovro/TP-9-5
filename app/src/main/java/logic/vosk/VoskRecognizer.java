@@ -12,7 +12,10 @@ import org.vosk.SpeakerModel;
 
 import javax.sound.sampled.AudioInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VoskRecognizer implements AudioStreamConsumer {
@@ -137,6 +140,9 @@ public class VoskRecognizer implements AudioStreamConsumer {
         double spkFrames = rootNode.get("spk_frames").asDouble();
 
         String text = rootNode.get("text").asText();
+        byte[] bytes = text.getBytes(Charset.forName("Windows-1251"));
+        text = new String(bytes, StandardCharsets.UTF_8);
+        text = text.substring(0, 1).toUpperCase() + text.substring(1);
 
         recognize(spk, spkFrames);
         return new RawReplica(text, currentSpeaker, spk, spkFrames);

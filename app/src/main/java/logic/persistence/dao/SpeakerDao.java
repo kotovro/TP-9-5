@@ -14,18 +14,22 @@ public class SpeakerDao {
         this.connection = connection;
     }
 
-    public void addParticipant(Speaker speaker) throws SQLException {
-        String sql = "INSERT INTO speaker (name) VALUES (?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, speaker.getName());
-            stmt.executeUpdate();
-        }
-
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
-            if (rs.next()) {
-                speaker.setId(rs.getInt(1));
+    public void addSpeaker(Speaker speaker) {
+        try {
+            String sql = "INSERT INTO speaker (name) VALUES (?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, speaker.getName());
+                stmt.executeUpdate();
             }
+
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
+                if (rs.next()) {
+                    speaker.setId(rs.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -55,22 +59,26 @@ public class SpeakerDao {
         }
     }
 
-    public List<Speaker> getAllSpeakers() throws SQLException {
-        String sql = "SELECT id, name FROM speaker";
-        List<Speaker> speakers = new ArrayList<>();
+    public List<Speaker> getAllSpeakers() {
+        try {
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+            String sql = "SELECT id, name FROM speaker";
+            List<Speaker> speakers = new ArrayList<>();
 
-            while (rs.next()) {
-                Speaker speaker = new Speaker(
-                        rs.getString("name"),
-                        null,
-                        rs.getInt("id"));
-                speakers.add(speaker);
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+
+                while (rs.next()) {
+                    Speaker speaker = new Speaker(
+                            rs.getString("name"),
+                            null,
+                            rs.getInt("id"));
+                    speakers.add(speaker);
+                }
             }
+            return speakers;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        return speakers;
     }
 }

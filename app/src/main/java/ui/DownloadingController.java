@@ -1,5 +1,7 @@
 package ui;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,11 +19,13 @@ import logic.audio_extractor.VideoValidator;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
+import logic.persistence.DBManager;
 import logic.vosk.VoskRecognizer;
 import logic.vosk.analiseDTO.RawReplica;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class DownloadingController {
@@ -29,7 +33,10 @@ public class DownloadingController {
     private File selectedFile;
 
     @FXML
-    private Button DownloadButton;
+    private Button downloadButton;
+
+    @FXML
+    public Button loadFromFileButton;
 
     @FXML
     private Pane errorPane;
@@ -67,15 +74,8 @@ public class DownloadingController {
     @FXML
     private void loadFromDatabase() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/loadStenogramm.fxml"));
-            Scene newScene = new Scene(loader.load());
-            Stage newStage = new Stage();
-            newStage.setScene(newScene);
-            newStage.setTitle("Загрузка стенограммы");
-            newStage.show();
-
-            Stage currentStage = (Stage) loadButton.getScene().getWindow();
-            currentStage.close();
+            Stage stage = (Stage) loadButton.getScene().getWindow();
+            LoadStenogrammApp.setStage(stage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class DownloadingController {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             selectedFile = file;
-            DownloadButton.setDisable(false);
+            downloadButton.setDisable(false);
             sucsessPane.setVisible(true);
         }
         else {
@@ -102,7 +102,10 @@ public class DownloadingController {
 
     @FXML
     protected void onDownloadButtonClick() {
-        // Добавить блокировку кнопки
+        loadButton.setDisable(true);
+        downloadButton.setDisable(true);
+        loadFromFileButton.setDisable(true);
+
         Task<Void> recognitionTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -110,17 +113,17 @@ public class DownloadingController {
                 AudioExtractorStreamer streamer = new AudioExtractorStreamer();
                 streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
 
+                //Speaker должке копироваться а не каждый раз браться
                 Transcript transcript = new Transcript("untitled", new Date());
                 for (RawReplica replica : recognizer.getFinalResult()) {
-                    Speaker speaker = new Speaker("Speaker" + replica.speaker.ID, getDefaultImage(), replica.speaker.ID);
+                    Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(0);
                     transcript.addReplica(new Replica(replica.text, speaker));
                 }
 
                 Platform.runLater(() -> {
                     try {
-                        Scene secondScene = EditWindow.getScene(transcript);
                         Stage stage = (Stage) sucsessPane.getScene().getWindow();
-                        stage.setScene(secondScene);
+                        EditWindow.setStage(stage, transcript);
                         recognizer.freeResources();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -169,7 +172,7 @@ public class DownloadingController {
                 for (File file : db.getFiles()) {
                     if (VideoValidator.isSupportVideoFile(file.getAbsolutePath())) {
                         selectedFile = file;
-                        DownloadButton.setDisable(false);
+                        downloadButton.setDisable(false);
                         sucsessPane.setVisible(true);
                         success = true;
                         break;
@@ -190,7 +193,7 @@ public class DownloadingController {
         return fileChooser;
     }
 
-    private Image getDefaultImage() { //TODO
-        return null;
+    private Image getDefaultImage() {
+        return EditController.getImage("/images/UserSpeak.png");
     }
 }

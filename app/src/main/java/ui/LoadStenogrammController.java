@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import logic.general.Transcript;
+import logic.persistence.DBManager;
 import ui.custom_elements.CardView;
 
 
@@ -29,17 +30,13 @@ public class LoadStenogrammController {
     private Button loadButton;
 
     @FXML
+    public Button deleteButton;
+
+    @FXML
     private void loadFromVideo() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/downloading.fxml"));
-            Scene newScene = new Scene(loader.load());
-            Stage newStage = new Stage();
-            newStage.setScene(newScene);
-            newStage.setTitle("Загрузка стенограммы");
-            newStage.show();
-
-            Stage currentStage = (Stage) loadButton.getScene().getWindow();
-            currentStage.close();
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            DownloadingApp.setStage(stage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,10 +47,11 @@ public class LoadStenogrammController {
         confirmButton.setDisable(true);
         cardPane.setHgap(15);
         cardPane.setVgap(15);
-        Transcript transcript = new Transcript("loma", new Date());
         List<CardView> cards = new ArrayList<>();
 
-        for (int i = 1; i <= 5; i++) { // типо количество стенограмм
+        DBManager.getTranscriptDao().getTranscripts();
+
+        for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {
             CardView card = new CardView(transcript);
             cards.add(card);
 
@@ -68,24 +66,24 @@ public class LoadStenogrammController {
 
             cardPane.getChildren().add(card);
         }
-
-
+        initDeleteButton();
 
         confirmButton.setOnAction(e -> {
             if (selectedCard == null) return;
-
-            try {
-                confirmButton.setDisable(true);
-                Thread.sleep(500);
-                Scene secondScene = EditWindow.getScene(selectedCard.getTranscript());
-                Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
-                stage.setScene(secondScene);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
+            confirmButton.setDisable(true);
+            deleteButton.setDisable(true);
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            EditWindow.setStage(stage, selectedCard.getTranscript());
         });
         cardPane.getStyleClass().add("flowpane-transparent");
+    }
+
+    private void initDeleteButton() {
+        deleteButton.setOnAction(e -> {
+            if (selectedCard == null) return;
+            confirmButton.setDisable(true);
+            deleteButton.setDisable(true);
+            //TODO delete from base
+        });
     }
 }

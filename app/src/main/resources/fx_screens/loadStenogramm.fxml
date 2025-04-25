@@ -40,6 +40,11 @@
                   <Font name="Tilda Sans Medium" size="12.0" />
                </font>
             </Button>
+            <Button fx:id="deleteButton" layoutX="412.0" layoutY="430.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" style="-fx-background-radius: 16; -fx-background-color: #3338D5;" text="Удалить" textFill="WHITE">
+               <font>
+                  <Font name="Tilda Sans Medium" size="14.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <Circle fill="#0b0f85" layoutX="66.0" layoutY="344.0" radius="100.0" strokeType="INSIDE">

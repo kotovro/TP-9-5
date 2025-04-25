@@ -51,7 +51,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainClass = 'ui.EditWindow'
+    mainClass = 'ui.DownloadingApp'
+//    mainClass = 'logic.vosk.MicroRecogniseDemo'
 //    mainClass = 'logic.persistence.InitDatabase'
     applicationDefaultJvmArgs = [
             '-Xms5G',

@@ -76,11 +76,11 @@ public class DBManager {
         return connection;
     }
 
-    public static TranscriptDao getReplicaDao() {
+    public static TranscriptDao getTranscriptDao() {
         return TRANSCRIPT_DAO;
     }
 
-    public static SpeakerDao getParticipantDao() {
+    public static SpeakerDao getSpeakerDao() {
         return participantDao;
     }
 }

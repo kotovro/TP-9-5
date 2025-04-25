@@ -1,6 +1,5 @@
 package ui;
 
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,14 +16,11 @@ import java.util.List;
 import java.util.Objects;
 
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import logic.general.Speaker;
 import logic.general.Replica;
 import javafx.scene.layout.AnchorPane;
 import logic.general.Transcript;
-import logic.text_edit.EditStory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
+import logic.persistence.DBManager;
 import logic.text_edit.EditStory;
 import logic.text_edit.action.AddReplica;
 import logic.text_edit.action.RemoveReplica;
@@ -33,11 +29,15 @@ import ui.custom_elements.CustomComboBox;
 import ui.custom_elements.CustomTextArea;
 
 public class EditController {
-    private Transcript transcript;
+    private final Transcript transcript;
     private List<Speaker> speakers = new ArrayList<>();
 
     private final EditStory editStory = new EditStory();
     private CustomTextArea activeTextArea = null;
+
+    public EditController(Transcript transcript) {
+        this.transcript = transcript;
+    }
 
     @FXML
     private AnchorPane rootPane = new AnchorPane();
@@ -51,24 +51,9 @@ public class EditController {
     @FXML
     private Button loadButton;
 
-    public void setTranscript(Transcript transcript) {
-        this.transcript = transcript;
-    }
-
     @FXML
     public void initialize() {
-        speakers = List.of(
-                new Speaker("Anna", getImage("/images/logo.png"), 1),
-                new Speaker("Boris", getImage("/images/UserSpeak.png"), 2),
-                new Speaker("Viktor", getImage("/images/UserSpeak2.png"), 3),
-                new Speaker("Galina", getImage("/images/DangerCircle.png"), 4)
-        );
-
-        transcript.addReplica(new Replica("meme", speakers.getFirst()));
-        transcript.addReplica(new Replica("meme", speakers.getFirst()));
-        transcript.addReplica(new Replica("meme", speakers.getFirst()));
-        transcript.addReplica(new Replica("meme", speakers.getFirst()));
-        transcript.addReplica(new Replica("meme", speakers.getFirst()));
+        speakers = DBManager.getSpeakerDao().getAllSpeakers();
 
         for (Replica replica : transcript.getReplicas()) {
             ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
@@ -88,8 +73,24 @@ public class EditController {
             }
         });
 
-        textAreaContainer.getChildren().add(createSaveButton());
-        textAreaContainer.getStyleClass().add("vbox-transparent");
+        initButtons();
+    }
+
+    public Transcript formTranscript() {
+        int number = DBManager.getTranscriptDao().getTranscripts().size() + 1;
+        Transcript transcript = new Transcript("Транскрипция " + number, new Date());
+        int i = 0;
+        Speaker speaker = null;
+        for (var container : textAreaContainer.getChildren()) {
+            if (i % 2 == 0) {
+                speaker = ((CustomComboBox)container).getSelectionModel().getSelectedItem();
+            } else {
+                String text = ((CustomTextArea)container).getText();
+                transcript.addReplica(new Replica(text, speaker));
+            }
+            i++;
+        }
+        return transcript;
     }
 
     private TextArea initTextArea(Replica replica, ComboBox<Speaker> comboBox) {
@@ -131,19 +132,12 @@ public class EditController {
         return textArea;
     }
 
-    private static Button createSaveButton() {
-        Button saveButton = new Button("сохранить");
-        saveButton.setText("Сохранить");
-        saveButton.setStyle("""
-                -fx-background-color: #3338D5;
-                -fx-text-fill: white;
-                -fx-font-family: "Arial";
-                -fx-font-size: 14px;
-                -fx-background-radius: 12px;
-                -fx-padding: 6 16;
-                """);
+    private void initButtons() {
         saveButton.setOnAction(event -> {
-            // то, что вам нужно
+            DBManager.getTranscriptDao().addTranscript(formTranscript());
+
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            LoadStenogrammApp.setStage(stage);
         });
 
         loadButton.setOnAction(event -> {
@@ -157,7 +151,7 @@ public class EditController {
                 dialog.setTitle("Выбор источника загрузки");
                 dialog.setScene(scene);
                 dialog.setResizable(false);
-                dialog.showAndWait(); // или dialog.showAndWait();
+                dialog.showAndWait();
 
                 Stage currentStage = (Stage) loadButton.getScene().getWindow();
                 currentStage.close();
@@ -167,8 +161,6 @@ public class EditController {
         });
 
         textAreaContainer.getStyleClass().add("vbox-transparent");
-        VBox.setMargin(saveButton, new javafx.geometry.Insets(15, 0, 0, 0));
-        return saveButton;
     }
 
     private void addNewReplica() {
@@ -181,7 +173,7 @@ public class EditController {
         editStory.addLast(storyPoint);
     }
 
-    private static Image getImage(String path) {
+    public static Image getImage(String path) {
         return new Image(Objects.requireNonNull(EditController.class.getResourceAsStream(path)));
     }
 }
