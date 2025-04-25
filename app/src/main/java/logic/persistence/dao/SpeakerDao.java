@@ -2,6 +2,7 @@ package logic.persistence.dao;
 
 import logic.general.Speaker;
 import logic.persistence.exception.SpeakerNotFoundException;
+import logic.utils.ImageSerializer;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,9 +17,10 @@ public class SpeakerDao {
 
     public void addSpeaker(Speaker speaker) {
         try {
-            String sql = "INSERT INTO speaker (name) VALUES (?)";
+            String sql = "INSERT INTO speaker (name, image) VALUES (?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, speaker.getName());
+                stmt.setBytes(2, ImageSerializer.imageToByteArray(speaker.getImage()));
                 stmt.executeUpdate();
             }
 
@@ -29,7 +31,7 @@ public class SpeakerDao {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

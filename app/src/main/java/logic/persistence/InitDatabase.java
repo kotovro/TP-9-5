@@ -4,10 +4,12 @@ import javafx.scene.image.Image;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
+import logic.persistence.dao.SpeakerDao;
 import logic.persistence.dao.TranscriptDao;
 import ui.EditController;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,22 +17,38 @@ import java.util.List;
 
 public class InitDatabase {
     public static void main(String[] args) throws SQLException {
-        Connection connection = DBManager.getConnection();
-//        Transcript transcript = new Transcript("Test", new Date());
-//        transcript.addReplica(new Replica("Test replica", new Speaker("TestSpeaker",
-//                new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1)));
-//        System.out.println(transcript.getReplica(0).getSpeaker().getName());
-//        TranscriptDao transcriptDao = new TranscriptDao(connection);
-        try {
-            TranscriptDao transcriptDao = new TranscriptDao(connection);
-            List<Transcript> transcriptList = transcriptDao.getTranscripts();
-            for (Transcript transcript : transcriptList) {
-                System.out.println(transcript.getDate());
-            }
+        Connection connection = null;
+        try  {
+
+            connection = DBManager.getConnection();
+            Speaker speaker = new Speaker("TestSpeaker",
+                    new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1);
+            SpeakerDao speakerDao = new SpeakerDao(connection);
+            speakerDao.addSpeaker(speaker);
             connection.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+
+
+        //        Transcript transcript = new Transcript("Test", new Date());
+
+//        transcript.addReplica(new Replica("Test replica", new Speaker("TestSpeaker",
+//                new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1)));
+//        TranscriptDao transcriptDao = new TranscriptDao(connection);
+//        try {
+//            TranscriptDao transcriptDao = new TranscriptDao(connection);
+//            List<Transcript> transcriptList = transcriptDao.getTranscripts();
+//            for (Transcript transcript : transcriptList) {
+//                System.out.println(transcript.getDate());
+//            }
+//            connection.commit();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
 //        Replica replica = new Replica();
 //        Participant p = new Participant();

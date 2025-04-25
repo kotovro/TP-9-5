@@ -1,6 +1,7 @@
 CREATE TABLE speaker (
                          id INTEGER PRIMARY KEY AUTOINCREMENT,
-                         name TEXT NOT NULL
+                         name TEXT NOT NULL,
+                         image blob
 );
 
 CREATE TABLE tag (
