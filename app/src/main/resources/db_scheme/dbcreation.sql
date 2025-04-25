@@ -22,12 +22,12 @@ CREATE TABLE transcript (
 );
 
 CREATE TABLE replica (
-                         meeting_id INTEGER,
+                         transcript_id INTEGER,
                          order_number INTEGER,
                          speaker_id INTEGER NOT NULL,
                          content TEXT NOT NULL,
-                         PRIMARY KEY (meeting_id, order_number),
-                         FOREIGN KEY (meeting_id) REFERENCES meeting(id) ON DELETE CASCADE,
+                         PRIMARY KEY (transcript_id, order_number),
+                         FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE,
                          FOREIGN KEY (speaker_id) REFERENCES speaker(id) ON DELETE CASCADE
 );
 

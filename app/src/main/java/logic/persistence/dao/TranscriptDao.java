@@ -24,7 +24,7 @@ public class TranscriptDao {
 
     private int getNextOrderNumber(int meetingId) throws SQLException {
         String sql = "SELECT COALESCE(MAX(order_number), 0) + 1 AS next_order "
-                + "FROM replica WHERE meeting_id = ?";
+                + "FROM replica WHERE transcript_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, meetingId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -36,6 +36,40 @@ public class TranscriptDao {
             }
         }
     }
+
+    public void deleteTranscript(Transcript transcript) {
+        try {
+            String getTranscriptIdSql = "SELECT id from transcript where name=?";
+            int transcriptId = -1;
+            try (PreparedStatement stmt = connection.prepareStatement(getTranscriptIdSql)) {
+                stmt.setString(1, transcript.getName());
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        transcriptId = rs.getInt("id");
+                    }
+                }
+            }
+
+            if (transcriptId != -1) {
+                String sql = "DELETE FROM replica WHERE transcript_id = ?";
+                try (PreparedStatement stmt = connection.prepareStatement(sql))
+                {
+                    stmt.setInt(1, transcriptId);
+                    stmt.executeUpdate();
+                }
+            }
+
+            String deleteTranscript = "DELETE FROM transcript WHERE id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(deleteTranscript)) {
+                stmt.setInt(1, transcriptId);
+                stmt.executeUpdate();
+            }
+        } catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     public void addTranscript(Transcript transcript) {
         try {
@@ -57,7 +91,7 @@ public class TranscriptDao {
             Iterable<Replica> replicas = transcript.getReplicas();
 
             for (Replica replica : replicas) {
-                String sql = "INSERT INTO replica (meeting_id, order_number, speaker_id, content) VALUES (?, ?, ?, ?)";
+                String sql = "INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                     stmt.setInt(1, transcriptId);
                     stmt.setInt(2, getNextOrderNumber(transcriptId));
@@ -75,7 +109,7 @@ public class TranscriptDao {
         List<Transcript> transcripts;
         String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
                 "FROM transcript t " +
-                "JOIN replica r ON t.id = r.meeting_id ";
+                "JOIN replica r ON t.id = r.transcript_id ";
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
