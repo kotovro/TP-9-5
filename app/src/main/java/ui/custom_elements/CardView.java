@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
 import logic.general.Transcript;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CardView extends StackPane {
@@ -30,7 +31,7 @@ public class CardView extends StackPane {
         Label namel = new Label(transcript.getName());
         namel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-        Label datel = new Label(transcript.getDate().toString());
+        Label datel = new Label(toString(transcript.getDate()));
         datel.setStyle("-fx-font-size: 16px; -fx-text-fill: #555; -fx-text-fill: black;");
 
         content.getChildren().addAll(namel, datel);
@@ -62,9 +63,6 @@ public class CardView extends StackPane {
         return transcript;
     }
 
-    public String getnameText() {
-        return ((Label)((VBox)getChildren().get(0)).getChildren().get(0)).getText();
-    }
     private String getDefaultStyle() {
         return "-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #ddd;";
     }
@@ -75,6 +73,11 @@ public class CardView extends StackPane {
 
     private String getSelectedStyle() {
         return "-fx-background-color: #E6E6FF; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #3338D5;";
+    }
+
+    private static String toString(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(date);
     }
 }
 

@@ -77,8 +77,12 @@ public class EditController {
     }
 
     public Transcript formTranscript() {
-        int number = DBManager.getTranscriptDao().getTranscripts().size() + 1;
-        Transcript transcript = new Transcript("Транскрипция " + number, new Date());
+        int index = 0;
+        for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {
+            index = Integer.parseInt(transcript.getName().substring(transcript.getName().length() - 1));
+        }
+        Transcript newTranscript = new Transcript("Транскрипция " + (index + 1), new Date());
+
         int i = 0;
         Speaker speaker = null;
         for (var container : textAreaContainer.getChildren()) {
@@ -86,11 +90,11 @@ public class EditController {
                 speaker = ((CustomComboBox)container).getSelectionModel().getSelectedItem();
             } else {
                 String text = ((CustomTextArea)container).getText();
-                transcript.addReplica(new Replica(text, speaker));
+                newTranscript.addReplica(new Replica(text, speaker));
             }
             i++;
         }
-        return transcript;
+        return newTranscript;
     }
 
     private TextArea initTextArea(Replica replica, ComboBox<Speaker> comboBox) {

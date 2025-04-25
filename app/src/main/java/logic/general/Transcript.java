@@ -10,7 +10,6 @@ import java.util.List;
 
 public class Transcript {
     protected List<Replica> replicas = new ArrayList<>();
-    protected int currentIndex = 0;
     private String name;
     private Date date;
 
@@ -28,7 +27,7 @@ public class Transcript {
     }
 
     public void addReplica(Replica replica) {
-        replicas.add(currentIndex, replica);
+        replicas.addLast(replica);
     }
 
     public void removeReplica(int index) {
@@ -52,10 +51,6 @@ public class Transcript {
         return replicas.get(index);
     }
 
-    public Replica getCurrentReplica() {
-        return replicas.get(currentIndex);
-    }
-
     public String getName() {
         return name;
     }
@@ -64,13 +59,7 @@ public class Transcript {
         return date;
     }
 
-    public int getCurrentIndex() {
-        return currentIndex;
-    }
 
-    public void setCurrentIndex(int currentIndex) {
-        this.currentIndex = currentIndex;
-    }
 
     List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
     List<Pair<Replica, Integer>> getSearchResults() {

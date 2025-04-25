@@ -67,7 +67,6 @@ public class VoskRecognizer implements AudioStreamConsumer {
         try {
             replicas.add(parseReplica(recognizer.getFinalResult()));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
         correctSpeakers();
         return replicas;

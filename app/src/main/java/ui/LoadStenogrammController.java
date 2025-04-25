@@ -82,10 +82,9 @@ public class LoadStenogrammController {
             confirmButton.setDisable(true);
             deleteButton.setDisable(true);
             selectedCard.setSelected(false);
-            selectedCard = null;
-
             DBManager.getTranscriptDao().deleteTranscript(selectedCard.getTranscript());
             cardPane.getChildren().remove(selectedCard);
+            selectedCard = null;
         });
     }
 }

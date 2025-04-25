@@ -2,8 +2,10 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
-    id 'org.beryx.jlink' version '2.24.1'
+    id 'org.beryx.jlink' version '3.0.0'
 }
+
+sourceCompatibility = JavaVersion.VERSION_21
 
 version = '1.0.0'
 
@@ -26,7 +28,6 @@ dependencies {
     implementation "org.bytedeco:ffmpeg-platform:4.4-1.5.8"
     implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
     implementation 'org.slf4j:slf4j-api:2.0.12'
-    implementation 'ch.qos.logback:logback-classic:1.5.6'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
 }
@@ -67,13 +68,51 @@ jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'Vstrecheslav'
+        jvmArgs = [
+                '-Xmx4G',
+                '-Xms512M'
+        ]
     }
 
     jpackage() {
+        jvmArgs = ['-Xmx12G']
+
+        imageOptions += [
+                '--resource-dir', "${buildDir}/jpackage-resources",
+                '--temp', "${buildDir}/jpackage-temp"  // Отдельная temp-папка
+        ]
+
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
-            imageOptions += ['--icon', 'src/main/resources/icon.ico']
+            imageOptions += [
+                    '--icon', 'src/main/resources/icon.ico',
+                    '--resource-dir', "${buildDir}/jpackage-resources",
+                    '--win-dir-chooser',
+                    '--win-menu',
+                    '--win-shortcut'
+            ]
+            installerOptions += [
+                    '--resource-dir', "${buildDir}/jpackage-resources",
+                    '--win-dir-chooser',
+                    '--win-menu',
+                    '--win-shortcut',
+            ]
+        } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+            imageOptions += ['--icon', 'src/main/resources/icon.png']
+            installerOptions += [
+                    '--linux-shortcut',
+                    '--resource-dir', 'resources/models/ai-models'
+            ]
+        } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+            imageOptions += ['--icon', 'src/main/resources/icon.icns']
+            installerOptions += ['--mac-package-name', 'Vstrecheslav']
         }
-        imageOptions += ['--vendor', 'Vsu Production']
+
+        imageOptions += [
+                '--resource-dir', "${buildDir}/jpackage-resources",
+                '-J-Xmx5G',
+                '-J-Xms512M',
+                '--vendor', 'Vsu Production'
+        ]
         installerOptions += [
                 '--vendor', 'Vsu Production',
                 '--app-version', version

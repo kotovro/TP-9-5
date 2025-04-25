@@ -19,7 +19,7 @@ import static ui.EditController.getImage;
 
 public class DBManager {
     private static final String SCHEMA_FILE = "src/main/resources/db_scheme/dbcreation.sql";
-    private static final String DEFAULT_DB_PATH = "db_examples/test.db";
+    private static final String DEFAULT_DB_PATH = "src/main/resources/db_examples/test.db";
     private static Connection connection;
     static {
         try {
