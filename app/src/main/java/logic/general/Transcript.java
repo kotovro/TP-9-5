@@ -14,6 +14,13 @@ public class Transcript {
     private String name;
     private Date date;
 
+    public void setReplicas(List<Replica> replicas) {
+        this.replicas = replicas;
+    }
+
+    public Transcript() {
+    }
+
     public Transcript(String name, Date date) {
         this.name = name;
         this.date = date;
@@ -82,4 +89,11 @@ public class Transcript {
         return searchResults;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

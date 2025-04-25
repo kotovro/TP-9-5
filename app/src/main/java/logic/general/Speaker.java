@@ -7,11 +7,18 @@ public class Speaker {
     private final Image image;
     private final String name;
 
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Speaker(String name, Image image, int id) {
         this.name = name;
         this.image =  image;
         this.id = id;
     }
+
 
     public String getName() {
         return name;
