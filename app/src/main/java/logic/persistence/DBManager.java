@@ -43,7 +43,7 @@ public class DBManager {
         String url = "jdbc:sqlite:" + dbFile;
 
         connection = DriverManager.getConnection(url);
-        connection.setAutoCommit(false);
+        connection.setAutoCommit(true);
     }
 
     public static void closeConnection() {
@@ -58,7 +58,7 @@ public class DBManager {
         Path dbFile = Paths.get(DEFAULT_DB_PATH).toAbsolutePath();
         String url = "jdbc:sqlite:" + dbFile.toAbsolutePath();
         connection = DriverManager.getConnection(url);
-        connection.setAutoCommit(false);
+        connection.setAutoCommit(true);
         Path schemaPath = Paths.get(SCHEMA_FILE);
 
         StringBuilder sb = new StringBuilder();
@@ -74,7 +74,6 @@ public class DBManager {
                     stmt.execute(command);
                 }
             }
-            connection.commit();
         }
     }
 

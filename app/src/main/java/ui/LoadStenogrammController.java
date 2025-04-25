@@ -47,11 +47,9 @@ public class LoadStenogrammController {
         confirmButton.setDisable(true);
         cardPane.setHgap(15);
         cardPane.setVgap(15);
-        List<CardView> cards = new ArrayList<>();
 
         for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {
             CardView card = new CardView(transcript);
-            cards.add(card);
 
             card.setOnSelected(() -> {
                 if (selectedCard != null) {
@@ -85,7 +83,9 @@ public class LoadStenogrammController {
             deleteButton.setDisable(true);
             selectedCard.setSelected(false);
             selectedCard = null;
-            //TODO delete from base
+
+            DBManager.getTranscriptDao().deleteTranscript(selectedCard.getTranscript());
+            cardPane.getChildren().remove(selectedCard);
         });
     }
 }
