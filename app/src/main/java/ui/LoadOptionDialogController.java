@@ -22,6 +22,12 @@ public class LoadOptionDialogController {
         openScene("/fx_screens/downloading.fxml");
     }
 
+    private Stage mainStage;
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
     private void openScene(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -31,9 +37,12 @@ public class LoadOptionDialogController {
             newStage.setTitle("Загрузка стенограммы");
             newStage.show();
 
-            // Закрытие текущего окна
             Stage currentStage = (Stage) cardVideo.getScene().getWindow();
             currentStage.close();
+
+            if (mainStage != null) {
+                mainStage.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

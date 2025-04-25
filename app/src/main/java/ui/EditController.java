@@ -151,10 +151,12 @@ public class EditController {
                 dialog.setTitle("Выбор источника загрузки");
                 dialog.setScene(scene);
                 dialog.setResizable(false);
-                dialog.showAndWait();
 
-                Stage currentStage = (Stage) loadButton.getScene().getWindow();
-                currentStage.close();
+                LoadOptionDialogController controller = loader.getController();
+                Stage mainStage = (Stage) loadButton.getScene().getWindow();
+                controller.setMainStage(mainStage);
+
+                dialog.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

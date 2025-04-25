@@ -116,7 +116,7 @@ public class DownloadingController {
                 //Speaker должке копироваться а не каждый раз браться
                 Transcript transcript = new Transcript("untitled", new Date());
                 for (RawReplica replica : recognizer.getFinalResult()) {
-                    Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(0);
+                    Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(1);
                     transcript.addReplica(new Replica(replica.text, speaker));
                 }
 
