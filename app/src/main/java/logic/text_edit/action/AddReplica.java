@@ -3,9 +3,7 @@ package logic.text_edit.action;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import logic.general.Replica;
 import logic.general.Speaker;
-import logic.general.Transcript;
 
 public class AddReplica implements StoryPoint {
     private final VBox textAreaContainer;

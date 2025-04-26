@@ -3,8 +3,6 @@ package ui;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,9 +22,7 @@ import logic.vosk.VoskRecognizer;
 import logic.vosk.analiseDTO.RawReplica;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 public class DownloadingController {
     @FXML
@@ -73,13 +69,12 @@ public class DownloadingController {
 
     @FXML
     private void loadFromDatabase() {
-        try {
-            Stage stage = (Stage) loadButton.getScene().getWindow();
-            LoadStenogrammApp.setStage(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadButton.setDisable(true);
+        downloadButton.setDisable(true);
+        loadFromFileButton.setDisable(true);
 
+        Stage stage = (Stage) loadButton.getScene().getWindow();
+        LoadStenogrammApp.setStage(stage);
     }
 
     @FXML
@@ -97,6 +92,7 @@ public class DownloadingController {
         }
         else {
             errorPane.setVisible(true);
+            downloadButton.setDisable(true);
         }
     }
 
@@ -174,6 +170,7 @@ public class DownloadingController {
                         selectedFile = file;
                         downloadButton.setDisable(false);
                         sucsessPane.setVisible(true);
+                        errorPane.setVisible(false);
                         success = true;
                         break;
                     }
@@ -191,9 +188,5 @@ public class DownloadingController {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format, "*" + format));
         }
         return fileChooser;
-    }
-
-    private Image getDefaultImage() {
-        return EditController.getImage("/images/UserSpeak.png");
     }
 }

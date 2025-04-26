@@ -1,4 +1,4 @@
-resources/ai-models/speech-recognition-model/*
+dynamic-resources/ai-models/speech-recognition-model/*
 gradle/*
 build
 gradlew

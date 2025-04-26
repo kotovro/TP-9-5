@@ -6,13 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import logic.general.Speaker;
-import logic.persistence.DBManager;
 
 import java.io.IOException;
-import java.util.List;
-
-import static ui.EditController.getImage;
 
 public class DownloadingApp extends Application {
     @Override

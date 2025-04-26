@@ -1,20 +1,12 @@
 package ui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import logic.general.Transcript;
 import logic.persistence.DBManager;
 import ui.custom_elements.CardView;
-
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class LoadStenogrammController {
 

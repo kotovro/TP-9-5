@@ -5,6 +5,7 @@ import logic.persistence.dao.SpeakerDao;
 import logic.persistence.dao.TranscriptDao;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,8 +19,8 @@ import java.util.stream.Stream;
 import static ui.EditController.getImage;
 
 public class DBManager {
-    private static final String SCHEMA_FILE = "src/main/resources/db_scheme/dbcreation.sql";
-    private static final String DEFAULT_DB_PATH = "src/main/resources/db_examples/test.db";
+    private static final String SCHEMA_FILE = "dynamic-resources/db_scheme/dbcreation.sql";
+    private static final String DEFAULT_DB_PATH = "dynamic-resources/db_examples/test.db";
     private static Connection connection;
     static {
         try {
@@ -54,7 +55,7 @@ public class DBManager {
         }
     }
 
-    public static void createDB() throws SQLException, IOException {
+    public static void createDB() throws SQLException, IOException, ClassNotFoundException {
         Path dbFile = Paths.get(DEFAULT_DB_PATH).toAbsolutePath();
         String url = "jdbc:sqlite:" + dbFile.toAbsolutePath();
         connection = DriverManager.getConnection(url);

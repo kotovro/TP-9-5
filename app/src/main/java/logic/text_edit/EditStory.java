@@ -2,9 +2,6 @@ package logic.text_edit;
 
 import logic.text_edit.action.StoryPoint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EditStory {
     private static final int BUFFER_MAX_SIZE = 100;
 

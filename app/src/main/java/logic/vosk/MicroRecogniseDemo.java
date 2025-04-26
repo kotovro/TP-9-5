@@ -1,9 +1,7 @@
 package logic.vosk;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.LineUnavailableException;
 
-import logic.audioInput.AudioStreamConsumer;
 import logic.audio_extractor.AudioExtractorStreamer;
 import logic.audio_extractor.VideoValidator;
 

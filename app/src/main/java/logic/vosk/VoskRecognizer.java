@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class VoskRecognizer implements AudioStreamConsumer {
@@ -34,9 +33,9 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public VoskRecognizer() {
         try {
-            model = new Model("resources/ai-models/speech-recognition-model");
+            model = new Model("dynamic-resources/ai-models/speech-recognition-model");
             recognizer = new Recognizer(model, 16000);
-            SpeakerModel model = new SpeakerModel("resources/ai-models/speaker-recognition-model");
+            SpeakerModel model = new SpeakerModel("dynamic-resources/ai-models/speaker-recognition-model");
             recognizer.setSpeakerModel(model);
         } catch (IOException e) {
             throw new RuntimeException(e);

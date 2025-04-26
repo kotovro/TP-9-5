@@ -1,19 +1,12 @@
 package logic.persistence;
 
 import javafx.scene.image.Image;
-import logic.general.Replica;
 import logic.general.Speaker;
-import logic.general.Transcript;
 import logic.persistence.dao.SpeakerDao;
-import logic.persistence.dao.TranscriptDao;
 import ui.EditController;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class InitDatabase {
     public static void main(String[] args) throws SQLException {

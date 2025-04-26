@@ -1,7 +1,6 @@
 package logic.general;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Replica {
     private Speaker speaker;
