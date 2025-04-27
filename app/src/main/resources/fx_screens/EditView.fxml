@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+      <Circle fill="#14165a" layoutX="100.0" layoutY="350.0" radius="136.0" strokeType="INSIDE">
+         <effect>
+            <BoxBlur height="93.19" iterations="2" width="81.26" />
+         </effect>
+      </Circle>
+      <Circle fill="#cdceff" layoutX="565.0" layoutY="86.0" radius="78.0" strokeType="INSIDE">
+         <effect>
+            <BoxBlur height="88.41" width="97.95" />
+         </effect>
+      </Circle>
+      <Circle fill="#0b0f85" layoutX="236.0" layoutY="44.0" radius="100.0" strokeType="INSIDE">
+         <effect>
+            <BoxBlur width="240.93" />
+         </effect>
+      </Circle>
+      <Circle fill="#0b0f85" layoutX="611.0" layoutY="372.0" radius="100.0" strokeType="INSIDE">
+         <effect>
+            <BoxBlur height="143.23" width="193.27" />
+         </effect>
+      </Circle>
+        <ScrollPane layoutX="23.0" layoutY="64.0" prefHeight="321.0" prefWidth="556.0" style="-fx-background-color: rgba(255, 255, 255, 0.3);">
+            <content>
+                <VBox fx:id="textAreaContainer" prefHeight="306.0" prefWidth="534.0" style="-fx-background-color: rgba(255, 255, 255, 0.3);">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </VBox>
+            </content>
+        </ScrollPane>
+      <Pane prefHeight="44.0" prefWidth="601.0" style="-fx-background-color: #9497FE;">
+         <children>
+            <ImageView fitHeight="31.0" fitWidth="34.0" layoutX="14.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/ClipboardList.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="52.0" layoutY="11.0" text="Стенограмма">
+               <font>
+                  <Font name="Tilda Sans Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="saveButton" layoutX="23.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
+         <font>
+            <Font name="Tilda Sans Medium" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="loadButton" layoutX="158.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Загрузить" textFill="WHITE">
+         <font>
+            <Font name="Tilda Sans Medium" size="13.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>
