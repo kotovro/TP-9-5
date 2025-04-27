@@ -5,7 +5,6 @@ import logic.persistence.dao.SpeakerDao;
 import logic.persistence.dao.TranscriptDao;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +19,7 @@ import static ui.EditController.getImage;
 
 public class DBManager {
     private static final String SCHEMA_FILE = "dynamic-resources/db_scheme/dbcreation.sql";
-    private static final String DEFAULT_DB_PATH = "dynamic-resources/db_examples/test.db";
+    private static final String DEFAULT_DB_PATH = "dynamic-resources/db_examples/saves.db";
     private static Connection connection;
     static {
         try {
@@ -80,10 +79,13 @@ public class DBManager {
 
     private static void addSpeakers() {
         List<Speaker> speakers = List.of(
-                new Speaker("Не выбран", getImage("/images/UserSpeak2.png"), 0),
-                new Speaker("Anna", getImage("/images/logo.png"), 1),
-                new Speaker("Viktor", getImage("/images/UserSpeak2.png"), 2),
-                new Speaker("Galina", getImage("/images/DangerCircle.png"), 3)
+                new Speaker("Не выбран", getImage("/images/default_users/undefined.png"), 0),
+                new Speaker("Соня", getImage("/images/default_users/sonya.png"), 1),
+                new Speaker("Никита", getImage("/images/default_users/nikita.jpg"), 2),
+                new Speaker("Виталий", getImage("/images/default_users/vitaly.png"), 3),
+                new Speaker("Константин", getImage("/images/default_users/konstantin.jpg"), 4),
+                new Speaker("Никита", getImage("/images/default_users/nikita.png"), 5),
+                new Speaker("Полина", getImage("/images/default_users/polina.png"), 6)
         );
         for (Speaker speaker : speakers) {
             getSpeakerDao().addSpeaker(speaker);

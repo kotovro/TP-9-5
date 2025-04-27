@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class VoskRecognizer implements AudioStreamConsumer {
     private static final RawSpeaker UNDEFINED_SPEAKER = new RawSpeaker(-1, new double[]{});
@@ -49,8 +50,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
         try {
             while ((nbytes = audioStream.read(buffer)) >= 0) {
                 if (recognizer.acceptWaveForm(buffer, nbytes)) {
-                    var res = recognizer.getResult();
-                    replicas.add(parseReplica(res));
+                    var result = parseReplica(recognizer.getResult());
+                    result.ifPresent(replicas::add);
                 }
             }
         } catch (Exception e) {
@@ -64,7 +65,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public List<RawReplica> getFinalResult() {
         try {
-            replicas.add(parseReplica(recognizer.getFinalResult()));
+            var result = parseReplica(recognizer.getFinalResult());
+            result.ifPresent(replicas::add);
         } catch (JsonProcessingException e) {
         }
         correctSpeakers();
@@ -124,12 +126,14 @@ public class VoskRecognizer implements AudioStreamConsumer {
         return false;
     }
 
-    private RawReplica parseReplica(String jsonString) throws JsonProcessingException {
+    private Optional<RawReplica> parseReplica(String jsonString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
         JsonNode rootNode = mapper.readTree(jsonString);
 
         JsonNode spkNode = rootNode.get("spk");
+        if (spkNode == null) return Optional.empty();
+
         double[] spk = new double[spkNode.size()];
         for (int i = 0; i < spkNode.size(); i++) {
             spk[i] = spkNode.get(i).asDouble();
@@ -143,7 +147,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
         text = text.substring(0, 1).toUpperCase() + text.substring(1);
 
         recognize(spk, spkFrames);
-        return new RawReplica(text, currentSpeaker, spk, spkFrames);
+        return Optional.of(new RawReplica(text, currentSpeaker, spk, spkFrames));
     }
 
     private static double norm(double[] data) {

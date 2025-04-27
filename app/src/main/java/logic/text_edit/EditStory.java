@@ -20,7 +20,6 @@ public class EditStory {
             currentActionIndex--;
             executables[currentActionIndex].unapply();
         }
-        System.out.println("undo last, current index : " + currentActionIndex);
     }
 
     public void addLast(StoryPoint action) {
@@ -30,7 +29,6 @@ public class EditStory {
         if (maxIndex >= BUFFER_MAX_SIZE * 2) {
             freeBufferSpace();
         }
-        System.out.println("added last, current index : " + currentActionIndex);
     }
 
     public boolean canRedo() {

@@ -144,7 +144,7 @@ public class DownloadingController {
         imgCheckCircle.setImage(image2);
         Image image3 = new Image(getClass().getResource("/images/DangerCircle.png").toExternalForm());
         imgDangerCircle.setImage(image3);
-        Image image4 = new Image(getClass().getResource("/images/UserSpeak2.png").toExternalForm());
+        Image image4 = new Image(getClass().getResource("/images/default_users/undefined.png").toExternalForm());
         imgUserSpeak2.setImage(image4);
     }
 
