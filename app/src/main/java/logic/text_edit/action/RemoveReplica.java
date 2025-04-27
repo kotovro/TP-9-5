@@ -1,34 +1,32 @@
 package logic.text_edit.action;
 
-import logic.general.Replica;
-import logic.general.Transcript;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
+import logic.general.Speaker;
 
-public class RemoveReplica implements Executable {
-    public Transcript transcript;
-    public int replicaPosition;
-    private Replica removedReplica;
-    private boolean removed = false;
+public class RemoveReplica implements StoryPoint {
+    private final VBox textAreaContainer;
+    private final ComboBox<Speaker> comboBox;
+    private final TextArea textArea;
+    private final int index;
 
-    public RemoveReplica(Transcript transcript, int replicaPosition) {
-        this.transcript = transcript;
-        this.replicaPosition = replicaPosition;
+    public RemoveReplica(VBox textAreaContainer, ComboBox<Speaker> comboBox, TextArea textArea, int index) {
+        this.textAreaContainer = textAreaContainer;
+        this.comboBox = comboBox;
+        this.textArea = textArea;
+        this.index = index;
     }
 
     @Override
     public void apply() {
-        if (!removed) {
-            if (replicaPosition >= 0 && replicaPosition < transcript.getReplicas().size()) {
-                removedReplica = transcript.getReplicas().remove(replicaPosition);
-                removed = true;
-            }
-        }
+        textAreaContainer.getChildren().remove(comboBox);
+        textAreaContainer.getChildren().remove(textArea);
     }
 
     @Override
     public void unapply() {
-        if (removed && removedReplica != null) {
-            transcript.getReplicas().add(replicaPosition, removedReplica);
-            removed = false;
-        }
+        textAreaContainer.getChildren().add(index, textArea);
+        textAreaContainer.getChildren().add(index, comboBox);
     }
 }

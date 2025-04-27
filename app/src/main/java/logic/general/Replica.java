@@ -1,26 +1,60 @@
 package logic.general;
 
+import java.util.ArrayList;
+
 public class Replica {
-    private Participant participant;
+    private Speaker speaker;
     private String text;
 
-    public int getSize() {
-        return 0;
+    public Replica() {
     }
 
-    public Participant getSpeaker() {
-        return participant;
+    public Replica(String text, Speaker speaker) {
+        this.text = text;
+        this.speaker = speaker;
     }
 
-    public void setSpeaker(Participant participant) {
-        this.participant = participant;
+    public Speaker getSpeaker() {
+        return speaker;
+    }
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setSpeaker(Speaker speaker) {
+        this.speaker = speaker;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public ArrayList<Integer> findAllOccurrences(String searchText) {
+        if (searchText.isEmpty())
+            return new ArrayList<>();
+
+        ArrayList<Integer> indices = new ArrayList<>();
+        int searchLength = searchText.length();
+        int textLength = text.length();
+        int index = 0;
+
+        while (index <= textLength - searchLength) {
+            boolean found = true;
+
+            for (int i = 0; i < searchLength; i++) {
+                if (text.charAt(index + i) != searchText.charAt(i)) {
+                    found = false;
+                    break;
+                }
+            }
+
+            if (found) {
+                indices.add(index);
+                index += searchLength;
+            } else {
+                index++;
+            }
+        }
+        return indices;
     }
 }

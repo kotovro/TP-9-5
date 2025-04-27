@@ -2,16 +2,38 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '3.0.0'
 }
+
+version = '1.0.0'
 
 repositories {
     mavenCentral()
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'net.java.dev.jna:jna:5.13.0'
+    }
+}
+
+dependencies {
+    implementation 'net.java.dev.jna:jna:5.13.0'
+    implementation 'com.alphacephei:vosk:0.3.45'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
+    implementation("com.google.guava:guava:32.0.1-jre")
+    implementation "org.bytedeco:javacv-platform:1.5.8"
+    implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+}
+
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
+    modularity.inferModulePath = true
 }
 
 javafx {
@@ -19,23 +41,82 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'vosk'
+    ]
+}
+
 application {
-    mainClass = 'logic.persistence.InitDatabase'
+    mainClass = 'ui.DownloadingApp'
     applicationDefaultJvmArgs = [
+            '-Xms5G',
+            '-Xmx5G',
             "--add-modules=javafx.controls,javafx.fxml,javafx.graphics",
             "-Dprism.verbose=true"
     ]
 }
 
-dependencies {
-    implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
-    implementation 'org.slf4j:slf4j-api:2.0.12'
-    implementation 'ch.qos.logback:logback-classic:1.5.6'
+jlink {
+    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'Vstrecheslav'
+        jvmArgs = [
+                '-Xmx5G',
+                '-Xms512M'
+        ]
+    }
+
+    jpackage() {
+        jvmArgs = ['-Xmx12G']
+
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            imageOptions += [
+                    '--icon', 'src/main/resources/icon.ico'
+            ]
+            installerOptions += [
+                    '--win-dir-chooser',
+                    '--win-menu',
+                    '--win-shortcut',
+            ]
+        }
+
+        imageOptions += [
+                '-J-Xmx5G',
+                '-J-Xms512M',
+                '--vendor', 'Vsu Production',
+                '--app-content', "src/main/resources",
+                '--app-content', "dynamic-resources"
+        ]
+        installerOptions += [
+                '--vendor', 'Vsu Production',
+                '--app-version', version,
+        ]
+    }
 }
 
-tasks.withType(JavaExec) {
-    jvmArgs = [
-            "--module-path", classpath.asPath,
-            "--add-modules", "javafx.controls,javafx.fxml,javafx.graphics"
-    ]
+tasks.register('copyDynamicResources', Copy) {
+    from 'dynamic-resources'
+    into "${buildDir}/dynamic-resources"
 }
+
+tasks.named('jlink') {
+    dependsOn 'copyDynamicResources'
+}
+
+tasks.named('jpackage') {
+    dependsOn 'copyDynamicResources'
+}
+
+//else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+//    imageOptions += ['--icon', 'src/main/resources/icon.png']
+//    installerOptions += [
+//            '--linux-shortcut',
+//            '--resource-dir', 'resources/models/ai-models'
+//    ]
+//} else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+//    imageOptions += ['--icon', 'src/main/resources/icon.icns']
+//    installerOptions += ['--mac-package-name', 'Vstrecheslav']
+//}

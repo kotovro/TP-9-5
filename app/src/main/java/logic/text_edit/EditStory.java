@@ -1,46 +1,52 @@
 package logic.text_edit;
 
-import logic.text_edit.action.Executable;
+import logic.text_edit.action.StoryPoint;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-//TODO add own double linked list for last action index tracking
 public class EditStory {
+    private static final int BUFFER_MAX_SIZE = 100;
 
-    List<Executable> executables = new ArrayList<>();
-    int currentActionIndex = -1;
+    private final StoryPoint[] executables = new StoryPoint[BUFFER_MAX_SIZE * 2];
+    //Указывает на позицию, следующую за текущим story point
+    private int currentActionIndex = 0;
+    //Указывает на позицию, следующую за последним story point
+    private int maxIndex = 0;
 
-    public boolean isUndoPossible()
-    {
-        return  (!executables.isEmpty() && currentActionIndex >= 0);
+    public boolean canUndo() {
+        return currentActionIndex > 0;
     }
+
     public void undoLast() {
-        if (isUndoPossible()) {
-            Executable lastAction = executables.get(currentActionIndex);
-            lastAction.unapply();
+        if (canUndo()) {
             currentActionIndex--;
+            executables[currentActionIndex].unapply();
         }
     }
 
-    public void addLast(Executable action) {
-        if (currentActionIndex < executables.size() - 1) {
-            executables.subList(currentActionIndex + 1, executables.size()).clear();
+    public void addLast(StoryPoint action) {
+        executables[currentActionIndex] = action;
+        currentActionIndex++;
+        maxIndex = currentActionIndex;
+        if (maxIndex >= BUFFER_MAX_SIZE * 2) {
+            freeBufferSpace();
         }
-        executables.addLast(action);
     }
 
-    public boolean isRedoPossible() {
-        return currentActionIndex + 1 < executables.size();
+    public boolean canRedo() {
+        return currentActionIndex < maxIndex;
     }
 
     public void redoLast() {
-        if(isRedoPossible()) {
+        if(canRedo()) {
+            executables[currentActionIndex].apply();
             currentActionIndex++;
-            Executable nextAction = executables.get(currentActionIndex);
-            nextAction.apply();
         }
     }
 
+    private void freeBufferSpace() {
+        currentActionIndex = BUFFER_MAX_SIZE;
+        maxIndex = BUFFER_MAX_SIZE;
+        for (int i = 0; i < BUFFER_MAX_SIZE; i++) {
+            executables[i] = executables[maxIndex + i];
+        }
+    }
 }
