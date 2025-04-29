@@ -16,9 +16,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static ui.EditController.getImage;
 
-/**
- * Тесты для класса DBManager, который управляет подключением к базе данных.
- */
 class DBManagerTest {
     private static final String TEST_DB_PATH = "test_db.db";
 

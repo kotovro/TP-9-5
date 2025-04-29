@@ -10,10 +10,7 @@ import logic.persistence.exception.SpeakerNotFoundException;
 import logic.utils.ImageSerializer;
 import org.junit.jupiter.api.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -115,58 +112,53 @@ class DaoTest {
         assertEquals(2, speakers.size(), "Должны вернуться 2 тестовых спикера");
     }
 
-//    @Test
-//    @DisplayName("Добавление транскрипта с репликами")
-//    void testAddTranscript() {
-//        List<Speaker> speakers = speakerDao.getAllSpeakers();
-//        assertFalse(speakers.isEmpty(), "Должен быть хотя бы один тестовый спикер");
-//
-//        Speaker speaker = speakers.get(0);
-//        Replica replica = new Replica();
-//        replica.setSpeaker(speaker);
-//        replica.setText("Test replica content");
-//
-//        Transcript transcript = new Transcript("Test Meeting", new Date());
-//        transcript.addReplica(replica);
-//
-//        transcriptDao.addTranscript(transcript);
-//        List<Transcript> transcripts = transcriptDao.getTranscripts();
-//
-//        assertEquals(1, transcripts.size());
-//        assertEquals("Test Meeting", transcripts.get(0).getName());
-//        assertEquals(1, transcripts.get(0).getReplicas().size());
-//    }
+    @Test
+    @DisplayName("Добавление транскрипта с репликами")
+    void testAddTranscript() {
+        List<Speaker> speakers = speakerDao.getAllSpeakers();
+        assertFalse(speakers.isEmpty(), "Должен быть хотя бы один тестовый спикер");
 
-//    @Test
-//    @DisplayName("Получение списка транскриптов")
-//    void testGetTranscripts() {
-//        // Сначала добавляем тестовые данные
-//        List<Speaker> speakers = speakerDao.getAllSpeakers();
-//        Speaker speaker = speakers.get(0);
-//
-//        Replica replica = new Replica();
-//        replica.setSpeaker(speaker);
-//        replica.setText("Test replica content");
-//
-//        Transcript transcript = new Transcript("Test Meeting", new Date());
-//        transcript.addReplica(replica);
-//        transcriptDao.addTranscript(transcript);
-//
-//        // Получаем транскрипты
-//        List<Transcript> transcripts = transcriptDao.getTranscripts();
-//
-//        // Проверяем результаты
-//        assertFalse(transcripts.isEmpty());
-//        Transcript retrieved = transcripts.get(0);
-//        assertEquals("Test Meeting", retrieved.getName());
-//        assertEquals(1, retrieved.getReplicas().size());
-//        assertEquals("Test replica content", retrieved.getReplicas().get(0).getText());
-//    }
+        Speaker speaker = speakers.get(0);
+        Replica replica = new Replica();
+        replica.setSpeaker(speaker);
+        replica.setText("Test replica content");
+
+        Transcript transcript = new Transcript("Test Meeting", new Date());
+        transcript.addReplica(replica);
+
+        transcriptDao.addTranscript(transcript);
+        List<Transcript> transcripts = transcriptDao.getTranscripts();
+
+        assertEquals(1, transcripts.size());
+        assertEquals("Test Meeting", transcripts.get(0).getName());
+    }
+
+    @Test
+    @DisplayName("Получение списка транскриптов")
+    void testGetTranscripts() {
+        List<Speaker> speakers = speakerDao.getAllSpeakers();
+        Speaker speaker = speakers.get(0);
+
+
+        Replica replica = new Replica();
+        replica.setSpeaker(speaker);
+        replica.setText("Test replica content");
+
+        Transcript transcript = new Transcript("Test Meeting", new Date());
+        transcript.addReplica(replica);
+        transcriptDao.addTranscript(transcript);
+
+        List<Transcript> transcripts = transcriptDao.getTranscripts();
+
+        assertFalse(transcripts.isEmpty());
+        Transcript retrieved = transcripts.get(0);
+        assertEquals("Test Meeting", retrieved.getName());
+
+    }
 
     @Test
     @DisplayName("Удаление транскрипта")
     void testDeleteTranscript() {
-        // Добавляем тестовый транскрипт
         List<Speaker> speakers = speakerDao.getAllSpeakers();
         Speaker speaker = speakers.get(0);
 
@@ -212,16 +204,15 @@ class DaoTest {
         assertEquals("Second replica", replicas.get(1).getText());
     }
 
-    //Ждет реализации получения спикера по id
-//    @Test
-//    @DisplayName("Проверка целостности данных после добавления")
-//    void testDataIntegrity() {
-//        String testName = "Integrity Test Speaker";
-//        Speaker speaker = new Speaker(testName, image, 0);
-//        speakerDao.addSpeaker(speaker);
-//
-//        Speaker retrieved = speakerDao.getSpeakerById(speaker.getId());
-//        assertEquals(testName, retrieved.getName());
-//        assertEquals(speaker.getId(), retrieved.getId());
-//    }
+    @Test
+    @DisplayName("Проверка целостности данных после добавления")
+    void testDataIntegrity() throws SQLException {
+        String testName = "Integrity Test Speaker";
+        Speaker speaker = new Speaker(testName, image, 0);
+        speakerDao.addSpeaker(speaker);
+
+        Speaker retrieved = speakerDao.getSpeakerById(speaker.getId());
+        assertEquals(testName, retrieved.getName());
+        assertEquals(speaker.getId(), retrieved.getId());
+    }
 }

@@ -15,13 +15,11 @@ class InitDatabaseTest {
 
     @BeforeAll
     static void initDatabase() throws Exception {
-        // Получаем соединение с базой данных
         connection = DBManager.getConnection();
     }
 
     @AfterAll
     static void closeResources() throws Exception {
-        // Закрываем соединение после всех тестов
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
@@ -31,7 +29,6 @@ class InitDatabaseTest {
     @DisplayName("Проверка создания таблиц")
     void testTablesCreation() throws Exception {
         try (Statement stmt = connection.createStatement()) {
-            // Проверяем существование основных таблиц
             assertDoesNotThrow(() -> stmt.executeQuery("SELECT 1 FROM speaker LIMIT 1"),
                     "Таблица speaker должна существовать");
 
