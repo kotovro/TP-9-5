@@ -8,14 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import logic.general.Replica;
-import logic.general.Speaker;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static ui.EditController.getImage;
 
 class ReplicaTest {

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static ui.EditController.getImage;
 
 class DBManagerTest {
-    private static final String TEST_DB_PATH = "test_db.db";
+    private static final String TEST_DB_PATH = "app\\dynamic-resources\\db_examples\\saves.db";
 
     @BeforeAll
     static void setUp() throws Exception {

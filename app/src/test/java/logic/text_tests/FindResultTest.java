@@ -39,45 +39,36 @@ class FindResultTest {
 
         assertTrue(findResult.hasNext());
         Pair<Integer, Integer> first = findResult.next();
-//        System.out.println(first.getKey());
-//        System.out.println(first.getValue());
-//        System.out.println(findResult.hasNext());
-//        System.out.println(findResult.hasPrevious());
-        assertEquals(1, first.getKey());
-        assertEquals(8, first.getValue());
-//
+        assertEquals(0, first.getKey());
+        assertEquals(1, first.getValue());
+
         assertTrue(findResult.hasPrevious());
         Pair<Integer, Integer> second = findResult.previous();
-//        System.out.println(second.getKey());
-//        System.out.println(second.getValue());
-        assertEquals(0, second.getKey());
-        assertEquals(0, second.getValue());
+        assertEquals(1, second.getKey());
+        assertEquals(8, second.getValue());
 
-       // assertFalse(findResult.hasNext());
+        assertFalse(findResult.hasNext());
     }
 
     @Test
     void navigationMethods_shouldWorkCorrectly() {
         findResult.formSearchResults(transcript, "world");
-//       System.out.println(findResult.hasNext());
         assertFalse(findResult.hasPrevious());
         assertFalse(findResult.hasNext());
 
- //       Pair<Integer, Integer> first = findResult.;
- //       System.out.println(first.getValue());
- //       System.out.println(first.getKey());
-//        assertEquals(0, first.getKey());
-//        assertEquals(6, first.getValue());
-//
-//        assertTrue(findResult.hasPrevious());
-//        assertFalse(findResult.hasNext()); // Больше результатов нет
-//
-//        Pair<Integer, Integer> prev = findResult.previous();
-//        assertEquals(0, prev.getKey());
-//        assertEquals(6, prev.getValue());
-//
-//        assertFalse(findResult.hasPrevious());
-//        assertTrue(findResult.hasNext()); // Снова можно идти вперед
+        Pair<Integer, Integer> first = findResult.next();
+        assertEquals(0, first.getKey());
+        assertEquals(6, first.getValue());
+
+        assertTrue(findResult.hasPrevious());
+        assertFalse(findResult.hasNext());
+
+        Pair<Integer, Integer> prev = findResult.previous();
+        assertEquals(0, prev.getKey());
+        assertEquals(6, prev.getValue());
+
+        assertFalse(findResult.hasPrevious());
+        assertTrue(findResult.hasNext());
     }
 
     @Test

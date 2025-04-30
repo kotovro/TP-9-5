@@ -1,11 +1,8 @@
 package logic.db_tests;
 
-import logic.general.Speaker;
 import logic.persistence.DBManager;
-import logic.persistence.dao.SpeakerDao;
 import org.junit.jupiter.api.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
