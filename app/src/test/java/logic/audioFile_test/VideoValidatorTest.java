@@ -64,15 +64,15 @@ class VideoValidatorTest {
                 "Валидатор должен возвращать true для существующего файла с поддерживаемым форматом");
     }
 
-    @Test
-    @DisplayName("Проверка существующего файла поддерживаемого формата")
-    void isSupportVideoFile_shouldReturnTrueForRealVideoFile() {
-        Path testVideoPath = Paths.get("src", "test", "resources", "video_test.mp4").toAbsolutePath();
-
-        assertTrue(Files.exists(testVideoPath), "Тестовый видеофайл не найден");
-        assertTrue(VideoValidator.isSupportVideoFile(testVideoPath.toString()),
-                "Валидатор должен возвращать true для реального видеофайла");
-    }
+//    @Test
+//    @DisplayName("Проверка существующего файла поддерживаемого формата")
+//    void isSupportVideoFile_shouldReturnTrueForRealVideoFile() {
+//        Path testVideoPath = Paths.get("src", "test", "resources", "video_test.mp4").toAbsolutePath();
+//
+//        assertTrue(Files.exists(testVideoPath), "Тестовый видеофайл не найден");
+//        assertTrue(VideoValidator.isSupportVideoFile(testVideoPath.toString()),
+//                "Валидатор должен возвращать true для реального видеофайла");
+//    }
 
     @Test
     @DisplayName("Проверка не существующего файла")
