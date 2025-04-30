@@ -1,0 +1,167 @@
+name: Run Unit Tests (Sequential Multi-OS)
+
+on:
+  workflow_dispatch:     # Ручной запуск
+  push:
+    branches: [ 'test' ]
+    paths:
+      - 'src/**'
+  pull_request:
+    branches: [ 'develop' ]
+    paths:
+      - 'src/**'
+
+jobs:
+  test-ubuntu:
+    name: Test on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Cache Gradle test results
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/test-results
+            build/reports/tests
+          key: ${{ runner.os }}-test-results-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-test-results-
+            
+      - name: Run unit tests
+        id: tests-ubuntu
+        run: ./gradlew test
+
+      - name: Ubuntu Test Status
+        if: always()
+        run: |
+          if [ "${{ steps.tests-ubuntu.outcome }}" == "success" ]; then
+            echo "✅ Ubuntu tests passed!"
+          else
+            echo "❌ Ubuntu tests failed!"
+          fi
+
+  test-macos:
+    name: Test on macOS
+    needs: test-ubuntu
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Cache Gradle test results
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/test-results
+            build/reports/tests
+          key: ${{ runner.os }}-test-results-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-test-results-
+            
+      - name: Run unit tests
+        id: tests-macos
+        run: ./gradlew test
+
+      - name: macOS Test Status
+        if: always()
+        run: |
+          if [ "${{ steps.tests-macos.outcome }}" == "success" ]; then
+            echo "✅ macOS tests passed!"
+          else
+            echo "❌ macOS tests failed!"
+          fi
+
+  test-windows:
+    name: Test on Windows
+    needs: test-macos
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Cache Gradle test results
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/test-results
+            build/reports/tests
+          key: ${{ runner.os }}-test-results-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-test-results-
+            
+      - name: Run unit tests
+        id: tests-windows
+        run: ./gradlew test
+
+      - name: Windows Test Status
+        if: always()
+        run: |
+          if [ "${{ steps.tests-windows.outcome }}" == "success" ]; then
+            echo "✅ Windows tests passed!"
+          else
+            echo "❌ Windows tests failed!"
+          fi
+
+  summary:
+    name: Test Summary
+    needs: [test-ubuntu, test-macos, test-windows]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Print results
+        run: |
+          echo "--- Final Test Results ---"
+          echo "Ubuntu: ${{ needs.test-ubuntu.result }}"
+          echo "macOS: ${{ needs.test-macos.result }}"
+          echo "Windows: ${{ needs.test-windows.result }}"
+          echo "--------------------------"
