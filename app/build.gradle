@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
     implementation 'org.slf4j:slf4j-api:2.0.12'
 
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'ch.qos.logback:logback-classic:1.5.13'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'junit:junit:4.13.1'
