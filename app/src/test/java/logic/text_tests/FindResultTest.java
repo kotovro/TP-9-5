@@ -39,11 +39,11 @@ class FindResultTest {
 
         assertTrue(findResult.hasNext());
         Pair<Integer, Integer> first = findResult.next();
-        assertEquals(0, first.getKey());
-        assertEquals(1, first.getValue());
+        assertEquals(1, first.getKey());
+        assertEquals(8, first.getValue());
 
         assertTrue(findResult.hasPrevious());
-        Pair<Integer, Integer> second = findResult.previous();
+        Pair<Integer, Integer> second = findResult.next();
         assertEquals(1, second.getKey());
         assertEquals(8, second.getValue());
 
