@@ -14,6 +14,10 @@
  
  ## Навигация по проекту
 
+### Релизы
+- [Руководство для пользователя по установке и использованию приложения](https://vk.com/wall-230195371_2)
+- [Релиз 1.0.0 под Windows 10](https://drive.google.com/file/d/1PQHqgqaMJc2b2YNO1almrWnZ6WpSnmWP/view) 
+
 ### Сервисы
 
 - [YouGile](https://ru.yougile.com/board/icqgfj2i9nk9) - таск-трекер
