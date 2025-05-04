@@ -63,7 +63,12 @@
             <Font name="Tilda Sans Medium" size="13.0" />
          </font>
       </Button>
-      <Button fx:id="loadButton" layoutX="158.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Загрузить" textFill="WHITE">
+      <Button fx:id="loadButton" layoutX="304.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Загрузить" textFill="WHITE">
+         <font>
+            <Font name="Tilda Sans Medium" size="13.0" />
+         </font>
+      </Button>
+      <Button fx:id="saveButton1" layoutX="154.0" layoutY="402.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Сохранить как" textFill="WHITE">
          <font>
             <Font name="Tilda Sans Medium" size="13.0" />
          </font>
