@@ -37,7 +37,7 @@
 - [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
 
 ### Диаграммы, usert storty & use case
-- Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM)
+- Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM); [обновленная] 
 - ER [PDF](https://shorturl.at/GvHCe) [DOCX](https://bit.ly/erd_docx)
 - [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing)
  ## Материалы по аттестациям
