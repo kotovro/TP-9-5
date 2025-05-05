@@ -49,4 +49,5 @@
  ### Аттестация 1
  - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
  - [Защита тех задания](https://drive.google.com/file/d/1Fx6a6WyuxJ6CGGZiUwpdNjLTP9FReBP4/view?usp=drivesdk)
-
+ ### Аттестация 2
+ - Защита второй аттестации [Rutube](https://rutube.ru/video/f2f09203d8218bb849fc84aa4cc1bc8b/)
