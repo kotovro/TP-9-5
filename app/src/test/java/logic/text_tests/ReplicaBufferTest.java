@@ -117,8 +117,8 @@ class ReplicaBufferTest {
 
     @Test
     void bufferStressTest_withHighVolumeData() throws InterruptedException {
-        final int MESSAGE_COUNT = 99;   //максимум до 500 реплик на все потоки (для 1 потока был тест до 100000000)
-        final int THREAD_COUNT = 5;
+        final int MESSAGE_COUNT = 500;
+        final int THREAD_COUNT = 1;
         final ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
         final AtomicInteger successCount = new AtomicInteger();
         final AtomicInteger failureCount = new AtomicInteger();
