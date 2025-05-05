@@ -43,7 +43,7 @@
 ### Диаграммы, usert storty & use case
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM); [обновленная](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_sequence_diagram.pdf)
 - ER [PDF](https://shorturl.at/GvHCe) [DOCX](https://bit.ly/erd_docx)
-- [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing)
+- [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing), [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/User_stories_and_use_cases.pdf)  
  ## Материалы по аттестациям
  ### Аттестация 1
  - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
