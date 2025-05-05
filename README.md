@@ -24,12 +24,13 @@
 - [Figma](https://www.figma.com/file/tgjyOfaAtJQgewFkinZqpI?node-id=0:1&locale=en&type=design) - дизайн-макеты проекта
 ### Документация
 
-- Техническое задание(обновлённое) [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5_%D1%81_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0%D0%BC%D0%B8.pdf)
+- Техническое задание(обновлённое с учетом разработки) [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5_%D1%81_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0%D0%BC%D0%B8.pdf); изменения [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85_%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D0%BA_%D0%B2_%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5.pdf)
 
 ### Отчеты
 - Очтет за период с 18.03 по 24.03 [PDF](https://bit.ly/4lC3QNT)
 - Отчет за период с 30.03 по 08.04 [PDF](https://bit.ly/3GcbfDe) 
 - Отчет за период с 08.04 по 21.04 [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9E%D1%82%D1%87%D0%B5%D1%82_%D0%B7%D0%B0_%D0%BF%D0%B5%D1%80%D0%B8%D0%BE%D0%B4_%D1%81_08_04_%D0%BF%D0%BE_21_04.pdf)
+- Отчет за период с 21.04 по 03.05 [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9E%D1%82%D1%87%D0%B5%D1%82_%D0%B7%D0%B0_%D0%BF%D0%B5%D1%80%D0%B8%D0%BE%D0%B4_%D1%81_21_04_%D0%BF%D0%BE_03_05.pdf)
 ### Работа с репозиторием
 
 - Правила коммитов [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/commitrules.txt)
