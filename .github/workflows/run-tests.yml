@@ -4,14 +4,10 @@ on:
   push:
     branches: 
       - "**"  
-    paths:
-      - 'app/src/**'
   pull_request:
     branches:
       - "develop" 
     types: [opened, synchronize, reopened, ready_for_review]
-    paths:
-      - 'app/src/**'  
   workflow_dispatch:  
 
 jobs:
