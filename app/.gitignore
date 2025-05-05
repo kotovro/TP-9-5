@@ -4,3 +4,16 @@ build
 gradlew
 gradlew.bat
 db_examples/*.db
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+
+dynamic-resources/ai-models/speech-recognition-model/*
+db_examples/*.db
+
+
+.DS_Store
+Thumbs.db

@@ -8,6 +8,7 @@
 build/
 out/
 !gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 
 # Compiled class file
 *.class
@@ -50,6 +51,7 @@ Thumbs.db
 
 # Gradle Wrapper files
 gradle-wrapper.jar
+#gradle-wrapper.jar
 
 # Java temporary files
 *.tmp
