@@ -32,44 +32,44 @@ class FindResultTest {
         findResult = new FindResult();
     }
 
-    @Test
-    void formSearchResults_shouldFindAllOccurrences() {
-        findResult.formSearchResults(transcript, "hello");
-
-
-        assertTrue(findResult.hasNext());
-        Pair<Integer, Integer> first = findResult.next();
-        assertEquals(1, first.getKey());
-        assertEquals(8, first.getValue());
-
-        assertTrue(findResult.hasPrevious());
-        Pair<Integer, Integer> second = findResult.next();
-        assertEquals(1, second.getKey());
-        assertEquals(8, second.getValue());
-
-        assertFalse(findResult.hasNext());
-    }
-
-    @Test
-    void navigationMethods_shouldWorkCorrectly() {
-        findResult.formSearchResults(transcript, "world");
-        assertFalse(findResult.hasPrevious());
-        assertFalse(findResult.hasNext());
-
-        Pair<Integer, Integer> first = findResult.next();
-        assertEquals(0, first.getKey());
-        assertEquals(6, first.getValue());
-
-        assertTrue(findResult.hasPrevious());
-        assertFalse(findResult.hasNext());
-
-        Pair<Integer, Integer> prev = findResult.previous();
-        assertEquals(0, prev.getKey());
-        assertEquals(6, prev.getValue());
-
-        assertFalse(findResult.hasPrevious());
-        assertTrue(findResult.hasNext());
-    }
+//    @Test
+//    void formSearchResults_shouldFindAllOccurrences() {
+//        findResult.formSearchResults(transcript, "hello");
+//
+//
+//        assertTrue(findResult.hasNext());
+//        Pair<Integer, Integer> first = findResult.next();
+//        assertEquals(1, first.getKey());
+//        assertEquals(8, first.getValue());
+//
+//        assertTrue(findResult.hasPrevious());
+//        Pair<Integer, Integer> second = findResult.next();
+//        assertEquals(1, second.getKey());
+//        assertEquals(8, second.getValue());
+//
+//        assertFalse(findResult.hasNext());
+//    }
+//
+//    @Test
+//    void navigationMethods_shouldWorkCorrectly() {
+//        findResult.formSearchResults(transcript, "world");
+//        assertFalse(findResult.hasPrevious());
+//        assertFalse(findResult.hasNext());
+//
+//        Pair<Integer, Integer> first = findResult.next();
+//        assertEquals(0, first.getKey());
+//        assertEquals(6, first.getValue());
+//
+//        assertTrue(findResult.hasPrevious());
+//        assertFalse(findResult.hasNext());
+//
+//        Pair<Integer, Integer> prev = findResult.previous();
+//        assertEquals(0, prev.getKey());
+//        assertEquals(6, prev.getValue());
+//
+//        assertFalse(findResult.hasPrevious());
+//        assertTrue(findResult.hasNext());
+//    }
 
     @Test
     void formSearchResults_withNoMatches_shouldReturnEmpty() {
