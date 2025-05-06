@@ -59,5 +59,5 @@
 #### Нас проверяли:
 - Команда 8.4 [репозиторий](https://github.com/nmasalkin/Project-work) [чек-лиcт](https://docs.google.com/spreadsheets/d/1Ja0ObTKoGNE-lEmVByOKiuTt0JGaLL0GPGK6Uz6He0U/edit?gid=0#gid=0)
 - Команда 9.2 [репозиторий](https://github.com/LatinMapsLives/GigaGuide) [чек-лист]()
-- Команда 6.2 [репозиторий](https://github.com/AlexanderLaptev/Taskbench) [чек-лист]()
+- Команда 6.2 [репозиторий](https://github.com/AlexanderLaptev/Taskbench) [чек-лист](https://github.com/AlexanderLaptev/Taskbench/blob/main/docs/%D0%A7%D0%B5%D0%BA%D0%BB%D0%B8%D1%81%D1%82%202%20%D1%8D%D1%82%D0%B0%D0%BF.pdf)
 - Команда 8.1 [репозиторий](https://github.com/mxnmiraii/Vkatun) [чек-лист](https://github.com/mxnmiraii/Vkatun/blob/main/%D0%9C%D0%B5%D0%B6%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D0%BD%D0%B0%D1%8F%20%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0/checklist2_8_1.pdf)
