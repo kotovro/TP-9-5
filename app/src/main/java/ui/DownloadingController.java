@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,9 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +50,46 @@ public class DownloadingController {
 
     private final List<String> allowed = List.of(".mp4", ".mov", ".avi", ".mkv", ".webm");
 
+    private final int MENU_WIDTH = 200;
+    private boolean isMenuOpen = false;
+
+    @FXML
+    private VBox sideMenu;
+
+    @FXML
+    private Button menuButton;
+
+
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
+        animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);
+        animation.setToX(isMenuOpen ? 0 : -MENU_WIDTH);
+        animation.play();
+    }
+
+    // Обработчики для пунктов меню
+    @FXML
+    private void handleMainClick() {
+        // переход на главную
+    }
+
+    @FXML
+    private void handleSavingsClick() {
+        // переход на сохраненные файлы
+    }
+
+    @FXML
+    private void handleEditClick() {
+        // переход на обработать видео
+    }
+
+    @FXML
+    private void handleExitClick() {
+        System.exit(0);
+    }
+
     private boolean isAllowedFile(File file) {
         String name = file.getName().toLowerCase();
         return allowed.stream().anyMatch(name::endsWith);
@@ -54,6 +97,7 @@ public class DownloadingController {
 
     @FXML
     public void initialize() {
+        menuButton.setOnAction(event -> toggleMenu());
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
 
@@ -124,8 +168,6 @@ public class DownloadingController {
         imgCheckCircle.setImage(image2);
         Image image3 = new Image(getClass().getResource("/images/DangerCircle.png").toExternalForm());
         imgDangerCircle.setImage(image3);
-        Image image4 = new Image(getClass().getResource("/images/UserSpeak2.png").toExternalForm());
-        imgUserSpeak2.setImage(image4);
     }
 
     private void initDropPaneEvents() {

@@ -9,12 +9,10 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Загружаем FXML файл
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/mainWindow.fxml"));
         Parent root = loader.load();
-
-        // Настраиваем сцену
-        Scene scene = new Scene(root, 800, 600);
+        primaryStage.setResizable(false);
+        Scene scene = new Scene(root, 1137, 778);
         primaryStage.setTitle("Боковое меню с FXML");
         primaryStage.setScene(scene);
         primaryStage.show();

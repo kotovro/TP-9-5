@@ -1,11 +1,14 @@
 package ui;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import logic.general.Transcript;
 
 
@@ -27,6 +30,45 @@ public class LoadStenogrammController {
     @FXML
     private Button loadButton;
 
+    private final int MENU_WIDTH = 200;
+    private boolean isMenuOpen = false;
+
+    @FXML
+    private VBox sideMenu;
+
+    @FXML
+    private Button menuButton;
+
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
+        animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);
+        animation.setToX(isMenuOpen ? 0 : -MENU_WIDTH);
+        animation.play();
+    }
+
+    // Обработчики для пунктов меню
+    @FXML
+    private void handleMainClick() {
+        // переход на главную
+    }
+
+    @FXML
+    private void handleSavingsClick() {
+        // переход на сохраненные файлы
+    }
+
+    @FXML
+    private void handleEditClick() {
+        // переход на обработать видео
+    }
+
+    @FXML
+    private void handleExitClick() {
+        System.exit(0);
+    }
+
     @FXML
     private void loadFromVideo() {
         try {
@@ -46,6 +88,7 @@ public class LoadStenogrammController {
     }
 
     public void initialize() {
+        menuButton.setOnAction(event -> toggleMenu());
         confirmButton.setDisable(true);
         cardPane.setHgap(15);
         cardPane.setVgap(15);
@@ -79,8 +122,10 @@ public class LoadStenogrammController {
                     confirmButton.setDisable(true);
                     Thread.sleep(5000);
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-                    Scene secondScene = new Scene(loader.load(), 600, 450);
+
                     Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
+                    stage.setResizable(false);
+                    Scene secondScene = new Scene(loader.load(), 1137, 778);
                     stage.setScene(secondScene);
                 } catch (IOException ex) {
                     ex.printStackTrace();

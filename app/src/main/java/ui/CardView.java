@@ -16,8 +16,8 @@ public class CardView extends StackPane {
 
     public CardView(String name, String date) {
         setPadding(new Insets(15));
-        setPrefSize(520, 100);
-        setMaxSize(520, 100);
+        setPrefSize(820, 100);
+        setMaxSize(820, 100);
         setStyle(getDefaultStyle());
 
         setEffect(new DropShadow(10, Color.GRAY));

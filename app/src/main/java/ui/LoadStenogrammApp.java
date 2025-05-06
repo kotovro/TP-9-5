@@ -13,7 +13,8 @@ public class LoadStenogrammApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(EditWindow.class.getResource("/fx_screens/loadStenogramm.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 610, 470);
+        stage.setResizable(false);
+        Scene scene = new Scene(fxmlLoader.load(), 1137, 778);
         String stylesheet = getClass().getResource("/styles/load.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
         stage.setScene(scene);

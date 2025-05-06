@@ -11,8 +11,8 @@ public class Lane extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fx_screens/downloadLane.fxml"));
-
-        Scene scene = new Scene(root, 400, 200);
+        primaryStage.setResizable(false);
+        Scene scene = new Scene(root, 1137, 778);
         primaryStage.setTitle("Loading Bar Example");
         primaryStage.setScene(scene);
         primaryStage.show();

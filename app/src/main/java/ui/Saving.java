@@ -11,7 +11,7 @@ public class Saving extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fx_screens/saving.fxml"));
-
+        primaryStage.setResizable(false);
         Scene scene = new Scene(root, 400, 200);
         primaryStage.setTitle("Saving");
         primaryStage.setScene(scene);

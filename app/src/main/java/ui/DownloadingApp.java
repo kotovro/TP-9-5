@@ -20,8 +20,9 @@ public class DownloadingApp extends Application {
         Font.loadFont(getClass().getResourceAsStream("/fonts/TildaSans-Regular.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/fonts/TildaSans-Semibold.ttf"), 12);
         FXMLLoader fxmlLoader = new FXMLLoader(DownloadingApp.class.getResource("/fx_screens/downloading.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 850, 500);
-        stage.setTitle("звлечение аудио");
+        stage.setResizable(false);
+        Scene scene = new Scene(fxmlLoader.load(), 1137, 778);
+        stage.setTitle("Извлечение аудио");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         stage.setScene(scene);
         stage.show();
