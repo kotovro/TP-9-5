@@ -53,4 +53,5 @@
  - [Защита тех задания](https://drive.google.com/file/d/1Fx6a6WyuxJ6CGGZiUwpdNjLTP9FReBP4/view?usp=drivesdk)
  ### Аттестация 2
  - Защита второй аттестации [Rutube](https://rutube.ru/video/f2f09203d8218bb849fc84aa4cc1bc8b/)
+ - PM отчет [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/PM_report__second__att.pdf)
  - Презентация [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%92%D1%8B%D1%81%D1%82%D1%83%D0%BF%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5/Attestation_2_presentation.pdf)
