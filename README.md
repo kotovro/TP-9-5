@@ -22,6 +22,7 @@
 
 - [YouGile](https://ru.yougile.com/board/icqgfj2i9nk9) - таск-трекер
 - [Figma](https://www.figma.com/file/tgjyOfaAtJQgewFkinZqpI?node-id=0:1&locale=en&type=design) - дизайн-макеты проекта
+- [Группа ВКонтакте с новостями о проекте](https://vk.com/vstrecheslav)
 ### Документация
 
 - Техническое задание(обновлённое с учетом разработки) [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5_%D1%81_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0%D0%BC%D0%B8.pdf); изменения [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85_%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D0%BA_%D0%B2_%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5.pdf)
@@ -40,6 +41,7 @@
 - SWOT анализ [XLSX](https://shorturl.at/58z0T)
 - [Анализ рынка; модель моонетизации](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Анализ%20рынка%20и%20модель%20монетизации.pdf)
 - [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
+- [Roadmap](https://github.com/kotovro/TP-9-5/blob/main/Documents/RoadmapPDF.pdf)
 
 ### Диаграммы, usert storty & use case
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM); [обновленная](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_sequence_diagram.pdf)
@@ -51,3 +53,4 @@
  - [Защита тех задания](https://drive.google.com/file/d/1Fx6a6WyuxJ6CGGZiUwpdNjLTP9FReBP4/view?usp=drivesdk)
  ### Аттестация 2
  - Защита второй аттестации [Rutube](https://rutube.ru/video/f2f09203d8218bb849fc84aa4cc1bc8b/)
+ - Презентация [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%92%D1%8B%D1%81%D1%82%D1%83%D0%BF%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5/Attestation_2_presentation.pdf)
