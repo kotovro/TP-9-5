@@ -3,6 +3,7 @@
     -fx-border-color: #7678F1;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+    -fx-border-width: 1px;
     -fx-padding: 6px;
     -fx-text-fill: black;
 }
@@ -24,7 +25,7 @@
 }
 
 .custom-text-area:focused {
-    -fx-border-color: #7678F1;
+    -fx-border-width: 3px;
 }
 
 .custom-text-area .content {
@@ -33,7 +34,7 @@
 }
 
 .custom-text-area:focused .content {
-    -fx-background-color: #FFFFFF;
+    -fx-border-width: 3px;
 }
 
 .custom-combobox {

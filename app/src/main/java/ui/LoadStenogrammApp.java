@@ -1,27 +1,29 @@
 package ui;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class LoadStenogrammApp extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(EditWindow.class.getResource("/fx_screens/loadStenogramm.fxml"));
-        stage.setResizable(false);
-        Scene scene = new Scene(fxmlLoader.load(), 1137, 778);
-        String stylesheet = getClass().getResource("/styles/load.css").toExternalForm();
+public class LoadStenogrammApp {
+    public static Scene getScene() {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoadStenogrammApp.class.getResource("/fx_screens/loadStenogramm.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1137, 778);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String stylesheet = LoadStenogrammApp.class.getResource("/styles/load.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-        stage.setScene(scene);
-        stage.show();
+        return scene;
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void setStage(Stage stage) {
+        stage.setScene(getScene());
+        stage.setResizable(false);
+        stage.setTitle("Загрузка стенограммы");
     }
 }

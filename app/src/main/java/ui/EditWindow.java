@@ -1,26 +1,30 @@
 package ui;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import logic.general.Transcript;
 
 import java.io.IOException;
 
-public class EditWindow extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
+public class EditWindow {
+    public static Scene getScene(Transcript transcript) {
         FXMLLoader fxmlLoader = new FXMLLoader(EditWindow.class.getResource("/fx_screens/EditView.fxml"));
-        stage.setResizable(false);
-        Scene scene = new Scene(fxmlLoader.load(), 1137, 778);
-        String stylesheet = getClass().getResource("/styles/slyles.css").toExternalForm();
+        fxmlLoader.setController(new EditController(transcript));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1137, 778);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String stylesheet = EditWindow.class.getResource("/styles/slyles.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-        stage.setScene(scene);
-        stage.show();
+        return scene;
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void setStage(Stage stage, Transcript transcript) {
+        stage.setResizable(false);
+        stage.setScene(getScene(transcript));
+        stage.setTitle("Загрузка стенограммы");
     }
 }

@@ -2,20 +2,14 @@ package ui;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import logic.general.Transcript;
-
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import logic.persistence.DBManager;
+import ui.custom_elements.CardView;
 
 public class LoadStenogrammController {
 
@@ -70,17 +64,13 @@ public class LoadStenogrammController {
     }
 
     @FXML
+    public Button deleteButton;
+
+    @FXML
     private void loadFromVideo() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/downloading.fxml"));
-            Scene newScene = new Scene(loader.load());
-            Stage newStage = new Stage();
-            newStage.setScene(newScene);
-            newStage.setTitle("Загрузка стенограммы");
-            newStage.show();
-
-            Stage currentStage = (Stage) loadButton.getScene().getWindow();
-            currentStage.close();
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            DownloadingApp.setStage(stage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,14 +82,9 @@ public class LoadStenogrammController {
         confirmButton.setDisable(true);
         cardPane.setHgap(15);
         cardPane.setVgap(15);
-        Transcript t = new Transcript("loma", new Date());
-        Date date = t.getDate();
-        String name = t.getName();
-        List<CardView> cards = new ArrayList<>();
 
-        for (int i = 1; i <= 5; i++) { // типо количество стенограмм
-            CardView card = new CardView(name, "date");
-            cards.add(card);
+        for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {
+            CardView card = new CardView(transcript);
 
             card.setOnSelected(() -> {
                 if (selectedCard != null) {
@@ -108,34 +93,33 @@ public class LoadStenogrammController {
                 card.setSelected(true);
                 selectedCard = card;
                 confirmButton.setDisable(false);
+                deleteButton.setDisable(false);
             });
 
             cardPane.getChildren().add(card);
         }
-
-
+        initDeleteButton();
 
         confirmButton.setOnAction(e -> {
-            if (selectedCard != null) {
-                try {
-                    // Здесь можешь сохранить selectedCard.getnameText() или что тебе там вообще нужно
-                    confirmButton.setDisable(true);
-                    Thread.sleep(5000);
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-
-                    Stage stage = (Stage) confirmButton.getScene().getWindow(); // Получаем текущую сцену
-                    stage.setResizable(false);
-                    Scene secondScene = new Scene(loader.load(), 1137, 778);
-                    stage.setScene(secondScene);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            } else {
-                //f,e;f,
-            }
+            if (selectedCard == null) return;
+            confirmButton.setDisable(true);
+            deleteButton.setDisable(true);
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            EditWindow.setStage(stage, selectedCard.getTranscript());
         });
         cardPane.getStyleClass().add("flowpane-transparent");
+    }
+
+    private void initDeleteButton() {
+        deleteButton.setDisable(true);
+        deleteButton.setOnAction(e -> {
+            if (selectedCard == null) return;
+            confirmButton.setDisable(true);
+            deleteButton.setDisable(true);
+            selectedCard.setSelected(false);
+            DBManager.getTranscriptDao().deleteTranscript(selectedCard.getTranscript());
+            cardPane.getChildren().remove(selectedCard);
+            selectedCard = null;
+        });
     }
 }

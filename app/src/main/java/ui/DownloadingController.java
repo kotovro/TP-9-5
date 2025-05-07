@@ -1,9 +1,9 @@
 package ui;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,17 +15,27 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
+import logic.audio_extractor.AudioExtractorStreamer;
+import logic.audio_extractor.VideoValidator;
+import logic.general.Replica;
+import logic.general.Speaker;
+import logic.general.Transcript;
+import logic.persistence.DBManager;
+import logic.vosk.VoskRecognizer;
+import logic.vosk.analiseDTO.RawReplica;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import java.util.Date;
 
 public class DownloadingController {
     @FXML
     private File selectedFile;
 
     @FXML
-    private Button DownloadButton;
+    private Button downloadButton;
+
+    @FXML
+    public Button loadFromFileButton;
 
     @FXML
     private Pane errorPane;
@@ -47,8 +57,6 @@ public class DownloadingController {
 
     @FXML
     private ImageView imgUserSpeak2;
-
-    private final List<String> allowed = List.of(".mp4", ".mov", ".avi", ".mkv", ".webm");
 
     private final int MENU_WIDTH = 200;
     private boolean isMenuOpen = false;
@@ -90,11 +98,6 @@ public class DownloadingController {
         System.exit(0);
     }
 
-    private boolean isAllowedFile(File file) {
-        String name = file.getName().toLowerCase();
-        return allowed.stream().anyMatch(name::endsWith);
-    }
-
     @FXML
     public void initialize() {
         menuButton.setOnAction(event -> toggleMenu());
@@ -110,20 +113,12 @@ public class DownloadingController {
 
     @FXML
     private void loadFromDatabase() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/loadStenogramm.fxml"));
-            Scene newScene = new Scene(loader.load());
-            Stage newStage = new Stage();
-            newStage.setScene(newScene);
-            newStage.setTitle("Загрузка стенограммы");
-            newStage.show();
+        loadButton.setDisable(true);
+        downloadButton.setDisable(true);
+        loadFromFileButton.setDisable(true);
 
-            Stage currentStage = (Stage) loadButton.getScene().getWindow();
-            currentStage.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        Stage stage = (Stage) loadButton.getScene().getWindow();
+        LoadStenogrammApp.setStage(stage);
     }
 
     @FXML
@@ -136,29 +131,54 @@ public class DownloadingController {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             selectedFile = file;
-            DownloadButton.setDisable(false);
+            downloadButton.setDisable(false);
             sucsessPane.setVisible(true);
         }
         else {
             errorPane.setVisible(true);
+            downloadButton.setDisable(true);
         }
     }
 
     @FXML
     protected void onDownloadButtonClick() {
-        // то, что вам нужно сделать после загрузки файла
-        try {
-            DownloadButton.setDisable(true);
-            Thread.sleep(5000);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-            Scene secondScene = new Scene(loader.load(), 600, 450);
-            Stage stage = (Stage) DownloadButton.getScene().getWindow(); // Получаем текущую сцену
-            stage.setScene(secondScene);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        }
+        //loadF.setDisable(true);
+        downloadButton.setDisable(true);
+        loadFromFileButton.setDisable(true);
+
+        Task<Void> recognitionTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                VoskRecognizer recognizer = new VoskRecognizer();
+                AudioExtractorStreamer streamer = new AudioExtractorStreamer();
+                streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
+
+                //Speaker должке копироваться а не каждый раз браться
+                Transcript transcript = new Transcript("untitled", new Date());
+                for (RawReplica replica : recognizer.getFinalResult()) {
+                    Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(1);
+                    transcript.addReplica(new Replica(replica.text, speaker));
+                }
+
+                Platform.runLater(() -> {
+                    try {
+                        Stage stage = (Stage) sucsessPane.getScene().getWindow();
+                        EditWindow.setStage(stage, transcript);
+                        recognizer.freeResources();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                return null;
+            }
+        };
+
+        recognitionTask.setOnFailed(event -> {
+            Throwable e = recognitionTask.getException();
+            e.printStackTrace();
+        });
+
+        new Thread(recognitionTask).start();
     }
 
     private void initImages() {
@@ -174,8 +194,8 @@ public class DownloadingController {
         dropPane.setOnDragOver(event -> {
             if (event.getGestureSource() != dropPane &&
                     event.getDragboard().hasFiles()) {
-                boolean hasVideo = event.getDragboard().getFiles().stream()
-                        .anyMatch(this::isAllowedFile);
+                boolean hasVideo = event.getDragboard().getFiles().stream().map(File::getAbsolutePath)
+                        .anyMatch(VideoValidator::isSupportVideoFile);
                 if (hasVideo) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
@@ -188,10 +208,11 @@ public class DownloadingController {
             boolean success = false;
             if (db.hasFiles()) {
                 for (File file : db.getFiles()) {
-                    if (isAllowedFile(file)) {
+                    if (VideoValidator.isSupportVideoFile(file.getAbsolutePath())) {
                         selectedFile = file;
-                        DownloadButton.setDisable(false);
+                        downloadButton.setDisable(false);
                         sucsessPane.setVisible(true);
+                        errorPane.setVisible(false);
                         success = true;
                         break;
                     }
@@ -205,13 +226,9 @@ public class DownloadingController {
     private FileChooser createFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите файл");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Видео файлы", "*.mp4"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.mkv"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.avi"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.mov"),
-                new FileChooser.ExtensionFilter("Видео файлы", "*.webm")
-        );
+        for (String format : VideoValidator.getSupportedFormats()) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(format, "*" + format));
+        }
         return fileChooser;
     }
 }
