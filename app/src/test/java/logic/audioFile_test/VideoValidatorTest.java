@@ -1,15 +1,13 @@
 package logic.audioFile_test;
 
-import logic.audio_extractor.VideoValidator;
+import logic.video_processing.audio_extractor.VideoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import static logic.audio_extractor.VideoValidator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VideoValidatorTest {

@@ -1,4 +1,4 @@
-package logic.audio_extractor;
+package logic.video_processing.audio_extractor;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

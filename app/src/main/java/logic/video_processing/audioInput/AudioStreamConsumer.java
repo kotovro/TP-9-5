@@ -1,4 +1,4 @@
-package logic.audioInput;
+package logic.video_processing.audioInput;
 
 import javax.sound.sampled.AudioInputStream;
 
