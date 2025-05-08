@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -9,9 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import javafx.util.Duration;
 import logic.audio_extractor.AudioExtractorStreamer;
 import logic.audio_extractor.VideoValidator;
 import logic.general.Replica;
@@ -55,8 +58,49 @@ public class DownloadingController {
     @FXML
     private ImageView imgUserSpeak2;
 
+    private final int MENU_WIDTH = 200;
+    private boolean isMenuOpen = false;
+
+    @FXML
+    private VBox sideMenu;
+
+    @FXML
+    private Button menuButton;
+
+
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
+        animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);
+        animation.setToX(isMenuOpen ? 0 : -MENU_WIDTH);
+        animation.play();
+    }
+
+    // Обработчики для пунктов меню
+    @FXML
+    private void handleMainClick() {
+        // переход на главную
+    }
+
+    @FXML
+    private void handleSavingsClick() {
+        // переход на сохраненные файлы
+    }
+
+    @FXML
+    private void handleEditClick() {
+        // переход на обработать видео
+    }
+
+    @FXML
+    private void handleExitClick() {
+        System.exit(0);
+    }
+
     @FXML
     public void initialize() {
+        menuButton.setOnAction(event -> toggleMenu());
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
 
@@ -98,7 +142,7 @@ public class DownloadingController {
 
     @FXML
     protected void onDownloadButtonClick() {
-        loadButton.setDisable(true);
+        //loadF.setDisable(true);
         downloadButton.setDisable(true);
         loadFromFileButton.setDisable(true);
 
@@ -144,8 +188,6 @@ public class DownloadingController {
         imgCheckCircle.setImage(image2);
         Image image3 = new Image(getClass().getResource("/images/DangerCircle.png").toExternalForm());
         imgDangerCircle.setImage(image3);
-        Image image4 = new Image(getClass().getResource("/images/default_users/undefined.png").toExternalForm());
-        imgUserSpeak2.setImage(image4);
     }
 
     private void initDropPaneEvents() {

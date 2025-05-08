@@ -1,5 +1,7 @@
 package ui;
 
+import javafx.animation.TranslateTransition;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.util.Pair;
 import logic.general.Speaker;
 import logic.general.Replica;
 import javafx.scene.layout.AnchorPane;
@@ -50,10 +54,52 @@ public class EditController {
     private Button saveButton;
 
     @FXML
+    private Button saveButton1;
+
+    @FXML
     private Button loadButton;
+    private final int MENU_WIDTH = 200;
+    private boolean isMenuOpen = false;
+
+    @FXML
+    private VBox sideMenu;
+
+    @FXML
+    private Button menuButton;
+
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
+        animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);
+        animation.setToX(isMenuOpen ? 0 : -MENU_WIDTH);
+        animation.play();
+    }
+
+    // Обработчики для пунктов меню
+    @FXML
+    private void handleMainClick() {
+        // переход на главную
+    }
+
+    @FXML
+    private void handleSavingsClick() {
+        // переход на сохраненные файлы
+    }
+
+    @FXML
+    private void handleEditClick() {
+        // переход на обработать видео
+    }
+
+    @FXML
+    private void handleExitClick() {
+        System.exit(0);
+    }
 
     @FXML
     public void initialize() {
+        menuButton.setOnAction(event -> toggleMenu());
         speakers = DBManager.getSpeakerDao().getAllSpeakers();
 
         for (Replica replica : transcript.getReplicas()) {
@@ -139,6 +185,11 @@ public class EditController {
 
     private void initButtons() {
         saveButton.setOnAction(event -> {
+            // то, что вам нужно (просто сохранить)
+        });
+
+        saveButton1.setOnAction(event -> {
+            // то, что вам нужно (сохранить как)
             DBManager.getTranscriptDao().addTranscript(formTranscript());
 
             Stage stage = (Stage) saveButton.getScene().getWindow();
@@ -152,6 +203,7 @@ public class EditController {
                 scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
 
                 Stage dialog = new Stage();
+                dialog.setResizable(false);
                 dialog.initOwner(loadButton.getScene().getWindow());
                 dialog.setTitle("Выбор источника загрузки");
                 dialog.setScene(scene);

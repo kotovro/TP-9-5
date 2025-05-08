@@ -12,7 +12,7 @@ public class LoadStenogrammApp {
         FXMLLoader fxmlLoader = new FXMLLoader(LoadStenogrammApp.class.getResource("/fx_screens/loadStenogramm.fxml"));
         Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load(), 610, 470);
+            scene = new Scene(fxmlLoader.load(), 1137, 778);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -23,6 +23,7 @@ public class LoadStenogrammApp {
 
     public static void setStage(Stage stage) {
         stage.setScene(getScene());
+        stage.setResizable(false);
         stage.setTitle("Загрузка стенограммы");
     }
 }
