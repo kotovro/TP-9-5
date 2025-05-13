@@ -9,12 +9,6 @@ CREATE TABLE tag (
                      name TEXT NOT NULL
 );
 
-CREATE TABLE meeting (
-                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                         name VARCHAR(100) UNIQUE,
-                         date TEXT NOT NULL
-);
-
 CREATE TABLE transcript (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             name VARCHAR(100) UNIQUE,
@@ -35,9 +29,7 @@ CREATE TABLE replica (
 
 CREATE TABLE protocol (
                           id INTEGER PRIMARY KEY AUTOINCREMENT,
-                          conclusion TEXT,
-                          meeting_id INTEGER UNIQUE,
-                          FOREIGN KEY (meeting_id) REFERENCES meeting(id) ON DELETE CASCADE
+                          conclusion TEXT
 );
 
 CREATE TABLE task (
