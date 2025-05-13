@@ -67,6 +67,16 @@ public class EditController {
     @FXML
     private Button menuButton;
 
+    @FXML
+    private Button main;
+
+    @FXML
+    private Button save;
+
+    @FXML
+    private Button change;
+
+
     private void toggleMenu() {
         isMenuOpen = !isMenuOpen;
 
@@ -79,17 +89,24 @@ public class EditController {
     // Обработчики для пунктов меню
     @FXML
     private void handleMainClick() {
-        // переход на главную
+        Stage stage = (Stage) main.getScene().getWindow();
+        MainWindow.setStage(stage);
     }
 
     @FXML
     private void handleSavingsClick() {
-        // переход на сохраненные файлы
+        Stage stage = (Stage) save.getScene().getWindow();
+        LoadStenogrammApp.setStage(stage);
     }
 
     @FXML
     private void handleEditClick() {
-        // переход на обработать видео
+        // здесь не вижу смысла добавлять диалоговое,
+        // тк если у пользователя открылось это окно, то значит, что ему в любом случае
+        // есть что редактировать
+        Stage stage = (Stage) change.getScene().getWindow();
+        Transcript transcript = new Transcript("untitled", new Date());
+        EditWindow.setStage(stage, transcript);
     }
 
     @FXML

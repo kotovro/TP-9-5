@@ -2,6 +2,8 @@ package ui;
 
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -10,6 +12,8 @@ import javafx.util.Duration;
 import logic.general.Transcript;
 import logic.persistence.DBManager;
 import ui.custom_elements.CardView;
+
+import java.util.Date;
 
 public class LoadStenogrammController {
 
@@ -30,8 +34,19 @@ public class LoadStenogrammController {
     @FXML
     private VBox sideMenu;
 
+
     @FXML
     private Button menuButton;
+
+    @FXML
+    private Button main;
+
+    @FXML
+    private Button save;
+
+    @FXML
+    private Button change;
+
 
     private void toggleMenu() {
         isMenuOpen = !isMenuOpen;
@@ -45,17 +60,45 @@ public class LoadStenogrammController {
     // Обработчики для пунктов меню
     @FXML
     private void handleMainClick() {
-        // переход на главную
+        Stage stage = (Stage) main.getScene().getWindow();
+        MainWindow.setStage(stage);
     }
 
     @FXML
     private void handleSavingsClick() {
-        // переход на сохраненные файлы
+        Stage stage = (Stage) save.getScene().getWindow();
+        LoadStenogrammApp.setStage(stage);
     }
 
     @FXML
     private void handleEditClick() {
-        // переход на обработать видео
+        // через if else тут скорее всего нужно
+        // if для редактирования ничего не выбрано:
+        try {
+            FXMLLoader loader = new FXMLLoader(EditController.class.getResource("/fx_screens/loadOptional.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
+
+            Stage dialog = new Stage();
+            dialog.setResizable(false);
+            dialog.initOwner(change.getScene().getWindow());
+            dialog.setTitle("Выбор источника загрузки");
+            dialog.setScene(scene);
+
+            LoadOptionDialogController controller = loader.getController();
+            Stage mainStage = (Stage) change.getScene().getWindow();
+            controller.setMainStage(mainStage);
+
+            controller.setLabelText("Сейчас не выбрано ничего для редактирования");
+
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // else:
+        //Stage stage = (Stage) change.getScene().getWindow();
+        //Transcript transcript = new Transcript("untitled", new Date());
+        //EditWindow.setStage(stage, transcript);
     }
 
     @FXML

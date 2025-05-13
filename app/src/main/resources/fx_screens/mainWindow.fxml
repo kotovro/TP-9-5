@@ -26,12 +26,12 @@
             </font></Label>
 
             <VBox fx:id="sideMenu" maxWidth="200" minWidth="0" prefWidth="200" style="-fx-background-color: #CDCEFF; -fx-padding: 20;" translateX="-200" StackPane.alignment="CENTER_LEFT">
-                <Button maxWidth="Infinity" onAction="#handleMainClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Главная">
+                <Button fx:id="main" maxWidth="Infinity" onAction="#handleMainClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Главная">
                <font>
                   <Font name="Tilda Sans Medium" size="12.0" />
                </font></Button>
-                <Button maxWidth="Infinity" onAction="#handleSavingsClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Сохраненные файлы" />
-                <Button maxWidth="Infinity" onAction="#handleEditClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Обработать видео" />
+                <Button fx:id="save" maxWidth="Infinity" onAction="#handleSavingsClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Сохраненные файлы" />
+                <Button fx:id="change" maxWidth="Infinity" onAction="#handleEditClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Обработать видео" />
                 <Button maxWidth="Infinity" onAction="#handleExitClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Выход" />
             </VBox>
         </StackPane>
