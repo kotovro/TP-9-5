@@ -3,14 +3,11 @@ name: Java CI with Gradle
 on:
   push:
     branches: 
-      - "main"
-      - "test" 
-      - "develop" 
+      - "**"  
   pull_request:
     branches:
-      - "main"
       - "develop" 
-    types: [opened, synchronize, reopened, ready_for_review]  
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:  
 
 jobs:
