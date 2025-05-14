@@ -37,7 +37,6 @@ public class DBManager {
 
     public static void initConnection() throws Exception {
         String url = "jdbc:sqlite::resource:" + DEFAULT_DB_PATH;
-        System.out.println(DEFAULT_DB_PATH);
         connection = DriverManager.getConnection(url);
         connection.setAutoCommit(true);
     }

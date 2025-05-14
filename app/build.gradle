@@ -151,3 +151,16 @@ tasks.named('jlink') {
 tasks.named('jpackage') {
     dependsOn initDB
 }
+
+tasks.register('copyDynamicResources', Copy) {
+    from 'dynamic-resources'
+    into "${buildDir}/dynamic-resources"
+}
+
+tasks.named('jlink') {
+    dependsOn 'copyDynamicResources'
+}
+
+tasks.named('jpackage') {
+    dependsOn 'copyDynamicResources'
+}
