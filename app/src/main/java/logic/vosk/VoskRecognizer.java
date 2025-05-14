@@ -11,6 +11,7 @@ import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
 
 import javax.sound.sampled.AudioInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class VoskRecognizer implements AudioStreamConsumer {
+    private static final String SPEECH_PATH = "resources/ai-models/speech-recognition-model";
+    private static final String SPEAKER_PATH = "resources/ai-models/speaker-recognition-model";
+
     private static final RawSpeaker UNDEFINED_SPEAKER = new RawSpeaker(-1, new double[]{});
     private static final double marginalDifference = 0.36;
     private static final double MINIMUM_FRAME_COUNT = 200;
@@ -34,9 +38,12 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public VoskRecognizer() {
         try {
-            model = new Model("dynamic-resources/ai-models/speech-recognition-model");
+            System.out.println("Working Dir: " + System.getProperty("user.dir") + SPEECH_PATH);
+            System.out.println("Working Dir: " + System.getProperty("user.dir") + SPEAKER_PATH);
+            model = new Model(SPEECH_PATH);
             recognizer = new Recognizer(model, 16000);
-            SpeakerModel model = new SpeakerModel("dynamic-resources/ai-models/speaker-recognition-model");
+
+            SpeakerModel model = new SpeakerModel(SPEAKER_PATH);
             recognizer.setSpeakerModel(model);
         } catch (IOException e) {
             throw new RuntimeException(e);

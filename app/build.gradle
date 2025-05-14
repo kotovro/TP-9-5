@@ -5,6 +5,12 @@ plugins {
     id 'org.beryx.jlink' version '3.0.0'
 }
 
+allprojects {
+    tasks.withType(JavaExec) {
+        jvmArgs = ['-Xmx12G']
+    }
+}
+
 version = '1.0.0'
 
 repositories {
@@ -75,7 +81,7 @@ application {
 
 jlink {
     imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    options = ['--strip-debug', '--compress', '1', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'Vstrecheslav'
         jvmArgs = [
@@ -85,18 +91,30 @@ jlink {
     }
 
     jpackage() {
-        jvmArgs = ['-Xmx12G']
-
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            imageOptions += [
+                    '--icon', 'src/main/resources/icon.ico',
+                    '--win-console'
+            ]
             installerOptions += [
                     '--win-dir-chooser',
                     '--win-menu',
                     '--win-shortcut',
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+            imageOptions += [
+                    '--icon', 'src/main/resources/icon.icns'
+            ]
             installerOptions += [
                     '--type', 'dmg',
                     '--mac-package-name', 'Vstrecheslav',
+//                    '--mac-package-identifier', 'com.vsu.vstrecheslav',
+//                    '--mac-sign',
+//                    '--mac-entitlements', 'src/main/resources/macos/entitlements.plist'
+            ]
+        } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+            imageOptions += ['--icon', 'src/main/resources/icon.ico']
+            installerOptions += [
                     '--linux-shortcut'
             ]
         }
@@ -106,8 +124,7 @@ jlink {
                 '-J-Xms512M',
                 '--vendor', 'Vsu Production',
                 '--app-content', "src/main/resources",
-                '--app-content', "dynamic-resources",
-                '--icon', 'src/main/resources/icon.ico'
+
         ]
         installerOptions += [
                 '--about-url', 'https://vk.com/vstrecheslav?from=groups',
@@ -117,26 +134,20 @@ jlink {
     }
 }
 
-tasks.register('copyDynamicResources', Copy) {
-    from 'dynamic-resources'
-    into "${buildDir}/dynamic-resources"
+tasks.register('initDB', JavaExec) {
+    group = 'build'
+    description = 'Initialize the database'
+
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'logic.persistence.DBInitializer'
+    args = []
+    dependsOn classes
 }
 
 tasks.named('jlink') {
-    dependsOn 'copyDynamicResources'
+    dependsOn initDB
 }
 
 tasks.named('jpackage') {
-    dependsOn 'copyDynamicResources'
+    dependsOn initDB
 }
-
-//else if (org.gradle.internal.os.OperatingSystem.current().linux) {
-//    imageOptions += ['--icon', 'src/main/resources/icon.png']
-//    installerOptions += [
-//            '--linux-shortcut',
-//            '--resource-dir', 'resources/models/ai-models'
-//    ]
-//} else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
-//    imageOptions += ['--icon', 'src/main/resources/icon.icns']
-//    installerOptions += ['--mac-package-name', 'Vstrecheslav']
-//}
