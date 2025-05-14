@@ -3,48 +3,45 @@ package logic.persistence.dao;
 import javafx.scene.image.Image;
 import logic.general.Protocol;
 import logic.general.Speaker;
+import logic.general.Transcript;
 import logic.persistence.exception.SpeakerNotFoundException;
-import logic.utils.ImageSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ProtocolDao {
     private final Connection connection;
 
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
     public ProtocolDao(Connection connection) {
         this.connection = connection;
     }
 
-//    public void addProtocol(Protocol protcol) {
-//        try {
-//            String sql = "INSERT INTO protocol (conclusion, meeting_id) VALUES (?, ?)";
-//            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-//                stmt.setString(1, protcol.getText());
-//                stmt.executeUpdate();
-//            }
-//
-//            try (Statement stmt = connection.createStatement();
-//                 ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
-//                if (rs.next()) {
-//                    speaker.setId(rs.getInt(1));
-//                }
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    public void deleteProtocol(int speakerId) throws SQLException {
+    public void addProtocol(Protocol protocol) {
+        try {
+            int transcriptId = new TranscriptDao(connection).getTranscriptIdByName(protocol.getTranscriptName());
+            String sql = "INSERT INTO protocol (conclusion, transcript_id) VALUES (?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, protocol.getText());
+                stmt.setInt(2, transcriptId);
+                stmt.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteProtocol() throws SQLException {
 //        String sql = "DELETE FROM speaker WHERE id = ?";
 //        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-//            stmt.setInt(1, speakerId);
+//            stmt.setInt(1, protocolId);
 //            stmt.executeUpdate();
 //        }
-//    }
-//
+    }
+
 //    public Speaker getProtocolById(int protocolId) throws SQLException {
 //        String sql = "SELECT id, name, image FROM speaker WHERE id = ?";
 //        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -65,29 +62,26 @@ public class ProtocolDao {
 //            }
 //        }
 //    }
-//
-//    public List<Speaker> getAllProtocols() {
-//        try {
-//
-//            String sql = "SELECT id, name, image FROM speaker";
-//            List<Speaker> speakers = new ArrayList<>();
-//
-//            try (Statement stmt = connection.createStatement();
-//                 ResultSet rs = stmt.executeQuery(sql)) {
-//
-//                while (rs.next()) {
-//                    byte[] imageBytes = rs.getBytes("image");
-//                    Image image = imageBytes != null ? new Image(new ByteArrayInputStream(imageBytes)) : null;
-//                    Speaker speaker = new Speaker(
-//                            rs.getString("name"),
-//                            image,
-//                            rs.getInt("id"));
-//                    speakers.add(speaker);
-//                }
-//            }
-//            return speakers;
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+
+    public List<Protocol> getAllProtocols() {
+        try {
+
+            String sql = "SELECT t.id AS transcript_id,  t.name, p.conclusion " +
+                    "FROM transcript t " +
+                    "JOIN protocol p ON t.id = p.transcript_id ";
+            List<Protocol> protocols = new ArrayList<>();
+
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+
+                while (rs.next()) {
+                    Protocol protocol = new Protocol(rs.getString("name"), rs.getString("conclusion"));
+                    protocols.add(protocol);
+                }
+            }
+            return protocols;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

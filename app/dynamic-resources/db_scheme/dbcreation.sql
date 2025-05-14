@@ -29,7 +29,9 @@ CREATE TABLE replica (
 
 CREATE TABLE protocol (
                           id INTEGER PRIMARY KEY AUTOINCREMENT,
-                          conclusion TEXT
+                          transcript_id INTEGER,
+                          conclusion TEXT,
+                          FOREIGN KEY (transcript_id) REFERENCES transcript(id)
 );
 
 CREATE TABLE task (

@@ -37,19 +37,43 @@ public class TranscriptDao {
         }
     }
 
-    public void deleteTranscript(Transcript transcript) {
-        try {
-            String getTranscriptIdSql = "SELECT id from transcript where name=?";
-            int transcriptId = -1;
-            try (PreparedStatement stmt = connection.prepareStatement(getTranscriptIdSql)) {
-                stmt.setString(1, transcript.getName());
-                try (ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
-                        transcriptId = rs.getInt("id");
-                    }
+    public int getTranscriptId(Transcript transcript) {
+        String getTranscriptIdSql = "SELECT id from transcript where name=?";
+        int transcriptId = -1;
+        try (PreparedStatement stmt = connection.prepareStatement(getTranscriptIdSql)) {
+            stmt.setString(1, transcript.getName());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    transcriptId = rs.getInt("id");
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        return transcriptId;
+    }
+
+    public int getTranscriptIdByName(String name) {
+        String getTranscriptIdSql = "SELECT id from transcript where name=?";
+        int transcriptId = -1;
+        try (PreparedStatement stmt = connection.prepareStatement(getTranscriptIdSql)) {
+            stmt.setString(1, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    transcriptId = rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return transcriptId;
+    }
+
+    public void deleteTranscript(Transcript transcript) {
+        try {
+            int transcriptId = getTranscriptId(transcript);
             if (transcriptId != -1) {
                 String sql = "DELETE FROM replica WHERE transcript_id = ?";
                 try (PreparedStatement stmt = connection.prepareStatement(sql))

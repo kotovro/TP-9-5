@@ -1,12 +1,19 @@
 package logic.persistence;
 
 import javafx.scene.image.Image;
+import logic.general.Protocol;
+import logic.general.Replica;
 import logic.general.Speaker;
+import logic.general.Transcript;
+import logic.persistence.dao.ProtocolDao;
 import logic.persistence.dao.SpeakerDao;
+import logic.persistence.dao.TranscriptDao;
 import ui.EditController;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 
 public class InitDatabase {
     public static void main(String[] args) throws SQLException {
@@ -18,30 +25,42 @@ public class InitDatabase {
                     new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1);
             SpeakerDao speakerDao = new SpeakerDao(connection);
             speakerDao.addSpeaker(speaker);
-            connection.commit();
 
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
 
 
-        //        Transcript transcript = new Transcript("Test", new Date());
+        Transcript transcript = new Transcript("Test", new Date());
 
-//        transcript.addReplica(new Replica("Test replica", new Speaker("TestSpeaker",
-//                new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1)));
-//        TranscriptDao transcriptDao = new TranscriptDao(connection);
-//        try {
-//            TranscriptDao transcriptDao = new TranscriptDao(connection);
-//            List<Transcript> transcriptList = transcriptDao.getTranscripts();
-//            for (Transcript transcript : transcriptList) {
-//                System.out.println(transcript.getDate());
-//            }
-//            connection.commit();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        transcript.addReplica(new Replica("Test replica", new Speaker("TestSpeaker",
+                new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1)));
+
+        TranscriptDao transcriptDao = new TranscriptDao(connection);
+        transcriptDao.addTranscript(transcript);
+        try {
+            List<Transcript> transcriptList = transcriptDao.getTranscripts();
+            for (Transcript t : transcriptList) {
+                System.out.println(t.getDate());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Protocol protocol = new Protocol(transcript.getName(), "Silly text");
+        ProtocolDao protocolDao = new ProtocolDao(connection);
+        protocolDao.addProtocol(protocol);
+        try {
+            List<Protocol> protocolList = protocolDao.getAllProtocols();
+            for (Protocol p : protocolList) {
+                System.out.println(p.getText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        Replica replica = new Replica();
 //        Participant p = new Participant();
@@ -57,23 +76,7 @@ public class InitDatabase {
 //            connection = DBManager.getConnection();
 //            connection.setAutoCommit(false);
 //
-//            ParticipantDao participantDao = new ParticipantDao(connection);
 //
-//            Participant newParticipant = new Participant();
-//            newParticipant.setName("Test User");
-//            participantDao.addParticipant(newParticipant);
-//            System.out.println("Added participant with ID: " + newParticipant.getId());
-//
-//            Participant fetched = participantDao.getParticipantById(newParticipant.getId());
-//            System.out.println("Fetched participant: " + fetched.getName());
-//
-//            System.out.println("All participants:");
-//            for (Participant p : participantDao.getAllParticipants()) {
-//                System.out.println(p.getId() + ": " + p.getName());
-//            }
-//
-//            participantDao.deleteParticipant(newParticipant.getId());
-//            System.out.println("Deleted participant with ID: " + newParticipant.getId());
 //
 //            connection.commit();
 //        } catch (Exception e) {

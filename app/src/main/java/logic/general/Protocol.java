@@ -1,20 +1,23 @@
 package logic.general;
 
 public class Protocol {
-    private int meetingId;
     private String text;
+    private String transcriptName;
 
     public Protocol() {
     }
 
-    public Protocol(int meetingId, String text) {
-        this.meetingId = meetingId;
+    public Protocol(String transcriptName, String text) {
+        this.transcriptName = transcriptName;
         this.text = text;
     }
 
+    public Protocol(String text) {
+        this.text = text;
+    }
 
-    public int getMeetingId() {
-        return meetingId;
+    public String getTranscriptName() {
+        return transcriptName;
     }
 
     public String getText() {
