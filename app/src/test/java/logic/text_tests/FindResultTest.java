@@ -1,6 +1,5 @@
 package logic.text_tests;
 
-import javafx.util.Pair;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
