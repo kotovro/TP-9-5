@@ -21,7 +21,7 @@
 ### Сервисы
 
 - [YouGile](https://ru.yougile.com/board/icqgfj2i9nk9) - таск-трекер
-- [Figma](https://www.figma.com/file/tgjyOfaAtJQgewFkinZqpI?node-id=0:1&locale=en&type=design) - дизайн-макеты проекта
+- [Figma](https://www.figma.com/design/tgjyOfaAtJQgewFkinZqpI/tp?node-id=187-2) - дизайн-макеты проекта
 - [Группа ВКонтакте с новостями о проекте](https://vk.com/vstrecheslav)
 ### Документация
 
