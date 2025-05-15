@@ -14,6 +14,7 @@ module vstrecheslav {
     requires org.bytedeco.javacv;
     requires org.bytedeco.ffmpeg.windows.x86;
     requires org.bytedeco.ffmpeg.windows.x86_64;
+    requires llama;
 
     opens ui to javafx.fxml;
     opens logic.persistence to java.sql, org.xerial.sqlitejdbc;
