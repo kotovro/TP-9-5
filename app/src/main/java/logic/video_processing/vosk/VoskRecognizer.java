@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import logic.video_processing.audioInput.AudioStreamConsumer;
 import logic.video_processing.vosk.analiseDTO.RawReplica;
 import logic.video_processing.vosk.analiseDTO.RawSpeaker;
+import logic.Platform;
+import logic.PlatformDependent;
 import org.vosk.Model;
 import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
@@ -19,6 +21,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class VoskRecognizer implements AudioStreamConsumer {
+    private static final String SPEECH_PATH = "dynamic-resources/ai-models/speech-recognition-model";
+    private static final String SPEAKER_PATH = "dynamic-resources/ai-models/speaker-recognition-model";
+
     private static final RawSpeaker UNDEFINED_SPEAKER = new RawSpeaker(-1, new double[]{});
     private static final double marginalDifference = 0.36;
     private static final double MINIMUM_FRAME_COUNT = 200;
@@ -37,10 +42,10 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public void init() {
         try {
-            model = new Model("dynamic-resources/ai-models/speech-recognition-model");
+            model = new Model(PlatformDependent.getPrefix() + SPEECH_PATH);
             recognizer = new Recognizer(model, 16000);
-            SpeakerModel model = new SpeakerModel("dynamic-resources/ai-models/speaker-recognition-model");
-            recognizer.setSpeakerModel(model);
+            SpeakerModel speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
+            recognizer.setSpeakerModel(speakerModel);
             speakers = new ArrayList<>();
             replicas = new ArrayList<>();
         } catch (IOException e) {
@@ -147,8 +152,11 @@ public class VoskRecognizer implements AudioStreamConsumer {
         double spkFrames = rootNode.get("spk_frames").asDouble();
 
         String text = rootNode.get("text").asText();
-        byte[] bytes = text.getBytes(Charset.forName("Windows-1251"));
-        text = new String(bytes, StandardCharsets.UTF_8);
+        if (PlatformDependent.CURRENT_PLATFORM == Platform.WINDOWS) {
+            byte[] bytes = text.getBytes(Charset.forName("Windows-1251"));
+            text = new String(bytes, StandardCharsets.UTF_8);
+        }
+
         text = text.substring(0, 1).toUpperCase() + text.substring(1);
 
         recognize(spk, spkFrames);
