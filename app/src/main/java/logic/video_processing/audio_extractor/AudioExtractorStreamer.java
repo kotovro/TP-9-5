@@ -1,6 +1,6 @@
-package logic.audio_extractor;
+package logic.video_processing.audio_extractor;
 
-import logic.audioInput.AudioStreamConsumer;
+import logic.video_processing.audioInput.AudioStreamConsumer;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 
@@ -12,6 +12,9 @@ import java.nio.ShortBuffer;
 public class AudioExtractorStreamer {
 
     private final AudioFormat format;
+    private long totalFrames = -1;
+    private long processedFrames = 0;
+    private ProcessListener processListener = new DeafProcessListener();
 
     public AudioExtractorStreamer() {
         this.format = new AudioFormat(16000, 16, 1, true, false);
@@ -29,6 +32,10 @@ public class AudioExtractorStreamer {
             grabber.setAudioChannels(1);
             grabber.start();
 
+            totalFrames = grabber.getLengthInFrames();
+            processedFrames = 0;
+            processListener.notifyStart();
+
             Frame frame;
             ByteArrayOutputStream fullOut = new ByteArrayOutputStream();
 
@@ -44,6 +51,7 @@ public class AudioExtractorStreamer {
                         buffer[i * 2 + 1] = (byte) ((val >> 8) & 0xFF);
                     }
                     fullOut.write(buffer);
+                    processedFrames++;
                 }
             }
 
@@ -58,7 +66,22 @@ public class AudioExtractorStreamer {
         } catch (Exception e) {
             System.err.println("Ошибка при извлечении аудио: " + e.getMessage());
             throw new RuntimeException("Не удалось извлечь аудио", e);
+        } finally {
+            totalFrames = -1;
+            processedFrames = 0;
+            processListener.notifyStop();
         }
+    }
+
+    public void subscribe(ProcessListener processListener) {
+        this.processListener = processListener;
+    }
+
+    public int getProcessPercent() {
+        if (totalFrames <= 0) {
+            return -1;
+        }
+        return (int) ((processedFrames * 100) / totalFrames);
     }
 
 }

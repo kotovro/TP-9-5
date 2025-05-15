@@ -1,4 +1,4 @@
-package logic.vosk.analiseDTO;
+package logic.video_processing.vosk.analiseDTO;
 
 public class RawReplica {
     public String text;

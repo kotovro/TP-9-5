@@ -1,4 +1,4 @@
-package logic.vosk.analiseDTO;
+package logic.video_processing.vosk.analiseDTO;
 
 import java.util.ArrayList;
 import java.util.List;

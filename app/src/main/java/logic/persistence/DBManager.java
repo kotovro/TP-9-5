@@ -3,7 +3,7 @@ package logic.persistence;
 import logic.persistence.dao.ProtocolDao;
 import logic.persistence.dao.SpeakerDao;
 import logic.persistence.dao.TranscriptDao;
-import logic.vosk.VoskRecognizer;
+import logic.video_processing.vosk.VoskRecognizer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

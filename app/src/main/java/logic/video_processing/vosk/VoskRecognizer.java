@@ -1,13 +1,13 @@
-package logic.vosk;
+package logic.video_processing.vosk;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import logic.video_processing.audioInput.AudioStreamConsumer;
+import logic.video_processing.vosk.analiseDTO.RawReplica;
+import logic.video_processing.vosk.analiseDTO.RawSpeaker;
 import logic.Platform;
 import logic.PlatformDependent;
-import logic.audioInput.AudioStreamConsumer;
-import logic.vosk.analiseDTO.RawReplica;
-import logic.vosk.analiseDTO.RawSpeaker;
 import org.vosk.Model;
 import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
@@ -30,22 +30,32 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private static final int CHUNK_SIZE = 4096;
     private static final int MINIMUM_FREQUENCY = 3;
 
-    private final Model model;
-    private final Recognizer recognizer;
-    private final List<RawSpeaker> speakers = new ArrayList<>();
-    private final List<RawReplica> replicas = new ArrayList<>();
-    private RawSpeaker currentSpeaker;
+    private Model model;
+    private Recognizer recognizer;
+    private List<RawSpeaker> speakers;
+    private List<RawReplica> replicas;
+    private RawSpeaker currentSpeaker = UNDEFINED_SPEAKER;
 
+    public boolean isInit() {
+        return recognizer != null;
+    }
 
-    public VoskRecognizer() {
+    public void init() {
         try {
-            SpeakerModel model1 = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
             model = new Model(PlatformDependent.getPrefix() + SPEECH_PATH);
             recognizer = new Recognizer(model, 16000);
-            recognizer.setSpeakerModel(model1);
+            SpeakerModel speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
+            recognizer.setSpeakerModel(speakerModel);
+            speakers = new ArrayList<>();
+            replicas = new ArrayList<>();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void freeResources() {
+        recognizer.close();
+        model.close();
     }
 
     @Override
@@ -76,11 +86,6 @@ public class VoskRecognizer implements AudioStreamConsumer {
         }
         correctSpeakers();
         return replicas;
-    }
-
-    public void freeResources() {
-        recognizer.close();
-        model.close();
     }
 
     //Не оптимально
