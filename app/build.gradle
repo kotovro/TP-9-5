@@ -93,8 +93,7 @@ jlink {
     jpackage() {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico',
-                    '--win-console'
+                    '--icon', 'src/main/resources/icon.ico'
             ]
             installerOptions += [
                     '--win-dir-chooser',
@@ -107,10 +106,7 @@ jlink {
             ]
             installerOptions += [
                     '--type', 'dmg',
-                    '--mac-package-name', 'Vstrecheslav',
-//                    '--mac-package-identifier', 'com.vsu.vstrecheslav',
-//                    '--mac-sign',
-//                    '--mac-entitlements', 'src/main/resources/macos/entitlements.plist'
+                    '--mac-package-name', 'Vstrecheslav'
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
             imageOptions += ['--icon', 'src/main/resources/icon.ico']
@@ -124,6 +120,7 @@ jlink {
                 '-J-Xms512M',
                 '--vendor', 'Vsu Production',
                 '--app-content', "src/main/resources",
+                '--app-content', "dynamic-resources"
 
         ]
         installerOptions += [

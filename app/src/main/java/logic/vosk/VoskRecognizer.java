@@ -3,6 +3,7 @@ package logic.vosk;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import logic.PlatformRelativePath;
 import logic.audioInput.AudioStreamConsumer;
 import logic.vosk.analiseDTO.RawReplica;
 import logic.vosk.analiseDTO.RawSpeaker;
@@ -20,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class VoskRecognizer implements AudioStreamConsumer {
-    private static final String SPEECH_PATH = "/dynamic-resources/ai-models/speech-recognition-model";
-    private static final String SPEAKER_PATH = "/dynamic-resources/ai-models/speaker-recognition-model";
+    private static final String SPEECH_PATH = "dynamic-resources/ai-models/speech-recognition-model";
+    private static final String SPEAKER_PATH = "dynamic-resources/ai-models/speaker-recognition-model";
 
     private static final RawSpeaker UNDEFINED_SPEAKER = new RawSpeaker(-1, new double[]{});
     private static final double marginalDifference = 0.36;
@@ -38,9 +39,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public VoskRecognizer() {
         try {
-            System.out.println(System.getProperty("user.dir"));
-            SpeakerModel model1 = new SpeakerModel(System.getProperty("user.dir") + SPEAKER_PATH);
-            model = new Model(System.getProperty("user.dir") + SPEECH_PATH);
+            SpeakerModel model1 = new SpeakerModel(PlatformRelativePath.getPrefix() + SPEAKER_PATH);
+            model = new Model(PlatformRelativePath.getPrefix() + SPEECH_PATH);
             recognizer = new Recognizer(model, 16000);
             recognizer.setSpeakerModel(model1);
         } catch (IOException e) {
