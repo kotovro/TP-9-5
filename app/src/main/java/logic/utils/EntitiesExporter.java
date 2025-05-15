@@ -1,17 +1,14 @@
 package logic.utils;
 
 import logic.general.Replica;
-import logic.general.Speaker;
 import logic.general.Transcript;
-import logic.persistence.dao.TranscriptDao;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
-public class TranscriptExporter {
-    public static StringBuilder exportToTextFile(Transcript transcript, String filePath) {
+public class EntitiesExporter {
+    public static StringBuilder exportTranscriptToTextFile(Transcript transcript, String filePath) {
         StringBuilder sb = new StringBuilder();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             sb.append(transcript.getName()).append(" ");
@@ -28,5 +25,4 @@ public class TranscriptExporter {
         }
         return sb;
     }
-
 }

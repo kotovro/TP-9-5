@@ -1,21 +1,12 @@
 package logic.transcriptExporter_test;
 
-import logic.general.Replica;
-import logic.general.Speaker;
-import logic.general.Transcript;
-import logic.utils.TranscriptExporter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
 public class TranscriptExportTest {
     @Test
     @DisplayName("Успешное сохранение стенограммы")
@@ -43,7 +34,7 @@ public class TranscriptExportTest {
 //
 //        Path txtFile = tempDir.resolve("test.txt");
 //        Files.createFile(txtFile);
-//        StringBuilder sb = TranscriptExporter.exportToTextFile(testTranscript, txtFile.toString());
+//        StringBuilder sb = EntitiesExporter.exportToTextFile(testTranscript, txtFile.toString());
 //        try {
 //            String content = Files.readString(txtFile.toAbsolutePath());
 //            assertEquals(sb.toString(), content);
