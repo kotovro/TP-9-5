@@ -14,6 +14,9 @@ public class LaneController {
     private Label progressLabel;
 
     @FXML
+    private Label label; //Виталь, лабел для твоих состояний
+
+    @FXML
     private void initialize() {
         startLoadingTask();
     }
