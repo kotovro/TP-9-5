@@ -17,14 +17,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
-import logic.audio_extractor.AudioExtractorStreamer;
-import logic.audio_extractor.VideoValidator;
+import logic.video_processing.audio_extractor.AudioExtractorStreamer;
+import logic.video_processing.audio_extractor.VideoValidator;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
 import logic.persistence.DBManager;
-import logic.vosk.VoskRecognizer;
-import logic.vosk.analiseDTO.RawReplica;
+import logic.video_processing.vosk.VoskRecognizer;
+import logic.video_processing.vosk.analiseDTO.RawReplica;
 
 import java.io.File;
 import java.util.Date;
@@ -198,12 +198,12 @@ public class DownloadingController {
                     Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(1);
                     transcript.addReplica(new Replica(replica.text, speaker));
                 }
+                recognizer.freeResources();
 
                 Platform.runLater(() -> {
                     try {
                         Stage stage = (Stage) sucsessPane.getScene().getWindow();
                         EditWindow.setStage(stage, transcript);
-                        recognizer.freeResources();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
