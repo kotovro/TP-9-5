@@ -40,8 +40,12 @@ public class InitDatabase {
                 new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1));
         transcript.addReplica(replica, 0);
 
+
         TranscriptDao transcriptDao = new TranscriptDao(connection);
-        transcriptDao.addTranscript(transcript);
+        try {transcriptDao.addTranscript(transcript);}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             List<Transcript> transcriptList = transcriptDao.getTranscripts();
             for (Transcript t : transcriptList) {
@@ -53,18 +57,11 @@ public class InitDatabase {
 
         Protocol protocol = new Protocol(transcript.getId(), "Silly text");
         ProtocolDao protocolDao = new ProtocolDao(connection);
+
         protocolDao.addProtocol(protocol);
-        try {
-            List<Protocol> protocolList = protocolDao.getAllProtocols();
-            for (Protocol p : protocolList) {
-                System.out.println(p.getText());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         replica.setText("We changed it!");
         transcriptDao.updateTranscript(transcript);
-        //        Replica replica = new Replica();
+//                Replica replica = new Replica();
 //        Participant p = new Participant();
 //        p.setName("Check");
 //        p.setId(1L);

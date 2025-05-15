@@ -3,6 +3,7 @@ package logic.persistence.dao;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
+import logic.persistence.exception.UniqueTranscriptNameViolationException;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -44,7 +45,6 @@ public class TranscriptDao {
                 return;
             }
 
-            // Update transcript details
             String updateTranscriptSql = "UPDATE transcript SET name = ?, date = ? WHERE id = ?";
             try (PreparedStatement updateStmt = connection.prepareStatement(updateTranscriptSql)) {
                 updateStmt.setString(1, transcript.getName());
@@ -134,7 +134,13 @@ public class TranscriptDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            ///this error code is specific for SQLite so applicable to sqlite state
+            if (e.getErrorCode() == 19) {
+                throw new UniqueTranscriptNameViolationException(transcript.getName());
+            }
+            else {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -169,7 +175,6 @@ public class TranscriptDao {
         } catch (ParseException | SQLException e) {
             throw new RuntimeException(e);
         }
-
         return transcripts;
     }
 
