@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transcript {
+    private int id = -1;
     protected List<Replica> replicas = new ArrayList<>();
     private String name;
     private Date date;
@@ -20,6 +21,7 @@ public class Transcript {
     public Transcript(String name, Date date) {
         this.name = name;
         this.date = date;
+
     }
 
     public void addReplica(Replica replica, int index) {
@@ -59,6 +61,13 @@ public class Transcript {
         return date;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
     List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
