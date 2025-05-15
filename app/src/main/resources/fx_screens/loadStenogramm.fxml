@@ -53,13 +53,13 @@
                   </Button>
                </graphic>
             </Label>
-            <Button fx:id="deleteButton" layoutX="412.0" layoutY="430.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" style="-fx-background-radius: 16; -fx-background-color: #3338D5;" text="Удалить" textFill="WHITE">
-            <font>
-               <Font name="Tilda Sans Medium" size="14.0" />
-            </font>
-         </Button>
          </children>
       </Pane>
+      <Button fx:id="deleteButton" layoutX="323.0" layoutY="687.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="102.0" style="-fx-background-radius: 16; -fx-background-color: #3338D5;" text="Удалить" textFill="WHITE">
+      <font>
+         <Font name="Tilda Sans Medium" size="14.0" />
+      </font>
+   </Button>
       <ScrollPane layoutX="134.0" layoutY="119.0" prefHeight="538.0" prefWidth="867.0">
          <content>
             <FlowPane fx:id="cardPane" prefHeight="536.0" prefWidth="841.0">
@@ -75,6 +75,7 @@
             <font>
                <Font name="Tilda Sans Medium" size="12.0" />
             </font></Button>
+         <Button fx:id="download" maxWidth="Infinity" onAction="#handleDownloadClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Загрузить стенограмму" />
          <Button fx:id="save" maxWidth="Infinity" onAction="#handleSavingsClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Сохраненные файлы" />
          <Button fx:id="change" maxWidth="Infinity" onAction="#handleEditClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Обработать видео" />
          <Button maxWidth="Infinity" onAction="#handleExitClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Выход" />

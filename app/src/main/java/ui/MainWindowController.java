@@ -31,6 +31,9 @@ public class MainWindowController {
     @FXML
     private Button change;
 
+    @FXML
+    private Button download;
+
 
     private void toggleMenu() {
         isMenuOpen = !isMenuOpen;
@@ -46,6 +49,12 @@ public class MainWindowController {
     private void handleMainClick() {
         Stage stage = (Stage) main.getScene().getWindow();
         MainWindow.setStage(stage);
+    }
+
+    @FXML
+    private void handleDownloadClick() {
+        Stage stage = (Stage) download.getScene().getWindow();
+        DownloadingApp.setStage(stage);
     }
 
     @FXML

@@ -65,6 +65,15 @@ public class LoadStenogrammController {
     }
 
     @FXML
+    private Button download;
+
+    @FXML
+    private void handleDownloadClick() {
+        Stage stage = (Stage) download.getScene().getWindow();
+        DownloadingApp.setStage(stage);
+    }
+
+    @FXML
     private void handleSavingsClick() {
         Stage stage = (Stage) save.getScene().getWindow();
         LoadStenogrammApp.setStage(stage);

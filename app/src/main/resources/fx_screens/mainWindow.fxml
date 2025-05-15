@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -22,7 +26,7 @@
         <StackPane style="-fx-background-color: #ecf0f1;">
             <Label style="-fx-font-size: 24;" text="ВСТРЕЧЕСЛАВ">
             <font>
-               <Font name="/fonts/Tilda Sans Extra Bold" size="18.0" />
+               <Font name="Fyodor Bold " size="48.0" />
             </font></Label>
 
             <VBox fx:id="sideMenu" maxWidth="200" minWidth="0" prefWidth="200" style="-fx-background-color: #CDCEFF; -fx-padding: 20;" translateX="-200" StackPane.alignment="CENTER_LEFT">
@@ -30,10 +34,33 @@
                <font>
                   <Font name="Tilda Sans Medium" size="12.0" />
                </font></Button>
+            <Button fx:id="download" maxWidth="Infinity" onAction="#handleDownloadClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Загрузить стенограмму" />
                 <Button fx:id="save" maxWidth="Infinity" onAction="#handleSavingsClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Сохраненные файлы" />
                 <Button fx:id="change" maxWidth="Infinity" onAction="#handleEditClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Обработать видео" />
                 <Button maxWidth="Infinity" onAction="#handleExitClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Выход" />
             </VBox>
+         <AnchorPane maxHeight="554.0" maxWidth="338.0" prefHeight="554.0" prefWidth="338.0" style="-fx-background-radius: 30; -fx-background-color: #0A0C31;">
+            <children>
+               <ImageView fitHeight="244.0" fitWidth="276.0" layoutX="50.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../images/Group%201.png" />
+                  </image>
+               </ImageView>
+               <Label layoutX="60.0" layoutY="337.0" prefHeight="23.0" prefWidth="218.0" text="В следующем обновлении" textFill="WHITE">
+                  <font>
+                     <Font name="Tilda Sans Bold" size="18.0" />
+                  </font>
+               </Label>
+               <Label layoutX="38.0" layoutY="361.0" text=" здесь будет много нового, жди!" textFill="WHITE">
+                  <font>
+                     <Font name="Tilda Sans Bold" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+            <opaqueInsets>
+               <Insets left="40.0" right="40.0" />
+            </opaqueInsets>
+         </AnchorPane>
         </StackPane>
     </center>
 </BorderPane>
