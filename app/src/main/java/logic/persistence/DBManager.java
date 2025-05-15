@@ -2,6 +2,7 @@ package logic.persistence;
 
 import logic.persistence.dao.ProtocolDao;
 import logic.persistence.dao.SpeakerDao;
+import logic.persistence.dao.TaskDAO;
 import logic.persistence.dao.TranscriptDao;
 import logic.video_processing.vosk.VoskRecognizer;
 
@@ -35,6 +36,7 @@ public class DBManager {
     }
     private static final TranscriptDao TRANSCRIPT_DAO = new TranscriptDao(connection);
     private static final ProtocolDao PROTOCOL_DAO = new ProtocolDao(connection);
+    private static final TaskDAO TASK_DAO = new TaskDAO(connection);
     private static final SpeakerDao SPEAKER_DAO = new SpeakerDao(connection);
 
     public static void initConnection() throws Exception {
@@ -58,6 +60,8 @@ public class DBManager {
     public static SpeakerDao getSpeakerDao() {
         return SPEAKER_DAO;
     }
+
+    public static TaskDAO getTaskDao() { return TASK_DAO; }
 
     public static Path getResourceAsFile(String resourcePath) throws IOException {
         // Получаем поток ресурса
