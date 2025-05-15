@@ -22,11 +22,11 @@ public class TranscriptDao {
         this.connection = connection;
     }
 
-    private int getNextOrderNumber(int meetingId) throws SQLException {
+    private int getNextOrderNumber(int transcriptId) throws SQLException {
         String sql = "SELECT COALESCE(MAX(order_number), 0) + 1 AS next_order "
                 + "FROM replica WHERE transcript_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, meetingId);
+            stmt.setInt(1, transcriptId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt("next_order");
@@ -39,9 +39,18 @@ public class TranscriptDao {
 
     public void updateTranscript(Transcript transcript) {
         try {
-            int transcriptId = getTranscriptId(transcript);
+            int transcriptId = transcript.getId();
             if (transcriptId == -1) {
                 return;
+            }
+
+            // Update transcript details
+            String updateTranscriptSql = "UPDATE transcript SET name = ?, date = ? WHERE id = ?";
+            try (PreparedStatement updateStmt = connection.prepareStatement(updateTranscriptSql)) {
+                updateStmt.setString(1, transcript.getName());
+                updateStmt.setString(2, sdf.format(transcript.getDate()));
+                updateStmt.setInt(3, transcriptId);
+                updateStmt.executeUpdate();
             }
 
             deleteReplicas(transcriptId);
@@ -82,33 +91,11 @@ public class TranscriptDao {
         }
     }
 
-    public int getTranscriptId(Transcript transcript) {
-        String getTranscriptIdSql = "SELECT id from transcript where name=?";
-        int transcriptId = -1;
-        try (PreparedStatement stmt = connection.prepareStatement(getTranscriptIdSql)) {
-            stmt.setString(1, transcript.getName());
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    transcriptId = rs.getInt("id");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return transcriptId;
-    }
-
     public void deleteTranscript(Transcript transcript) {
         try {
-            int transcriptId = getTranscriptId(transcript);
-            if (transcriptId != -1) {
-                deleteReplicas(transcriptId);
-            }
-
             String deleteTranscript = "DELETE FROM transcript WHERE id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(deleteTranscript)) {
-                stmt.setInt(1, transcriptId);
+                stmt.setInt(1, transcript.getId());
                 stmt.executeUpdate();
             }
         } catch(SQLException e)
@@ -127,11 +114,10 @@ public class TranscriptDao {
                 stmt.executeUpdate();
             }
 
-            int transcriptId = -1;
             try (Statement stmt = connection.createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid();")) {
                 if (rs.next()) {
-                    transcriptId = rs.getInt(1);
+                    transcript.setId(rs.getInt(1));
                 }
             }
 
@@ -140,8 +126,8 @@ public class TranscriptDao {
             for (Replica replica : replicas) {
                 String sql = "INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES (?, ?, ?, ?)";
                 try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                    stmt.setInt(1, transcriptId);
-                    stmt.setInt(2, getNextOrderNumber(transcriptId));
+                    stmt.setInt(1, transcript.getId());
+                    stmt.setInt(2, getNextOrderNumber(transcript.getId()));
                     stmt.setInt(3, replica.getSpeaker().getId());
                     stmt.setString(4, replica.getText());
                     stmt.executeUpdate();
@@ -169,6 +155,7 @@ public class TranscriptDao {
                     String rawDate = rs.getString("date");
                     Date date = sdf.parse(rawDate);
                     transcript = new Transcript(rs.getString("name"), date);
+                    transcript.setId(transcriptId);
 
                     transcript.setReplicas(new ArrayList<>());
                     transcriptMap.put(transcriptId, transcript);

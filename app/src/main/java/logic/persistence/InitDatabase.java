@@ -51,7 +51,7 @@ public class InitDatabase {
             e.printStackTrace();
         }
 
-        Protocol protocol = new Protocol(transcriptDao.getTranscriptId(transcript), "Silly text");
+        Protocol protocol = new Protocol(transcript.getId(), "Silly text");
         ProtocolDao protocolDao = new ProtocolDao(connection);
         protocolDao.addProtocol(protocol);
         try {
