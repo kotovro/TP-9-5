@@ -93,8 +93,7 @@ jlink {
     jpackage() {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico',
-                    '--win-console'
+                    '--icon', 'src/main/resources/icon.ico'
             ]
             installerOptions += [
                     '--win-dir-chooser',
