@@ -8,6 +8,8 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static logic.video_processing.audio_extractor.VideoValidator.getSupportedFormats;
+import static logic.video_processing.audio_extractor.VideoValidator.isSupportVideoFile;
 import static org.junit.jupiter.api.Assertions.*;
 
 class VideoValidatorTest {
@@ -58,7 +60,7 @@ class VideoValidatorTest {
     void isSupportVideoFile_shouldReturnTrueForExistingSupportedFile(@TempDir Path tempDir) throws Exception {
         Path testFile = tempDir.resolve("test.mp4");
         Files.createFile(testFile);
-        assertTrue(VideoValidator.isSupportVideoFile(testFile.toString()),
+        assertTrue(isSupportVideoFile(testFile.toString()),
                 "Валидатор должен возвращать true для существующего файла с поддерживаемым форматом");
     }
 
