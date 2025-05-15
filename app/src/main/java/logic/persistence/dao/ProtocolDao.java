@@ -63,10 +63,7 @@ public class ProtocolDao {
 
     public List<Protocol> getAllProtocols() {
         try {
-
-            String sql = "SELECT t.id AS transcript_id,  t.name, p.conclusion " +
-                    "FROM transcript t " +
-                    "JOIN protocol p ON t.id = p.transcript_id ";
+            String sql = "SELECT * FROM protocol";
             List<Protocol> protocols = new ArrayList<>();
 
             try (Statement stmt = connection.createStatement();

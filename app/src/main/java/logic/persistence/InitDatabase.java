@@ -42,10 +42,10 @@ public class InitDatabase {
 
 
         TranscriptDao transcriptDao = new TranscriptDao(connection);
-        try {transcriptDao.addTranscript(transcript);}
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {transcriptDao.addTranscript(transcript);}
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
         try {
             List<Transcript> transcriptList = transcriptDao.getTranscripts();
             for (Transcript t : transcriptList) {
@@ -57,10 +57,12 @@ public class InitDatabase {
 
         Protocol protocol = new Protocol(transcript.getId(), "Silly text");
         ProtocolDao protocolDao = new ProtocolDao(connection);
-
         protocolDao.addProtocol(protocol);
-        replica.setText("We changed it!");
-        transcriptDao.updateTranscript(transcript);
+        protocolDao.getAllProtocols();
+//
+//        protocolDao.addProtocol(protocol);
+//        replica.setText("We changed it!");
+//        transcriptDao.updateTranscript(transcript);
 //                Replica replica = new Replica();
 //        Participant p = new Participant();
 //        p.setName("Check");
