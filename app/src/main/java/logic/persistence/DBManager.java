@@ -1,5 +1,6 @@
 package logic.persistence;
 
+import logic.persistence.dao.ProtocolDao;
 import logic.persistence.dao.SpeakerDao;
 import logic.persistence.dao.TranscriptDao;
 import logic.vosk.VoskRecognizer;
@@ -33,6 +34,7 @@ public class DBManager {
         }
     }
     private static final TranscriptDao TRANSCRIPT_DAO = new TranscriptDao(connection);
+    private static final ProtocolDao PROTOCOL_DAO = new ProtocolDao(connection);
     private static final SpeakerDao SPEAKER_DAO = new SpeakerDao(connection);
 
     public static void initConnection() throws Exception {
