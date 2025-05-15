@@ -6,6 +6,7 @@ out/
 
 
 dynamic-resources/ai-models/speech-recognition-model/*
+src/main/resources/ai-models/speech-recognition-model/*
 db_examples/*.db
 
 
