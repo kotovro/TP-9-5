@@ -36,8 +36,9 @@ public class InitDatabase {
 
         Transcript transcript = new Transcript("Test", new Date());
 
-        transcript.addReplica(new Replica("Test replica", new Speaker("TestSpeaker",
-                new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1)));
+        Replica replica = new Replica("Test replica", new Speaker("TestSpeaker",
+                new Image(EditController.class.getResourceAsStream("/images/logo.png")), 1));
+        transcript.addReplica(replica, 0);
 
         TranscriptDao transcriptDao = new TranscriptDao(connection);
         transcriptDao.addTranscript(transcript);
@@ -50,7 +51,7 @@ public class InitDatabase {
             e.printStackTrace();
         }
 
-        Protocol protocol = new Protocol(transcript.getName(), "Silly text");
+        Protocol protocol = new Protocol(transcriptDao.getTranscriptId(transcript), "Silly text");
         ProtocolDao protocolDao = new ProtocolDao(connection);
         protocolDao.addProtocol(protocol);
         try {
@@ -61,8 +62,9 @@ public class InitDatabase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        Replica replica = new Replica();
+        replica.setText("We changed it!");
+        transcriptDao.updateTranscript(transcript);
+        //        Replica replica = new Replica();
 //        Participant p = new Participant();
 //        p.setName("Check");
 //        p.setId(1L);

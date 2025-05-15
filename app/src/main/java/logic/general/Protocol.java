@@ -2,13 +2,13 @@ package logic.general;
 
 public class Protocol {
     private String text;
-    private String transcriptName;
+    private int transcriptId;
 
     public Protocol() {
     }
 
-    public Protocol(String transcriptName, String text) {
-        this.transcriptName = transcriptName;
+    public Protocol(int transcriptId, String text) {
+        this.transcriptId = transcriptId;
         this.text = text;
     }
 
@@ -16,8 +16,8 @@ public class Protocol {
         this.text = text;
     }
 
-    public String getTranscriptName() {
-        return transcriptName;
+    public int getTranscriptId() {
+        return transcriptId;
     }
 
     public String getText() {

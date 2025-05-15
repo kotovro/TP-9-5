@@ -37,6 +37,51 @@ public class TranscriptDao {
         }
     }
 
+    public void updateTranscript(Transcript transcript) {
+        try {
+            int transcriptId = getTranscriptId(transcript);
+            if (transcriptId == -1) {
+                return;
+            }
+
+            deleteReplicas(transcriptId);
+
+            List<Replica> replicas = (List<Replica>) transcript.getReplicas();
+            if (!replicas.isEmpty()) {
+                StringBuilder insertSql = new StringBuilder();
+                insertSql.append("INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES ");
+
+                for (int i = 0; i < replicas.size(); i++) {
+                    insertSql.append("(?, ?, ?, ?)");
+                    if (i < replicas.size() - 1) {
+                        insertSql.append(", ");
+                    }
+                }
+
+                try (PreparedStatement insertStmt = connection.prepareStatement(insertSql.toString())) {
+                    int paramIndex = 1;
+                    for (Replica replica : replicas) {
+                        insertStmt.setInt(paramIndex++, transcriptId);
+                        insertStmt.setInt(paramIndex++, getNextOrderNumber(transcriptId));
+                        insertStmt.setInt(paramIndex++, replica.getSpeaker().getId());
+                        insertStmt.setString(paramIndex++, replica.getText());
+                    }
+                    insertStmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteReplicas(int transcriptId) throws SQLException {
+        String deleteSql = "DELETE FROM replica WHERE transcript_id = ?";
+        try (PreparedStatement deleteStmt = connection.prepareStatement(deleteSql)) {
+            deleteStmt.setInt(1, transcriptId);
+            deleteStmt.executeUpdate();
+        }
+    }
+
     public int getTranscriptId(Transcript transcript) {
         String getTranscriptIdSql = "SELECT id from transcript where name=?";
         int transcriptId = -1;
@@ -54,33 +99,11 @@ public class TranscriptDao {
         return transcriptId;
     }
 
-    public int getTranscriptIdByName(String name) {
-        String getTranscriptIdSql = "SELECT id from transcript where name=?";
-        int transcriptId = -1;
-        try (PreparedStatement stmt = connection.prepareStatement(getTranscriptIdSql)) {
-            stmt.setString(1, name);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    transcriptId = rs.getInt("id");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return transcriptId;
-    }
-
     public void deleteTranscript(Transcript transcript) {
         try {
             int transcriptId = getTranscriptId(transcript);
             if (transcriptId != -1) {
-                String sql = "DELETE FROM replica WHERE transcript_id = ?";
-                try (PreparedStatement stmt = connection.prepareStatement(sql))
-                {
-                    stmt.setInt(1, transcriptId);
-                    stmt.executeUpdate();
-                }
+                deleteReplicas(transcriptId);
             }
 
             String deleteTranscript = "DELETE FROM transcript WHERE id = ?";

@@ -15,17 +15,17 @@ public class ProtocolDao {
     private final Connection connection;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
     public ProtocolDao(Connection connection) {
         this.connection = connection;
     }
 
     public void addProtocol(Protocol protocol) {
         try {
-            int transcriptId = new TranscriptDao(connection).getTranscriptIdByName(protocol.getTranscriptName());
             String sql = "INSERT INTO protocol (conclusion, transcript_id) VALUES (?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, protocol.getText());
-                stmt.setInt(2, transcriptId);
+                stmt.setInt(2, protocol.getTranscriptId());
                 stmt.executeUpdate();
             }
 
@@ -33,6 +33,21 @@ public class ProtocolDao {
             throw new RuntimeException(e);
         }
     }
+    
+    public void updateProtocol(Protocol protocol) {
+        try {
+            String sql = "UPDATE protocol SET conclusion = ?  WHERE protocol_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, protocol.getText());
+                stmt.setInt(2, protocol.getTranscriptId());
+                stmt.executeUpdate();
+            }
+        } catch (
+                Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void deleteProtocol() throws SQLException {
 //        String sql = "DELETE FROM speaker WHERE id = ?";
@@ -75,7 +90,7 @@ public class ProtocolDao {
                  ResultSet rs = stmt.executeQuery(sql)) {
 
                 while (rs.next()) {
-                    Protocol protocol = new Protocol(rs.getString("name"), rs.getString("conclusion"));
+                    Protocol protocol = new Protocol(rs.getInt("transcript_id"), rs.getString("conclusion"));
                     protocols.add(protocol);
                 }
             }
