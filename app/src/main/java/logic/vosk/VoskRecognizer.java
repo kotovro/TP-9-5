@@ -3,7 +3,8 @@ package logic.vosk;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import logic.PlatformRelativePath;
+import logic.Platform;
+import logic.PlatformDependent;
 import logic.audioInput.AudioStreamConsumer;
 import logic.vosk.analiseDTO.RawReplica;
 import logic.vosk.analiseDTO.RawSpeaker;
@@ -12,7 +13,6 @@ import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
 
 import javax.sound.sampled.AudioInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -39,8 +39,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public VoskRecognizer() {
         try {
-            SpeakerModel model1 = new SpeakerModel(PlatformRelativePath.getPrefix() + SPEAKER_PATH);
-            model = new Model(PlatformRelativePath.getPrefix() + SPEECH_PATH);
+            SpeakerModel model1 = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
+            model = new Model(PlatformDependent.getPrefix() + SPEECH_PATH);
             recognizer = new Recognizer(model, 16000);
             recognizer.setSpeakerModel(model1);
         } catch (IOException e) {
@@ -147,8 +147,11 @@ public class VoskRecognizer implements AudioStreamConsumer {
         double spkFrames = rootNode.get("spk_frames").asDouble();
 
         String text = rootNode.get("text").asText();
-        byte[] bytes = text.getBytes(Charset.forName("Windows-1251"));
-        text = new String(bytes, StandardCharsets.UTF_8);
+        if (PlatformDependent.CURRENT_PLATFORM == Platform.WINDOWS) {
+            byte[] bytes = text.getBytes(Charset.forName("Windows-1251"));
+            text = new String(bytes, StandardCharsets.UTF_8);
+        }
+
         text = text.substring(0, 1).toUpperCase() + text.substring(1);
 
         recognize(spk, spkFrames);
