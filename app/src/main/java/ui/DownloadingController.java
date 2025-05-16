@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
@@ -19,18 +17,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
-import logic.video_processing.audio_extractor.AudioExtractorStreamer;
 import logic.video_processing.audio_extractor.VideoValidator;
-import logic.general.Replica;
-import logic.general.Speaker;
-import logic.general.Transcript;
-import logic.persistence.DBManager;
-import logic.video_processing.vosk.VoskRecognizer;
-import logic.video_processing.vosk.analiseDTO.RawReplica;
+import logic.video_processing.queue.ProcessingQueue;
 import ui.custom_elements.ListenProgressBar;
+import ui.custom_elements.Notification;
 
 import java.io.File;
-import java.util.Date;
 
 public class DownloadingController {
     @FXML
@@ -65,7 +57,7 @@ public class DownloadingController {
 
     private final int MENU_WIDTH = 200;
     private boolean isMenuOpen = false;
-    private final VoskRecognizer recognizer = new VoskRecognizer();
+    private final ProcessingQueue processingQueue = new ProcessingQueue();
 
     @FXML
     private VBox sideMenu;
@@ -103,10 +95,7 @@ public class DownloadingController {
     private ListenProgressBar progressBar;
 
     @FXML
-    private Label progressLabel;
-
-    @FXML
-    private Label label; //Виталь, лабел для твоих состояний
+    private Notification progressLabel;
 
     @FXML
     private Button download;
@@ -167,6 +156,13 @@ public class DownloadingController {
 
         initImages();
         initDropPaneEvents();
+        processingQueue.setProcessListener(progressBar);
+        processingQueue.setStatusListener(progressLabel);
+        progressBar.setProcessor(processingQueue);
+
+        Platform.runLater(() -> {
+            processingQueue.setResultListener(new ToEditSwitch((Stage) sucsessPane.getScene().getWindow()));
+        });
     }
 
     @FXML
@@ -207,37 +203,14 @@ public class DownloadingController {
         loadFromFileButton.setDisable(true);
         progressBar.setProgress(-1);
 
-        Task<Void> recognitionTask = new Task<Void>() {
+        Task<Void> recognitionTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                if (!recognizer.isInit()) recognizer.init();
-                AudioExtractorStreamer streamer = progressBar.getAudioExtractor();
-                streamer.processAudio(selectedFile.getAbsolutePath(), recognizer);
-
-                //Speaker должке копироваться а не каждый раз браться
-                Transcript transcript = new Transcript("untitled", new Date());
-                for (RawReplica replica : recognizer.getFinalResult()) {
-                    Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(1);
-                    transcript.addReplica(new Replica(replica.text, speaker));
-                }
-                recognizer.freeResources();
-
-                Platform.runLater(() -> {
-                    try {
-                        Stage stage = (Stage) sucsessPane.getScene().getWindow();
-                        EditWindow.setStage(stage, transcript);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                processingQueue.add(selectedFile.getAbsolutePath());
+                processingQueue.processTask();
                 return null;
             }
         };
-
-        recognitionTask.setOnFailed(event -> {
-            Throwable e = recognitionTask.getException();
-            e.printStackTrace();
-        });
 
         new Thread(recognitionTask).start();
     }

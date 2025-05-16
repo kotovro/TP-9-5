@@ -1,6 +1,7 @@
 package logic.video_processing.audio_extractor;
 
 import logic.video_processing.audioInput.AudioStreamConsumer;
+import logic.video_processing.queue.Processor;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 
@@ -9,7 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.ShortBuffer;
 
-public class AudioExtractorStreamer {
+public class AudioExtractorStreamer implements Processor {
 
     private final AudioFormat format;
     private long totalFrames = -1;
@@ -27,7 +28,12 @@ public class AudioExtractorStreamer {
      * @return итоговый AudioInputStream после завершения
      */
     public void processAudio(String filePath, AudioStreamConsumer audioConsumer) {
+        processedFrames = 0;
+        totalFrames = 1;
+        processListener.notifyStart();
+
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
+
             grabber.setSampleRate(16000);
             grabber.setAudioChannels(1);
             grabber.start();
@@ -35,8 +41,6 @@ public class AudioExtractorStreamer {
             long duration = grabber.getLengthInTime() / 1000; // в миллисекундах
             // Рассчитываем общее количество сэмплов (при 16000 Гц)
             totalFrames = duration * 16000 / 1000;
-            processedFrames = 0;
-            processListener.notifyStart();
 
             Frame frame;
             final int CHUNK_SIZE_FRAMES = 1024;

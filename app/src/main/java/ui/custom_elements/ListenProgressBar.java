@@ -1,16 +1,17 @@
 package ui.custom_elements;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressBar;
 import logic.video_processing.audio_extractor.AudioExtractorStreamer;
 import logic.video_processing.audio_extractor.ProcessListener;
+import logic.video_processing.queue.Processor;
 
 public class ListenProgressBar extends ProgressBar implements ProcessListener {
-    private final AudioExtractorStreamer audioExtractor = new AudioExtractorStreamer();
+    private Processor processor;
     Task<Void> requests;
 
     public ListenProgressBar() {
-        audioExtractor.subscribe(this);
         setProgress(0);
     }
 
@@ -21,7 +22,9 @@ public class ListenProgressBar extends ProgressBar implements ProcessListener {
             protected Void call() throws Exception {
                 while (true) {
                     Thread.sleep(50);
-                    updateProgress(audioExtractor.getProcessPercent(), 100);
+                    Platform.runLater(() -> {
+                        updateProgress(processor.getProcessPercent(), 100);
+                    });
                     System.out.println("I work");
                 }
             }
@@ -37,7 +40,7 @@ public class ListenProgressBar extends ProgressBar implements ProcessListener {
         System.out.println("I stop");
     }
 
-    public AudioExtractorStreamer getAudioExtractor() {
-        return audioExtractor;
+    public void setProcessor(Processor processor) {
+        this.processor = processor;
     }
 }
