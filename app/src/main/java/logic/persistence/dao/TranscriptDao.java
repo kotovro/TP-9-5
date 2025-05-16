@@ -104,6 +104,39 @@ public class TranscriptDao {
         }
     }
 
+    public Transcript getTranscriptById(int transcriptId) {
+        Transcript transcript = null;
+
+        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
+                "FROM transcript t " +
+                "JOIN replica r ON t.id = r.transcript_id " +
+                "WHERE t.id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, transcriptId);
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                while (rs.next()) {
+                    if (transcript == null) {
+                        String rawDate = rs.getString("date");
+                        Date date = sdf.parse(rawDate);
+                        transcript = new Transcript(rs.getString("name"), date);
+                        transcript.setId(transcriptId);
+                        transcript.setReplicas(new ArrayList<>());
+                    }
+                    Replica replica = new Replica();
+                    replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
+                    replica.setText(rs.getString("content"));
+                    transcript.addReplica(replica);
+                }
+                return transcript;
+            }
+        } catch (ParseException | SQLException e) {
+            e.printStackTrace();
+        }
+        return transcript;
+    }
+
 
     public void addTranscript(Transcript transcript) {
         try {
