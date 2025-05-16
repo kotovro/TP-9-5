@@ -56,6 +56,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
     public void freeResources() {
         recognizer.close();
         model.close();
+        recognizer = null;
+        model = null;
     }
 
     @Override

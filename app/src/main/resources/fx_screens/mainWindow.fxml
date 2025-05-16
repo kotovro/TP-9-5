@@ -46,7 +46,7 @@
                      <Image url="@../images/Group%201.png" />
                   </image>
                </ImageView>
-               <Label layoutX="60.0" layoutY="337.0" prefHeight="23.0" prefWidth="218.0" text="В следующем обновлении" textFill="WHITE">
+               <Label layoutX="60.0" layoutY="337.0" prefHeight="23.0" prefWidth="238.0" text="В следующем обновлении" textFill="WHITE">
                   <font>
                      <Font name="Tilda Sans Bold" size="18.0" />
                   </font>

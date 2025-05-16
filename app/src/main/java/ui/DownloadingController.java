@@ -62,6 +62,7 @@ public class DownloadingController {
 
     private final int MENU_WIDTH = 200;
     private boolean isMenuOpen = false;
+    private final VoskRecognizer recognizer = new VoskRecognizer();
 
     @FXML
     private VBox sideMenu;
@@ -197,7 +198,7 @@ public class DownloadingController {
         Task<Void> recognitionTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                VoskRecognizer recognizer = new VoskRecognizer();
+                if (!recognizer.isInit()) recognizer.init();
                 AudioExtractorStreamer streamer = new AudioExtractorStreamer();
                 streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
 
