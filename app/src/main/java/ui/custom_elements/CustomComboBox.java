@@ -9,7 +9,7 @@ import logic.general.Speaker;
 import java.util.List;
 
 public class CustomComboBox extends ComboBox<Speaker> {
-    public CustomComboBox(List<Speaker> speakers) {
+    public CustomComboBox(List<Speaker> speakers, Speaker defaultSpeaker) {
         getItems().addAll(speakers);
         setPrefWidth(160);
         setPrefHeight(32);
@@ -50,7 +50,7 @@ public class CustomComboBox extends ComboBox<Speaker> {
             }
 
             @Override
-            protected void updateItem(Speaker speaker, boolean empty) {
+            public void updateItem(Speaker speaker, boolean empty) {
                 super.updateItem(speaker, empty);
                 if (empty || speaker == null) {
                     setGraphic(null);
@@ -65,6 +65,6 @@ public class CustomComboBox extends ComboBox<Speaker> {
         });
 
         VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
-        getSelectionModel().select(0);
+        getSelectionModel().select(speakers.indexOf(defaultSpeaker));
     }
 }

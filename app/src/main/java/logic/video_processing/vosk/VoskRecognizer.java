@@ -56,6 +56,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
     public void freeResources() {
         recognizer.close();
         model.close();
+        recognizer = null;
+        model = null;
     }
 
     @Override
@@ -68,6 +70,18 @@ public class VoskRecognizer implements AudioStreamConsumer {
                     var result = parseReplica(recognizer.getResult());
                     result.ifPresent(replicas::add);
                 }
+            }
+        } catch (Exception e) {
+            System.err.println("Can't read file");
+        }
+    }
+
+    @Override
+    public void onAudioChunkReceived(byte[] audioData, int bytesRead) {
+        try {
+            if (recognizer.acceptWaveForm(audioData, bytesRead)) {
+                var result = parseReplica(recognizer.getResult());
+                result.ifPresent(replicas::add);
             }
         } catch (Exception e) {
             System.err.println("Can't read file");
