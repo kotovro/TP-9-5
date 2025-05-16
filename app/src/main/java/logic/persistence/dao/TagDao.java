@@ -4,6 +4,8 @@ import logic.general.Tag;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class TagDao {
     private final Connection connection;
@@ -17,6 +19,13 @@ public class TagDao {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, tag.getName());
             stmt.executeUpdate();
+
+            try (Statement stmt2 = connection.createStatement();
+                 ResultSet rs = stmt2.executeQuery("SELECT last_insert_rowid();")) {
+                if (rs.next()) {
+                    tag.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

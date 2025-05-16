@@ -1,7 +1,7 @@
 package logic.general;
 
 public class Tag {
-    private int id;
+    private int id = -1;
     private String name;
 
     public Tag(String name) {
