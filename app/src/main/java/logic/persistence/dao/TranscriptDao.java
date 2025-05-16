@@ -24,19 +24,6 @@ public class TranscriptDao {
         this.connection = connection;
     }
 
-    private int getNextOrderNumber(int transcriptId) throws SQLException {
-        String sql = "SELECT COALESCE(MAX(order_number), 0) AS max_order FROM replica WHERE transcript_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, transcriptId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("max_order");
-                }
-                return 0;
-            }
-        }
-    }
-
     private void insertReplicas(int transcriptId, List<Replica> replicas) {
         try {
             if (replicas.isEmpty()) {
