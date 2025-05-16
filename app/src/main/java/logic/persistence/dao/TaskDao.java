@@ -6,10 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskDAO {
+public class TaskDao {
     private final Connection connection;
 
-    public TaskDAO(Connection connection) {
+    public TaskDao(Connection connection) {
         this.connection = connection;
     }
 
