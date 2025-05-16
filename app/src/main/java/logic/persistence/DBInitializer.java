@@ -18,7 +18,7 @@ import static ui.EditController.getImage;
 
 public class DBInitializer {
     private static final String DB_CREATION_SCRIPT_PATH = "develop_resources/dbcreation.sql";
-    private static final String DB_PATH = "src/main/resources/saves/saves.db";
+    private static final String DB_PATH = "dynamic-resources/saves/saves.db";
 
     public static void reinitDB() {
         deleteIfExist();
