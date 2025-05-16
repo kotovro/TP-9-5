@@ -14,6 +14,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
+<?import ui.custom_elements.ListenProgressBar?>
 <AnchorPane prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DownloadingController">
     <children>
         <Circle fill="#9da0fa" layoutX="85.0" radius="100.0" strokeType="INSIDE">
@@ -113,7 +114,7 @@
                          <Insets />
                      </opaqueInsets>
                  </Pane>
-              <ProgressBar fx:id="progressBar" layoutX="20.0" layoutY="111.0" prefHeight="23.0" prefWidth="334.0" style="-fx-accent: #0A0C31; -fx-padding: 2px;" />
+              <ListenProgressBar fx:id="progressBar" layoutX="20.0" layoutY="111.0" prefHeight="23.0" prefWidth="334.0" style="-fx-accent: #0A0C31; -fx-padding: 2px;" />
               <Label fx:id="progressLabel" layoutX="162.0" layoutY="69.0" prefHeight="30.0" prefWidth="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
          </children></AnchorPane>
     </children>

@@ -17,7 +17,7 @@ public class MicroRecogniseDemo {
         }
         VoskRecognizer recognizer = new VoskRecognizer();
         AudioExtractorStreamer streamer = new AudioExtractorStreamer();
-        streamer.processAudio(path, recognizer::processStream);
+//        streamer.processAudio(path, recognizer::processStream);
         //streamer.startStreaming(recognizer);
 //
 //        System.out.println("MicroRecogniseDemo started");

@@ -32,37 +32,42 @@ public class AudioExtractorStreamer {
             grabber.setAudioChannels(1);
             grabber.start();
 
-            totalFrames = grabber.getLengthInFrames();
+            long duration = grabber.getLengthInTime() / 1000; // в миллисекундах
+            // Рассчитываем общее количество сэмплов (при 16000 Гц)
+            totalFrames = duration * 16000 / 1000;
             processedFrames = 0;
             processListener.notifyStart();
 
             Frame frame;
-            ByteArrayOutputStream fullOut = new ByteArrayOutputStream();
+            final int CHUNK_SIZE_FRAMES = 1024;
+            byte[] chunkBuffer = new byte[CHUNK_SIZE_FRAMES * 2];
+            int bufferPos = 0;
 
             while ((frame = grabber.grabSamples()) != null) {
                 if (frame.samples != null && frame.samples.length > 0) {
                     ShortBuffer sb = (ShortBuffer) frame.samples[0];
                     sb.rewind();
                     int remaining = sb.remaining();
-                    byte[] buffer = new byte[remaining * 2];
+
                     for (int i = 0; i < remaining; i++) {
                         short val = sb.get();
-                        buffer[i * 2] = (byte) (val & 0xFF);
-                        buffer[i * 2 + 1] = (byte) ((val >> 8) & 0xFF);
+                        chunkBuffer[bufferPos++] = (byte) (val & 0xFF);
+                        chunkBuffer[bufferPos++] = (byte) ((val >> 8) & 0xFF);
+                        processedFrames++;
+
+                        if (bufferPos == chunkBuffer.length) {
+                            audioConsumer.onAudioChunkReceived(chunkBuffer, bufferPos);
+                            bufferPos = 0;
+                        }
                     }
-                    fullOut.write(buffer);
-                    processedFrames++;
                 }
             }
 
+            if (bufferPos > 0) {
+                audioConsumer.onAudioChunkReceived(chunkBuffer, bufferPos);
+            }
+
             grabber.stop();
-
-            byte[] fullData = fullOut.toByteArray();
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(fullData);
-            AudioInputStream fullAudioStream = new AudioInputStream(inputStream, format, fullData.length / format.getFrameSize());
-
-            audioConsumer.onAudioChunkReceived(fullAudioStream);
-
         } catch (Exception e) {
             System.err.println("Ошибка при извлечении аудио: " + e.getMessage());
             throw new RuntimeException("Не удалось извлечь аудио", e);

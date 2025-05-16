@@ -76,6 +76,18 @@ public class VoskRecognizer implements AudioStreamConsumer {
         }
     }
 
+    @Override
+    public void onAudioChunkReceived(byte[] audioData, int bytesRead) {
+        try {
+            if (recognizer.acceptWaveForm(audioData, bytesRead)) {
+                var result = parseReplica(recognizer.getResult());
+                result.ifPresent(replicas::add);
+            }
+        } catch (Exception e) {
+            System.err.println("Can't read file");
+        }
+    }
+
     public void processStream(AudioInputStream audioStream) {
         onAudioChunkReceived(audioStream);
     }

@@ -27,6 +27,7 @@ import logic.general.Transcript;
 import logic.persistence.DBManager;
 import logic.video_processing.vosk.VoskRecognizer;
 import logic.video_processing.vosk.analiseDTO.RawReplica;
+import ui.custom_elements.ListenProgressBar;
 
 import java.io.File;
 import java.util.Date;
@@ -99,33 +100,13 @@ public class DownloadingController {
     }
 
     @FXML
-    private ProgressBar progressBar;
+    private ListenProgressBar progressBar;
 
     @FXML
     private Label progressLabel;
 
     @FXML
     private Label label; //Виталь, лабел для твоих состояний
-
-    private void startLoadingTask() {
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                for (int i = 0; i <= 100; i++) {
-                    Thread.sleep(50); // Имитация загрузки
-                    updateProgress(i, 100); // Обновляем прогресс (0-1)
-                }
-                return null;
-            }
-        };
-
-        progressBar.progressProperty().bind(task.progressProperty());
-        progressLabel.textProperty().bind(
-                task.progressProperty().multiply(100).asString("%.0f%%")
-        );
-
-        new Thread(task).start();
-    }
 
     @FXML
     private Button download;
@@ -180,7 +161,6 @@ public class DownloadingController {
 
     @FXML
     public void initialize() {
-        startLoadingTask();
         menuButton.setOnAction(event -> toggleMenu());
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
@@ -223,17 +203,16 @@ public class DownloadingController {
 
     @FXML
     protected void onDownloadButtonClick() {
-        //loadF.setDisable(true);
-        startLoadingTask(); // начало загрузки
         downloadButton.setDisable(true);
         loadFromFileButton.setDisable(true);
+        progressBar.setProgress(-1);
 
         Task<Void> recognitionTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 if (!recognizer.isInit()) recognizer.init();
-                AudioExtractorStreamer streamer = new AudioExtractorStreamer();
-                streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
+                AudioExtractorStreamer streamer = progressBar.getAudioExtractor();
+                streamer.processAudio(selectedFile.getAbsolutePath(), recognizer);
 
                 //Speaker должке копироваться а не каждый раз браться
                 Transcript transcript = new Transcript("untitled", new Date());
