@@ -42,10 +42,10 @@ CREATE TABLE task (
                       FOREIGN KEY (protocol_id) REFERENCES protocol(id) ON DELETE CASCADE
 );
 
-CREATE TABLE speaker_tag (
-                                 speaker_id INTEGER,
+CREATE TABLE transcript_tag (
+                                 transcript INTEGER,
                                  tag_id INTEGER,
-                                 PRIMARY KEY (speaker_id, tag_id),
-                                 FOREIGN KEY (speaker_id) REFERENCES speaker(id) ON DELETE CASCADE,
+                                 PRIMARY KEY (transcript_id, tag_id),
+                                 FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE,
                                  FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE
 );
