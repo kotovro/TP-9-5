@@ -24,25 +24,21 @@ public class TranscriptDao {
     }
 
     private int getNextOrderNumber(int transcriptId) throws SQLException {
-        String sql = "SELECT COALESCE(MAX(order_number), 0) + 1 AS next_order "
-                + "FROM replica WHERE transcript_id = ?";
+        String sql = "SELECT COALESCE(MAX(order_number), 0) AS max_order FROM replica WHERE transcript_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, transcriptId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("next_order");
-                } else {
-                    return 1;
+                    return rs.getInt("max_order");
                 }
+                return 0;
             }
         }
     }
 
     private void insertReplicas(int transcriptId, List<Replica> replicas) {
-
         try {
-            if (replicas.isEmpty())
-            {
+            if (replicas.isEmpty()) {
                 return;
             }
 
@@ -58,17 +54,18 @@ public class TranscriptDao {
 
             try (PreparedStatement insertStmt = connection.prepareStatement(insertSql.toString())) {
                 int paramIndex = 1;
-                for (Replica replica : replicas) {
+                for (int i = 0; i < replicas.size(); i++) {
+                    Replica replica = replicas.get(i);
                     insertStmt.setInt(paramIndex++, transcriptId);
-                    insertStmt.setInt(paramIndex++, getNextOrderNumber(transcriptId));
+                    insertStmt.setInt(paramIndex++, i + 1);
                     insertStmt.setInt(paramIndex++, replica.getSpeaker().getId());
                     insertStmt.setString(paramIndex++, replica.getText());
                 }
                 insertStmt.executeUpdate();
             }
-        } catch (SQLException e)
-        {   e.printStackTrace();}
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateTranscript(Transcript transcript) {
