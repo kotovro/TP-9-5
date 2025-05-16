@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class TranscriptDao {
     private final Connection connection;
@@ -231,6 +232,38 @@ public class TranscriptDao {
             throw new RuntimeException(e);
         }
         return transcripts;
+    }
+
+    public Optional<Transcript> getTranscriptByName(String name) {
+        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
+                "FROM transcript t " +
+                "JOIN replica r ON t.id = r.transcript_id " +
+                "WHERE t.name = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                Transcript transcript = null;
+
+                while (rs.next()) {
+                    if (transcript == null) {
+                        String rawDate = rs.getString("date");
+                        Date date = sdf.parse(rawDate);
+                        transcript = new Transcript(rs.getString("name"), date);
+                        transcript.setId(rs.getInt("transcript_id"));
+                        transcript.setReplicas(new ArrayList<>());
+                    }
+                    Replica replica = new Replica();
+                    replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
+                    replica.setText(rs.getString("content"));
+                    transcript.addReplica(replica);
+                }
+                return Optional.ofNullable(transcript);
+            }
+        } catch (ParseException | SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
 }
