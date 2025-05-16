@@ -125,7 +125,6 @@ public class EditController {
 
         for (Replica replica : transcript.getReplicas()) {
             ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
-            System.out.println(replica.getSpeaker().getName());
             textAreaContainer.getChildren().add(comboBox);
             TextArea textArea = initTextArea(replica, comboBox);
             textAreaContainer.getChildren().add(textArea);
@@ -204,9 +203,13 @@ public class EditController {
 
     private void initButtons() {
         saveButton.setOnAction(event -> {
-            Transcript transcript = formTranscript();
-            GlobalState.transcript = transcript;
-            DBManager.getTranscriptDao().updateTranscript(transcript);
+            if (transcript.getId() < 0)
+            {
+                GlobalState.transcript = formTranscript();
+                Saving.createDialog((Stage) saveAsButton.getScene().getWindow());
+            } else {
+                DBManager.getTranscriptDao().updateTranscript(formTranscript());
+            }
 
             Stage stage = (Stage) saveButton.getScene().getWindow();
             LoadStenogrammApp.setStage(stage);

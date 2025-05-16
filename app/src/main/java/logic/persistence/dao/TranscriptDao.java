@@ -24,17 +24,47 @@ public class TranscriptDao {
     }
 
     private int getNextOrderNumber(int transcriptId) throws SQLException {
-        String sql = "SELECT COALESCE(MAX(order_number), 0) + 1 AS next_order "
-                + "FROM replica WHERE transcript_id = ?";
+        String sql = "SELECT COALESCE(MAX(order_number), 0) AS max_order FROM replica WHERE transcript_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, transcriptId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("next_order");
-                } else {
-                    return 1;
+                    return rs.getInt("max_order");
+                }
+                return 0;
+            }
+        }
+    }
+
+    private void insertReplicas(int transcriptId, List<Replica> replicas) {
+        try {
+            if (replicas.isEmpty()) {
+                return;
+            }
+
+            StringBuilder insertSql = new StringBuilder();
+            insertSql.append("INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES ");
+
+            for (int i = 0; i < replicas.size(); i++) {
+                insertSql.append("(?, ?, ?, ?)");
+                if (i < replicas.size() - 1) {
+                    insertSql.append(", ");
                 }
             }
+
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertSql.toString())) {
+                int paramIndex = 1;
+                for (int i = 0; i < replicas.size(); i++) {
+                    Replica replica = replicas.get(i);
+                    insertStmt.setInt(paramIndex++, transcriptId);
+                    insertStmt.setInt(paramIndex++, i + 1);
+                    insertStmt.setInt(paramIndex++, replica.getSpeaker().getId());
+                    insertStmt.setString(paramIndex++, replica.getText());
+                }
+                insertStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -45,41 +75,44 @@ public class TranscriptDao {
                 return;
             }
 
-            String updateTranscriptSql = "UPDATE transcript SET name = ?, date = ? WHERE id = ?";
-            try (PreparedStatement updateStmt = connection.prepareStatement(updateTranscriptSql)) {
-                updateStmt.setString(1, transcript.getName());
-                updateStmt.setString(2, sdf.format(transcript.getDate()));
-                updateStmt.setInt(3, transcriptId);
-                updateStmt.executeUpdate();
+            String checkNameSql = "SELECT name FROM transcript WHERE id = ?";
+            String currentName = null;
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkNameSql)) {
+                checkStmt.setInt(1, transcriptId);
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next()) {
+                        currentName = rs.getString("name");
+                    }
+                }
+            }
+
+            if (!transcript.getName().equals(currentName)) {
+                String updateTranscriptSql = "UPDATE transcript SET name = ?, date = ? WHERE id = ?";
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateTranscriptSql)) {
+                    updateStmt.setString(1, transcript.getName());
+                    updateStmt.setString(2, sdf.format(transcript.getDate()));
+                    updateStmt.setInt(3, transcriptId);
+                    updateStmt.executeUpdate();
+                }
+            } else {
+                String updateDateSql = "UPDATE transcript SET date = ? WHERE id = ?";
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateDateSql)) {
+                    updateStmt.setString(1, sdf.format(transcript.getDate()));
+                    updateStmt.setInt(2, transcriptId);
+                    updateStmt.executeUpdate();
+                }
             }
 
             deleteReplicas(transcriptId);
-
             List<Replica> replicas = (List<Replica>) transcript.getReplicas();
-            if (!replicas.isEmpty()) {
-                StringBuilder insertSql = new StringBuilder();
-                insertSql.append("INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES ");
+            insertReplicas(transcriptId, replicas);
 
-                for (int i = 0; i < replicas.size(); i++) {
-                    insertSql.append("(?, ?, ?, ?)");
-                    if (i < replicas.size() - 1) {
-                        insertSql.append(", ");
-                    }
-                }
-
-                try (PreparedStatement insertStmt = connection.prepareStatement(insertSql.toString())) {
-                    int paramIndex = 1;
-                    for (Replica replica : replicas) {
-                        insertStmt.setInt(paramIndex++, transcriptId);
-                        insertStmt.setInt(paramIndex++, getNextOrderNumber(transcriptId));
-                        insertStmt.setInt(paramIndex++, replica.getSpeaker().getId());
-                        insertStmt.setString(paramIndex++, replica.getText());
-                    }
-                    insertStmt.executeUpdate();
-                }
-            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getErrorCode() == 19) {
+                throw new UniqueTranscriptNameViolationException(transcript.getName());
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -154,24 +187,13 @@ public class TranscriptDao {
                 }
             }
 
-            Iterable<Replica> replicas = transcript.getReplicas();
+            List<Replica> replicas = (List<Replica>) transcript.getReplicas();
+            insertReplicas(transcript.getId(), replicas);
 
-            for (Replica replica : replicas) {
-                String sql = "INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES (?, ?, ?, ?)";
-                try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                    stmt.setInt(1, transcript.getId());
-                    stmt.setInt(2, getNextOrderNumber(transcript.getId()));
-                    stmt.setInt(3, replica.getSpeaker().getId());
-                    stmt.setString(4, replica.getText());
-                    stmt.executeUpdate();
-                }
-            }
         } catch (SQLException e) {
-            ///this error code is specific for SQLite so applicable to sqlite state
             if (e.getErrorCode() == 19) {
                 throw new UniqueTranscriptNameViolationException(transcript.getName());
-            }
-            else {
+            } else {
                 e.printStackTrace();
             }
         }
