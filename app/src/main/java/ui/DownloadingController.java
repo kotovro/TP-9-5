@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
@@ -97,6 +99,35 @@ public class DownloadingController {
     }
 
     @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Label progressLabel;
+
+    @FXML
+    private Label label; //Виталь, лабел для твоих состояний
+
+    private void startLoadingTask() {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for (int i = 0; i <= 100; i++) {
+                    Thread.sleep(50); // Имитация загрузки
+                    updateProgress(i, 100); // Обновляем прогресс (0-1)
+                }
+                return null;
+            }
+        };
+
+        progressBar.progressProperty().bind(task.progressProperty());
+        progressLabel.textProperty().bind(
+                task.progressProperty().multiply(100).asString("%.0f%%")
+        );
+
+        new Thread(task).start();
+    }
+
+    @FXML
     private Button download;
 
     @FXML
@@ -149,6 +180,7 @@ public class DownloadingController {
 
     @FXML
     public void initialize() {
+        startLoadingTask();
         menuButton.setOnAction(event -> toggleMenu());
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
@@ -192,6 +224,7 @@ public class DownloadingController {
     @FXML
     protected void onDownloadButtonClick() {
         //loadF.setDisable(true);
+        startLoadingTask(); // начало загрузки
         downloadButton.setDisable(true);
         loadFromFileButton.setDisable(true);
 
