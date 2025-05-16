@@ -69,6 +69,9 @@ public class Transcript {
         this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     List<Pair<Replica, Integer>> searchResults = new LinkedList<>();
     List<Pair<Replica, Integer>> getSearchResults() {

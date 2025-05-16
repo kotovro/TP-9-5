@@ -60,11 +60,6 @@
             <Font name="Tilda Sans Medium" size="13.0" />
          </font>
       </Button>
-      <Button fx:id="loadButton" layoutX="581.0" layoutY="711.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="102.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Загрузить" textFill="WHITE">
-         <font>
-            <Font name="Tilda Sans Medium" size="13.0" />
-         </font>
-      </Button>
       <Button fx:id="saveAsButton" layoutX="363.0" layoutY="711.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="Сохранить как" textFill="WHITE">
          <font>
             <Font name="Tilda Sans Medium" size="13.0" />

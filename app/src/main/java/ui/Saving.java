@@ -6,34 +6,22 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Saving extends Application {
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fx_screens/saving.fxml"));
-        primaryStage.setResizable(false);
-        Scene scene = new Scene(root, 400, 200);
-        primaryStage.setTitle("Saving");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
-
+public class Saving {
     public static void createDialog(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(Saving.class.getResource("/fx_screens/saving.fxml"));
-            Scene scene = new Scene(root, 400, 160);
+            FXMLLoader loader = new FXMLLoader(DownloadingApp.class.getResource("/fx_screens/saving.fxml"));
+            Scene scene = new Scene(loader.load(), 400, 200);
             Stage dialog = new Stage();
             dialog.setResizable(false);
             dialog.setTitle("Сохранение");
             dialog.initOwner(primaryStage);
             dialog.setScene(scene);
+
+            SavingController controller = loader.getController();
+            controller.setParentStage(primaryStage);
             dialog.show();
-        } catch (Exception ignored) {
-
+        } catch (Exception exception) {
+            System.err.println(exception.getMessage());
         }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

@@ -23,17 +23,23 @@ public class SavingController {
         textField.setText(GlobalState.transcript.getName());
     }
 
+    private Stage parentStage;
+
     @FXML
     protected void onFileButtonClick(ActionEvent event) {
         errorPane.setVisible(false);
         if (textField.getText().isEmpty()) return;
+        GlobalState.transcript.setName(textField.getText());
         try {
             DBManager.getTranscriptDao().addTranscript(GlobalState.transcript);
         } catch (UniqueTranscriptNameViolationException e) {
             errorPane.setVisible(true);
             return;
         }
-        Stage stage = (Stage) textField.getScene().getWindow();
-        LoadStenogrammApp.setStage(stage);
+        LoadStenogrammApp.setStage(parentStage);
+    }
+
+    public void setParentStage(Stage parentStage) {
+        this.parentStage = parentStage;
     }
 }

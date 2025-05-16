@@ -77,12 +77,6 @@ public class MainWindowController {
                 dialog.setTitle("Выбор источника загрузки");
                 dialog.setScene(scene);
 
-                LoadOptionDialogController controller = loader.getController();
-                Stage mainStage = (Stage) change.getScene().getWindow();
-                controller.setMainStage(mainStage);
-
-                controller.setLabelText("Сейчас не выбрано ничего для редактирования");
-
                 dialog.show();
             } catch (Exception e) {
                 e.printStackTrace();

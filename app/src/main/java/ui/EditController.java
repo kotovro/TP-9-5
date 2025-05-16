@@ -53,8 +53,6 @@ public class EditController {
     @FXML
     private Button saveAsButton;
 
-    @FXML
-    private Button loadButton;
     private final int MENU_WIDTH = 200;
     private boolean isMenuOpen = false;
 
@@ -159,6 +157,7 @@ public class EditController {
             }
             i++;
         }
+        newTranscript.setId(GlobalState.transcript.getId());
         return newTranscript;
     }
 
@@ -210,37 +209,11 @@ public class EditController {
             } else {
                 DBManager.getTranscriptDao().updateTranscript(formTranscript());
             }
-
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            LoadStenogrammApp.setStage(stage);
         });
 
         saveAsButton.setOnAction(event -> {
             GlobalState.transcript = formTranscript();
             Saving.createDialog((Stage) saveAsButton.getScene().getWindow());
-        });
-
-        loadButton.setOnAction(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(EditController.class.getResource("/fx_screens/loadOptional.fxml"));
-                Scene scene = new Scene(loader.load());
-                scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
-
-                Stage dialog = new Stage();
-                dialog.setResizable(false);
-                dialog.initOwner(loadButton.getScene().getWindow());
-                dialog.setTitle("Выбор источника загрузки");
-                dialog.setScene(scene);
-                dialog.setResizable(false);
-
-                LoadOptionDialogController controller = loader.getController();
-                Stage mainStage = (Stage) loadButton.getScene().getWindow();
-                controller.setMainStage(mainStage);
-
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         });
 
         textAreaContainer.getStyleClass().add("vbox-transparent");

@@ -17,14 +17,6 @@ import java.sql.DriverManager;
 public class DBManager {
     private static final String DEFAULT_DB_PATH = VoskRecognizer.class.getResource("/saves/saves.db").toString();
 
-    private static String getDBPath() {
-        try {
-            return getResourceAsFile("/saves/saves.db").toAbsolutePath().toString();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private static Connection connection;
     static {
         try {
@@ -57,21 +49,5 @@ public class DBManager {
 
     public static SpeakerDao getSpeakerDao() {
         return SPEAKER_DAO;
-    }
-
-    public static Path getResourceAsFile(String resourcePath) throws IOException {
-        // Получаем поток ресурса
-        InputStream is = VoskRecognizer.class.getResourceAsStream(resourcePath);
-        if (is == null) {
-            throw new FileNotFoundException("Resource not found: " + resourcePath);
-        }
-
-        // Создаем временный файл
-        Path tempFile = Files.createTempFile("module-resource-",
-                resourcePath.substring(resourcePath.lastIndexOf('.')));
-        Files.copy(is, tempFile, StandardCopyOption.REPLACE_EXISTING);
-        tempFile.toFile().deleteOnExit();
-
-        return tempFile.toAbsolutePath();
     }
 }
