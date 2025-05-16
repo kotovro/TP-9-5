@@ -86,6 +86,7 @@ public class EditController {
     // Обработчики для пунктов меню
     @FXML
     private void handleMainClick() {
+        GlobalState.transcript = formTranscript();
         Stage stage = (Stage) main.getScene().getWindow();
         MainWindow.setStage(stage);
     }
@@ -95,24 +96,21 @@ public class EditController {
 
     @FXML
     private void handleDownloadClick() {
+        GlobalState.transcript = formTranscript();
         Stage stage = (Stage) download.getScene().getWindow();
         DownloadingApp.setStage(stage);
     }
 
     @FXML
     private void handleSavingsClick() {
+        GlobalState.transcript = formTranscript();
         Stage stage = (Stage) save.getScene().getWindow();
         LoadStenogrammApp.setStage(stage);
     }
 
     @FXML
     private void handleEditClick() {
-        // здесь не вижу смысла добавлять диалоговое,
-        // тк если у пользователя открылось это окно, то значит, что ему в любом случае
-        // есть что редактировать
-        Stage stage = (Stage) change.getScene().getWindow();
-        Transcript transcript = new Transcript("untitled", new Date());
-        EditWindow.setStage(stage, transcript);
+
     }
 
     @FXML
@@ -126,7 +124,8 @@ public class EditController {
         speakers = DBManager.getSpeakerDao().getAllSpeakers();
 
         for (Replica replica : transcript.getReplicas()) {
-            ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
+            ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
+            System.out.println(replica.getSpeaker().getName());
             textAreaContainer.getChildren().add(comboBox);
             TextArea textArea = initTextArea(replica, comboBox);
             textAreaContainer.getChildren().add(textArea);
@@ -147,25 +146,21 @@ public class EditController {
     }
 
     public Transcript formTranscript() {
-        List<Speaker> speakers = textAreaContainer.getChildren().stream()
-                .filter(node -> node instanceof CustomComboBox)
-                .map(node -> ((CustomComboBox)node).getSelectionModel().getSelectedItem())
-                .toList();
+        int index = 0;
+        Transcript newTranscript = new Transcript(transcript.getName(), new Date());
 
-        List<String> texts = textAreaContainer.getChildren().stream()
-                .filter(node -> node instanceof CustomTextArea)
-                .map(node -> ((CustomTextArea)node).getText())
-                .toList();
-
-        List<Replica> replicas = new ArrayList<>();
-        transcript.getReplicas().forEach(replicas::add);
-        
-        for (int i = 0; i < replicas.size(); i++) {
-            replicas.get(i).setSpeaker(speakers.get(i));
-            replicas.get(i).setText(texts.get(i));
+        int i = 0;
+        Speaker speaker = null;
+        for (var container : textAreaContainer.getChildren()) {
+            if (i % 2 == 0) {
+                speaker = ((CustomComboBox)container).getSelectionModel().getSelectedItem();
+            } else {
+                String text = ((CustomTextArea)container).getText();
+                newTranscript.addReplica(new Replica(text, speaker));
+            }
+            i++;
         }
-
-        return transcript;
+        return newTranscript;
     }
 
     private TextArea initTextArea(Replica replica, ComboBox<Speaker> comboBox) {
@@ -209,14 +204,17 @@ public class EditController {
 
     private void initButtons() {
         saveButton.setOnAction(event -> {
-            DBManager.getTranscriptDao().updateTranscript(formTranscript());
+            Transcript transcript = formTranscript();
+            GlobalState.transcript = transcript;
+            DBManager.getTranscriptDao().updateTranscript(transcript);
 
             Stage stage = (Stage) saveButton.getScene().getWindow();
             LoadStenogrammApp.setStage(stage);
         });
 
         saveAsButton.setOnAction(event -> {
-            // то, что вам нужно (сохранить как)
+            GlobalState.transcript = formTranscript();
+            Saving.createDialog((Stage) saveAsButton.getScene().getWindow());
         });
 
         loadButton.setOnAction(event -> {
@@ -247,7 +245,7 @@ public class EditController {
 
     private void addNewReplica() {
         Replica replica = new Replica("", speakers.getFirst());
-        ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
+        ComboBox<Speaker> comboBox = new CustomComboBox(speakers, speakers.getFirst());
         TextArea textArea = initTextArea(replica, comboBox);
         int index = textAreaContainer.getChildren().indexOf(activeTextArea) + 1;
         StoryPoint storyPoint = new AddReplica(textAreaContainer, comboBox, textArea, index);

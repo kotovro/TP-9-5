@@ -81,33 +81,32 @@ public class LoadStenogrammController {
 
     @FXML
     private void handleEditClick() {
-        // через if else тут скорее всего нужно
-        // if для редактирования ничего не выбрано:
-        try {
-            FXMLLoader loader = new FXMLLoader(EditController.class.getResource("/fx_screens/loadOptional.fxml"));
-            Scene scene = new Scene(loader.load());
-            scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
+        if (GlobalState.transcript == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(EditController.class.getResource("/fx_screens/loadOptional.fxml"));
+                Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
 
-            Stage dialog = new Stage();
-            dialog.setResizable(false);
-            dialog.initOwner(change.getScene().getWindow());
-            dialog.setTitle("Выбор источника загрузки");
-            dialog.setScene(scene);
+                Stage dialog = new Stage();
+                dialog.setResizable(false);
+                dialog.initOwner(change.getScene().getWindow());
+                dialog.setTitle("Выбор источника загрузки");
+                dialog.setScene(scene);
 
-            LoadOptionDialogController controller = loader.getController();
-            Stage mainStage = (Stage) change.getScene().getWindow();
-            controller.setMainStage(mainStage);
+                LoadOptionDialogController controller = loader.getController();
+                Stage mainStage = (Stage) change.getScene().getWindow();
+                controller.setMainStage(mainStage);
 
-            controller.setLabelText("Сейчас не выбрано ничего для редактирования");
+                controller.setLabelText("Сейчас не выбрано ничего для редактирования");
 
-            dialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+                dialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Stage stage = (Stage) change.getScene().getWindow();
+            EditWindow.setStage(stage, GlobalState.transcript);
         }
-        // else:
-        //Stage stage = (Stage) change.getScene().getWindow();
-        //Transcript transcript = new Transcript("untitled", new Date());
-        //EditWindow.setStage(stage, transcript);
     }
 
     @FXML
@@ -117,17 +116,6 @@ public class LoadStenogrammController {
 
     @FXML
     public Button deleteButton;
-
-    @FXML
-    private void loadFromVideo() {
-        try {
-            Stage stage = (Stage) confirmButton.getScene().getWindow();
-            DownloadingApp.setStage(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public void initialize() {
         menuButton.setOnAction(event -> toggleMenu());
@@ -157,6 +145,7 @@ public class LoadStenogrammController {
             confirmButton.setDisable(true);
             deleteButton.setDisable(true);
             Stage stage = (Stage) confirmButton.getScene().getWindow();
+            GlobalState.transcript = selectedCard.getTranscript();
             EditWindow.setStage(stage, selectedCard.getTranscript());
         });
         cardPane.getStyleClass().add("flowpane-transparent");

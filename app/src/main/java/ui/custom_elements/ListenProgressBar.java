@@ -25,7 +25,6 @@ public class ListenProgressBar extends ProgressBar implements ProcessListener {
                     Platform.runLater(() -> {
                         updateProgress(processor.getProcessPercent(), 100);
                     });
-                    System.out.println("I work");
                 }
             }
         };
@@ -37,7 +36,6 @@ public class ListenProgressBar extends ProgressBar implements ProcessListener {
     @Override
     public void notifyStop() {
         requests.cancel();
-        System.out.println("I stop");
     }
 
     public void setProcessor(Processor processor) {

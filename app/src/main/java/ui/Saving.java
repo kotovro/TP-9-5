@@ -18,6 +18,21 @@ public class Saving extends Application {
         primaryStage.show();
     }
 
+    public static void createDialog(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(Saving.class.getResource("/fx_screens/saving.fxml"));
+            Scene scene = new Scene(root, 400, 160);
+            Stage dialog = new Stage();
+            dialog.setResizable(false);
+            dialog.setTitle("Сохранение");
+            dialog.initOwner(primaryStage);
+            dialog.setScene(scene);
+            dialog.show();
+        } catch (Exception ignored) {
+
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

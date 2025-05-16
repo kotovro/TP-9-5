@@ -36,7 +36,7 @@
                </font></Button>
             <Button fx:id="download" maxWidth="Infinity" onAction="#handleDownloadClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Загрузить стенограмму" />
                 <Button fx:id="save" maxWidth="Infinity" onAction="#handleSavingsClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Сохраненные файлы" />
-                <Button fx:id="change" maxWidth="Infinity" onAction="#handleEditClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Обработать видео" />
+                <Button fx:id="change" maxWidth="Infinity" onAction="#handleEditClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Редактирование" />
                 <Button maxWidth="Infinity" onAction="#handleExitClick" style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-size: 14; -fx-alignment: center-left;" text="Выход" />
             </VBox>
          <AnchorPane maxHeight="554.0" maxWidth="338.0" prefHeight="554.0" prefWidth="338.0" style="-fx-background-radius: 30; -fx-background-color: #0A0C31;">

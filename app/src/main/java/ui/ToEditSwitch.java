@@ -14,6 +14,7 @@ public class ToEditSwitch implements ResultListener {
 
     @Override
     public void onResultReady(Transcript transcript) {
+        GlobalState.transcript = transcript;
         Platform.runLater(() -> {
             EditWindow.setStage(stage, transcript);
         });
