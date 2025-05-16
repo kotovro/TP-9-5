@@ -209,7 +209,12 @@ public class EditController {
 
     private void initButtons() {
         saveButton.setOnAction(event -> {
-            DBManager.getTranscriptDao().updateTranscript(formTranscript());
+            if (transcript.getId() < 0)
+            {
+                DBManager.getTranscriptDao().addTranscript(formTranscript());
+            } else {
+                DBManager.getTranscriptDao().updateTranscript(formTranscript());
+            }
 
             Stage stage = (Stage) saveButton.getScene().getWindow();
             LoadStenogrammApp.setStage(stage);
