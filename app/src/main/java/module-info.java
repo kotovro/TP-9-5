@@ -26,7 +26,9 @@ module vstrecheslav {
     opens logic.video_processing.audio_extractor to org.bytedeco.javacv.platform,
             org.bytedeco.ffmpeg.platform, org.bytedeco.ffmpeg, org.bytedeco.javacv,
             org.bytedeco.ffmpeg.windows.x86, org.bytedeco.ffmpeg.windows.x86_64,
-            org.bytedeco.ffmpeg.macosx.arm64, org.bytedeco.ffmpeg.macosx.x86_64;
+            org.bytedeco.ffmpeg.macosx.arm64, org.bytedeco.ffmpeg.macosx.x86_64,
+            org.bytedeco.ffmpeg.linux.arm64, org.bytedeco.ffmpeg.linux.x86_64;
+
 
     exports ui;
     exports ui.custom_elements;
