@@ -16,6 +16,8 @@ module vstrecheslav {
     requires org.bytedeco.ffmpeg.windows.x86_64;
     requires org.bytedeco.ffmpeg.macosx.arm64;
     requires org.bytedeco.ffmpeg.macosx.x86_64;
+    requires org.bytedeco.ffmpeg.linux.arm64;
+    requires org.bytedeco.ffmpeg.linux.x86_64;
 
     opens ui to javafx.fxml;
     opens ui.custom_elements to javafx.fxml;

@@ -110,7 +110,9 @@ jlink {
                     '--mac-package-name', 'Vstrecheslav'
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
-            imageOptions += ['--icon', 'src/main/resources/icon.ico']
+            imageOptions += [
+                    '--icon', 'src/main/resources/icon.ico'
+            ]
             installerOptions += [
                     '--linux-shortcut'
             ]

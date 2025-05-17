@@ -53,7 +53,6 @@ public class PlatformDependent {
     }
 
     private static String getLinuxPrefix() {
-        System.out.println("Im in Linux");
-        return Paths.get("").toAbsolutePath().getParent().resolve("lib").toString();
+        return Paths.get("").toAbsolutePath().getParent().resolve("lib").toString() + "/";
     }
 }
