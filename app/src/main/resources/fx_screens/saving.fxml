@@ -31,7 +31,7 @@
 
     <!-- VBox внутри AnchorPane -->
     <VBox fx:id="vbox" alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="30" AnchorPane.leftAnchor="30" AnchorPane.rightAnchor="30" AnchorPane.topAnchor="30">
-      <TextField prefHeight="34.0" prefWidth="527.0" style="-fx-background-color: #cdceff;" />
+      <TextField fx:id="textField" prefHeight="34.0" prefWidth="527.0" style="-fx-background-color: #cdceff;" />
       <Button fx:id="Save" mnemonicParsing="false" onAction="#onFileButtonClick" prefHeight="33.0" prefWidth="98.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
          <font>
             <Font name="Tilda Sans Medium" size="13.0" />
