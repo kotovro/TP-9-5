@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -53,6 +54,11 @@ public class PlatformDependent {
     }
 
     private static String getLinuxPrefix() {
+        Path installedPath = Paths.get("/opt/vstrecheslav/lib");
+        if (Files.exists(installedPath)) {
+            return installedPath.toString() + "/";
+        }
+
         return Paths.get("").toAbsolutePath().getParent().resolve("lib").toString() + "/";
     }
 }
