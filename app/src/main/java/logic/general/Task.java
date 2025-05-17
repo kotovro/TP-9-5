@@ -25,5 +25,4 @@ public class Task {
     public int getTranscriptId() {
         return transcriptId;
     }
-
 }
