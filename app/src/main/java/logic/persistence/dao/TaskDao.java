@@ -69,7 +69,7 @@ public class TaskDao {
                 stmt.setInt(1, transcriptId);
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
-                        Task task = new Task(rs.getInt("transcript_id"), rs.getString("name"), rs.getString("description"));
+                        Task task = new Task(rs.getInt("transcript_id"), rs.getString("description"));
                         task.setId(rs.getInt("id"));
                         tasks.add(task);
                     }
@@ -88,7 +88,7 @@ public class TaskDao {
                 stmt.setInt(1, taskId);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        Task task = new Task(rs.getInt("transcript_id"), rs.getString("name") ,rs.getString("description"));
+                        Task task = new Task(rs.getInt("transcript_id"), rs.getString("description"));
                         task.setId(rs.getInt("id"));
                         return task;
                     }
