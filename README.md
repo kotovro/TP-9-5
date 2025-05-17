@@ -14,8 +14,15 @@
  
  ## Навигация по проекту
 
-### Релизы
+### Релизы 
+#### Общая информация
 - [Руководство для пользователя по установке и использованию приложения](https://vk.com/wall-230195371_2)
+#### Актуальная версия[1.0.1]
+- [Релиз 1.0.1 под Windows 10](https://drive.google.com/file/d/15dtJjIcSMX09tpr1YzgqxvBS_qXRjlhn/view?usp=drive_link)
+- [Релиз 1.0.1 под MacOS](https://drive.google.com/file/d/1AEuYtw0EjzJGn3Yn8vBzn8uOSS3WZiGi/view?usp=drive_link)
+- [Релиз 1.0.1 под Linux(Ubuntu)](https://drive.google.com/file/d/1fcwTLWJodw0yyQj6fdYjF-l6aD44hHoV/view?usp=drive_link)
+#### Прошлые версии
+##### Версия 1.0.0
 - [Релиз 1.0.0 под Windows 10](https://drive.google.com/file/d/1PQHqgqaMJc2b2YNO1almrWnZ6WpSnmWP/view) 
 
 ### Сервисы
