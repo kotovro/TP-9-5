@@ -111,10 +111,11 @@ jlink {
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico'
+                    '--icon', 'src/main/resources/icon.png'
             ]
             installerOptions += [
-                    '--linux-shortcut'
+                    '--linux-shortcut',
+                    '--type', 'deb'
             ]
         }
 
