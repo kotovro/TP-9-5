@@ -3,6 +3,7 @@ package logic.persistence;
 import logic.PlatformDependent;
 import logic.persistence.dao.ProtocolDao;
 import logic.persistence.dao.SpeakerDao;
+import logic.persistence.dao.TaskDao;
 import logic.persistence.dao.TranscriptDao;
 import logic.video_processing.vosk.VoskRecognizer;
 
@@ -28,6 +29,7 @@ public class DBManager {
     }
     private static final TranscriptDao TRANSCRIPT_DAO = new TranscriptDao(connection);
     private static final ProtocolDao PROTOCOL_DAO = new ProtocolDao(connection);
+    private static final TaskDao TASK_DAO = new TaskDao(connection);
     private static final SpeakerDao SPEAKER_DAO = new SpeakerDao(connection);
 
     public static void initConnection() throws Exception {
@@ -51,4 +53,6 @@ public class DBManager {
     public static SpeakerDao getSpeakerDao() {
         return SPEAKER_DAO;
     }
+
+    public static TaskDao getTaskDao() { return TASK_DAO; }
 }
