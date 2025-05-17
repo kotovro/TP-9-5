@@ -11,7 +11,7 @@ allprojects {
     }
 }
 
-version = '1.0.0'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -99,6 +99,7 @@ jlink {
                     '--win-dir-chooser',
                     '--win-menu',
                     '--win-shortcut',
+                    '--type', 'msi'
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
             imageOptions += [

@@ -1,28 +1,28 @@
 package ui;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import logic.video_processing.audio_extractor.AudioExtractorStreamer;
+import javafx.util.Duration;
 import logic.video_processing.audio_extractor.VideoValidator;
-import logic.general.Replica;
-import logic.general.Speaker;
-import logic.general.Transcript;
-import logic.persistence.DBManager;
-import logic.video_processing.vosk.VoskRecognizer;
-import logic.video_processing.vosk.analiseDTO.RawReplica;
+import logic.video_processing.queue.ProcessingQueue;
+import ui.custom_elements.ListenProgressBar;
+import ui.custom_elements.Notification;
 
 import java.io.File;
-import java.util.Date;
 
 public class DownloadingController {
     @FXML
@@ -55,13 +55,113 @@ public class DownloadingController {
     @FXML
     private ImageView imgUserSpeak2;
 
+    private final int MENU_WIDTH = 200;
+    private boolean isMenuOpen = false;
+    private final ProcessingQueue processingQueue = new ProcessingQueue();
+
+    @FXML
+    private VBox sideMenu;
+
+    @FXML
+    private Button menuButton;
+
+    @FXML
+    private Button main;
+
+    @FXML
+    private Button save;
+
+    @FXML
+    private Button change;
+
+
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
+        animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);
+        animation.setToX(isMenuOpen ? 0 : -MENU_WIDTH);
+        animation.play();
+    }
+
+    // Обработчики для пунктов меню
+    @FXML
+    private void handleMainClick() {
+        Stage stage = (Stage) main.getScene().getWindow();
+        MainWindow.setStage(stage);
+    }
+
+    @FXML
+    private ListenProgressBar progressBar;
+
+    @FXML
+    private Notification progressLabel;
+
+    @FXML
+    private Button download;
+
+    @FXML
+    private void handleDownloadClick() {
+        Stage stage = (Stage) download.getScene().getWindow();
+        DownloadingApp.setStage(stage);
+    }
+
+    @FXML
+    private void handleSavingsClick() {
+        Stage stage = (Stage) save.getScene().getWindow();
+        LoadStenogrammApp.setStage(stage);
+    }
+
+    @FXML
+    private void handleEditClick() {
+        if (GlobalState.transcript == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(EditController.class.getResource("/fx_screens/loadOptional.fxml"));
+                Scene scene = new Scene(loader.load());
+                scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
+
+                Stage dialog = new Stage();
+                dialog.setResizable(false);
+                dialog.initOwner(change.getScene().getWindow());
+                dialog.setTitle("Выбор источника загрузки");
+                dialog.setScene(scene);
+
+                LoadOptionDialogController controller = loader.getController();
+                Stage mainStage = (Stage) change.getScene().getWindow();
+                controller.setMainStage(mainStage);
+
+                controller.setLabelText("Сейчас не выбрано ничего для редактирования");
+
+                dialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Stage stage = (Stage) save.getScene().getWindow();
+            EditWindow.setStage(stage, GlobalState.transcript);
+        }
+    }
+
+    @FXML
+    private void handleExitClick() {
+        System.exit(0);
+    }
+
     @FXML
     public void initialize() {
+        menuButton.setOnAction(event -> toggleMenu());
         errorPane.setVisible(false);
         sucsessPane.setVisible(false);
 
         initImages();
         initDropPaneEvents();
+        processingQueue.setProcessListener(progressBar);
+        processingQueue.setStatusListener(progressLabel);
+        progressBar.setProcessor(processingQueue);
+
+        Platform.runLater(() -> {
+            processingQueue.setResultListener(new ToEditSwitch((Stage) sucsessPane.getScene().getWindow()));
+        });
     }
 
     @FXML
@@ -98,41 +198,23 @@ public class DownloadingController {
 
     @FXML
     protected void onDownloadButtonClick() {
-        loadButton.setDisable(true);
         downloadButton.setDisable(true);
         loadFromFileButton.setDisable(true);
+        main.setDisable(true);
+        save.setDisable(true);
+        change.setDisable(true);
+        download.setDisable(true);
 
-        Task<Void> recognitionTask = new Task<Void>() {
+        progressBar.setProgress(-1);
+
+        Task<Void> recognitionTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                VoskRecognizer recognizer = new VoskRecognizer();
-                AudioExtractorStreamer streamer = new AudioExtractorStreamer();
-                streamer.processAudio(selectedFile.getAbsolutePath(), recognizer::processStream);
-
-                //Speaker должке копироваться а не каждый раз браться
-                Transcript transcript = new Transcript("untitled", new Date());
-                for (RawReplica replica : recognizer.getFinalResult()) {
-                    Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(1);
-                    transcript.addReplica(new Replica(replica.text, speaker));
-                }
-                recognizer.freeResources();
-
-                Platform.runLater(() -> {
-                    try {
-                        Stage stage = (Stage) sucsessPane.getScene().getWindow();
-                        EditWindow.setStage(stage, transcript);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                processingQueue.add(selectedFile.getAbsolutePath());
+                processingQueue.processTask();
                 return null;
             }
         };
-
-        recognitionTask.setOnFailed(event -> {
-            Throwable e = recognitionTask.getException();
-            e.printStackTrace();
-        });
 
         new Thread(recognitionTask).start();
     }
@@ -144,8 +226,6 @@ public class DownloadingController {
         imgCheckCircle.setImage(image2);
         Image image3 = new Image(getClass().getResource("/images/DangerCircle.png").toExternalForm());
         imgDangerCircle.setImage(image3);
-        Image image4 = new Image(getClass().getResource("/images/default_users/undefined.png").toExternalForm());
-        imgUserSpeak2.setImage(image4);
     }
 
     private void initDropPaneEvents() {
