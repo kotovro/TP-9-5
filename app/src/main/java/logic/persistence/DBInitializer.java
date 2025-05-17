@@ -1,7 +1,9 @@
 package logic.persistence;
 
+import javafx.scene.image.Image;
 import logic.general.Speaker;
 import logic.persistence.dao.SpeakerDao;
+import ui.EditController;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,9 +14,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import static ui.EditController.getImage;
 
 public class DBInitializer {
     private static final String DB_CREATION_SCRIPT_PATH = "develop_resources/dbcreation.sql";
@@ -80,5 +82,9 @@ public class DBInitializer {
 
     public static void main(String[] args) {
         reinitDB();
+    }
+
+    public static Image getImage(String path) {
+        return new Image(Objects.requireNonNull(EditController.class.getResourceAsStream(path)));
     }
 }

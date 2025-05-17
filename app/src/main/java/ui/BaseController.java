@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import ui.main_panes.*;
 
 import java.io.IOException;
 
@@ -25,30 +26,28 @@ public class BaseController {
     private Pane downloadLane;
     @FXML
     private Pane downloadPane;
+
     private boolean isMenuOpen = false;
     private boolean isDownloadsOpen = false;
     private final int MENU_WIDTH = 363;
-    private MainWindowController mainWindowController;
+    private PaneController paneController;
 
-    public void setContent(String fxml) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/" + fxml));
-            Node node = loader.load();
-            contentPane.getChildren().setAll(node);
+    //Их лучше создавать не здесь
+    private final EditPain editPain = new EditPain();
+    private final MainPain mainPain = new MainPain();
+    private final LoadPane loadPane = new LoadPane();
+    private final SavesPain savesPain = new SavesPain();
 
-            if (fxml.equals("mainWindow.fxml")) {
-                mainWindowController = loader.getController();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setContent(ContentPane contentPane) {
+        this.contentPane = contentPane;
+        paneController = contentPane.getController();
     }
 
     @FXML
     public void initialize() {
         menuButton.setOnMouseClicked(event -> toggleMenu());
         downloadLane.setOnMouseClicked(event -> toggleDownloads());
-        setContent("mainWindow.fxml");
+        setContent(new MainPain());
     }
 
     private void toggleDownloads() {
@@ -70,17 +69,13 @@ public class BaseController {
 
     private void toggleMenu() {
         isMenuOpen = !isMenuOpen;
-        if (mainWindowController != null && isMenuOpen) {
-            mainWindowController.stopAnimation();
-        }
-        else if (mainWindowController != null && !isMenuOpen) {
-            mainWindowController.startImageSwitching();
-        }
         if (isMenuOpen) {
+            paneController.stopAnimation();
             disablePane.setVisible(true);
         }
         else {
             disablePane.setVisible(false);
+            paneController.startAnimation();
         }
         TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
         animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);

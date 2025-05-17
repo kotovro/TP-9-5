@@ -17,7 +17,7 @@ import logic.general.Transcript;
 
 import java.util.Date;
 
-public class MainWindowController {
+public class MainWindowController implements PaneController {
     @FXML
     private ImageView animatedImageView;
 
@@ -32,10 +32,19 @@ public class MainWindowController {
         image2 = new Image(getClass().getResource("/images/menuV2.png").toExternalForm());
         animatedImageView.setImage(image1);
 
-        startImageSwitching();
+        startAnimation();
     }
 
-    public void startImageSwitching() {
+    public void stopAnimation() {
+        animationRunning = false;
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
+    }
+
+    @Override
+    public void startAnimation() {
         animationRunning = true;
 
         timeline = new Timeline(
@@ -47,13 +56,5 @@ public class MainWindowController {
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
-    }
-
-    public void stopAnimation() {
-        animationRunning = false;
-        if (timeline != null) {
-            timeline.stop();
-            timeline = null;
-        }
     }
 }
