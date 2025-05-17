@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VoskRecognizer implements AudioStreamConsumer {
     private static final String SPEECH_PATH = "dynamic-resources/ai-models/speech-recognition-model";
@@ -153,6 +155,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private Optional<RawReplica> parseReplica(String jsonString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
+        jsonString = fixDecimalSeparators(jsonString);
         JsonNode rootNode = mapper.readTree(jsonString);
 
         JsonNode spkNode = rootNode.get("spk");
@@ -175,6 +178,19 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
         recognize(spk, spkFrames);
         return Optional.of(new RawReplica(text, currentSpeaker, spk, spkFrames));
+    }
+
+    private static String fixDecimalSeparators(String json) {
+        Pattern pattern = Pattern.compile("\\d+,\\d+");
+        Matcher matcher = pattern.matcher(json);
+        StringBuffer sb = new StringBuffer();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group().replace(',', '.'));
+        }
+        matcher.appendTail(sb);
+
+        return sb.toString();
     }
 
     private static double norm(double[] data) {

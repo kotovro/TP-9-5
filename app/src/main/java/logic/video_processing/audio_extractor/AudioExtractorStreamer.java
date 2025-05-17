@@ -33,7 +33,6 @@ public class AudioExtractorStreamer implements Processor {
         processListener.notifyStart();
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
-
             grabber.setSampleRate(16000);
             grabber.setAudioChannels(1);
             grabber.start();
