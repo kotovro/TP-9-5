@@ -211,7 +211,6 @@ public class DownloadingController {
             @Override
             protected Void call() throws Exception {
                 processingQueue.add(selectedFile.getAbsolutePath());
-                processingQueue.processTask();
                 return null;
             }
         };
