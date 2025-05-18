@@ -12,6 +12,7 @@ public class LLMWrapper {
     private LLMService service = null;
 
     public List<Task> getTasks(Transcript transcript) {
+        List<Task> tasks = new ArrayList<>();
         StringBuilder textSB = new StringBuilder();
         for (Replica replicas: transcript.getReplicas()) {
             textSB.append(replicas.getText());
@@ -19,31 +20,36 @@ public class LLMWrapper {
         String inputText = textSB.toString();
         String prompt = String.format("""
         Ты — русский языковой помощник для анализа текстов.
-        Извлеки ТОП-5 самых важных задач из текста ниже.
+        Извлеки ТОП‑5 самых важных задач из текста ниже.
         Если задач больше пяти — выбери ключевые, остальные проигнорируй.
         
-        Формат для каждой задачи:
-        1. [Суть задачи, 10-20 слов].
-            * Ответственный: [имя/должность или «не указан»].
-            * Метки: [если есть], Срок: [дата или «не указан»].
+        Формат для каждой задачи (каждая задача — новая строка):
+        1. [Суть задачи, 10–20 слов]. Ответственный: [имя/должность или «не указан»]. Метки: [если есть], Срок: [дата или «не указан»].
         
         Пример:
-        1. Запуск MVP нейроинтерфейсов для ритейла.
-            * Ответственный: отдел R&D.
-            * Метки: ИИ, Срок: 29.09.2025.
+        1. Запуск MVP нейроинтерфейсов для ритейла. Ответственный: отдел R&D. Метки: ИИ, Срок: 29.09.2025.
+        2. Разработка API для мобильного приложения. Ответственный: команда backend. Метки: REST, Срок: 15.06.2025.
+        
+        Важно: каждую задачу выводи с новой строки — без пустых строк между ними.
         
         ТЕКСТ:
         %s
         """, inputText);
 
-        String tasks = service.generate(
+
+        String tasksSTR = service.generate(
                 prompt,
                 false,
                 0.25f
         );
 
-        //TODO: FIX TASKS EXTRACTION
-        return new ArrayList<>();
+        String[] lines = tasksSTR.split("\\r?\\n");
+
+        for (String line : lines) {
+            if (line.isBlank()) continue;
+            tasks.add(new Task(transcript.getId(), line));
+        }
+        return tasks;
     }
 
     public Protocol summarize(Transcript transcript) {
