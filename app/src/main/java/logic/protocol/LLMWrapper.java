@@ -1,6 +1,5 @@
 package logic.protocol;
 
-import logic.PlatformDependent;
 import logic.general.Protocol;
 import logic.general.Replica;
 import logic.general.Task;
@@ -10,11 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LLMWrapper {
-    private final LLMService service;
-
-    public LLMWrapper(LLMService service) {
-        this.service = service;
-    }
+    private LLMService service = null;
 
     public List<Task> getTasks(Transcript transcript) {
         StringBuilder textSB = new StringBuilder();
@@ -82,5 +77,18 @@ public class LLMWrapper {
         );
 
         return new Protocol(summary);
+    }
+
+    public void init() {
+        if (service == null) service = new LLMService();
+    }
+
+    public boolean isInit() {
+        return service != null;
+    }
+
+    public void freeResources() {
+        service.freeResources();
+        service = null;
     }
 }

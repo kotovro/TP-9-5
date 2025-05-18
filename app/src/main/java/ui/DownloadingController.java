@@ -160,7 +160,7 @@ public class DownloadingController {
         progressBar.setProcessor(processingQueue);
 
         Platform.runLater(() -> {
-            processingQueue.setResultListener(new ToEditSwitch((Stage) sucsessPane.getScene().getWindow()));
+            processingQueue.setTranscriptListener(new ToEditSwitch((Stage) sucsessPane.getScene().getWindow()));
         });
     }
 
