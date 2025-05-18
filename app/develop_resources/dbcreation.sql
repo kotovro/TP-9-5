@@ -37,9 +37,8 @@ CREATE TABLE protocol (
 CREATE TABLE task (
                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                       description TEXT NOT NULL,
-                      conclusion TEXT,
-                      protocol_id INTEGER,
-                      FOREIGN KEY (protocol_id) REFERENCES protocol(id) ON DELETE CASCADE
+                      transcript_id INTEGER,
+                      FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE
 );
 
 CREATE TABLE transcript_tag (

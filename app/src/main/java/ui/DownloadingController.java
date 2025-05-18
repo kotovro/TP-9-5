@@ -160,7 +160,7 @@ public class DownloadingController {
         progressBar.setProcessor(processingQueue);
 
         Platform.runLater(() -> {
-            processingQueue.setResultListener(new ToEditSwitch((Stage) sucsessPane.getScene().getWindow()));
+            processingQueue.setTranscriptListener(new ToEditSwitch((Stage) sucsessPane.getScene().getWindow()));
         });
     }
 
@@ -211,7 +211,6 @@ public class DownloadingController {
             @Override
             protected Void call() throws Exception {
                 processingQueue.add(selectedFile.getAbsolutePath());
-                processingQueue.processTask();
                 return null;
             }
         };

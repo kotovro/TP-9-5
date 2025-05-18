@@ -1,7 +1,9 @@
 package logic.persistence;
 
+import logic.PlatformDependent;
 import logic.persistence.dao.ProtocolDao;
 import logic.persistence.dao.SpeakerDao;
+import logic.persistence.dao.TaskDao;
 import logic.persistence.dao.TranscriptDao;
 import logic.video_processing.vosk.VoskRecognizer;
 
@@ -15,7 +17,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBManager {
-    private static final String DEFAULT_DB_PATH = VoskRecognizer.class.getResource("/saves/saves.db").toString();
+    private static final String DEFAULT_DB_PATH = "dynamic-resources/saves/saves.db";
 
     private static Connection connection;
     static {
@@ -27,10 +29,11 @@ public class DBManager {
     }
     private static final TranscriptDao TRANSCRIPT_DAO = new TranscriptDao(connection);
     private static final ProtocolDao PROTOCOL_DAO = new ProtocolDao(connection);
+    private static final TaskDao TASK_DAO = new TaskDao(connection);
     private static final SpeakerDao SPEAKER_DAO = new SpeakerDao(connection);
 
     public static void initConnection() throws Exception {
-        String url = "jdbc:sqlite::resource:" + DEFAULT_DB_PATH;
+        String url = "jdbc:sqlite:" + PlatformDependent.getPrefix() + DEFAULT_DB_PATH;
         connection = DriverManager.getConnection(url);
         connection.setAutoCommit(true);
     }
@@ -50,4 +53,6 @@ public class DBManager {
     public static SpeakerDao getSpeakerDao() {
         return SPEAKER_DAO;
     }
+
+    public static TaskDao getTaskDao() { return TASK_DAO; }
 }

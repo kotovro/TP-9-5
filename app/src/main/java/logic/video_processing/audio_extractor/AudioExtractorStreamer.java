@@ -38,8 +38,7 @@ public class AudioExtractorStreamer implements Processor {
             grabber.setAudioChannels(1);
             grabber.start();
 
-            long duration = grabber.getLengthInTime() / 1000; // в миллисекундах
-            // Рассчитываем общее количество сэмплов (при 16000 Гц)
+            long duration = grabber.getLengthInTime() / 1000;
             totalFrames = duration * 16000 / 1000;
 
             Frame frame;

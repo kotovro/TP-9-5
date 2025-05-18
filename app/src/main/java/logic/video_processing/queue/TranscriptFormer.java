@@ -13,12 +13,11 @@ import java.util.List;
 
 public class TranscriptFormer {
     private static int untitledCount = 0;
-    public static Transcript formTranscript(List<RawReplica> rawReplicas) throws SQLException {
+    public static Transcript formTranscript(List<RawReplica> rawReplicas) {
         Transcript transcript = new Transcript("untitled" + untitledCount, new Date());
         for (RawReplica replica : rawReplicas) {
             Speaker speaker = DBManager.getSpeakerDao().getSpeakerById(1);
             transcript.addReplica(new Replica(replica.text, speaker));
-
         }
         untitledCount++;
         return transcript;
