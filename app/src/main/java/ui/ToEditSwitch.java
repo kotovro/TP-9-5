@@ -3,9 +3,9 @@ package ui;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import logic.general.Transcript;
-import logic.video_processing.queue.ResultListener;
+import logic.video_processing.queue.listeners.TranscriptListener;
 
-public class ToEditSwitch implements ResultListener {
+public class ToEditSwitch implements TranscriptListener {
     private final Stage stage;
 
     public ToEditSwitch(Stage stage) {
