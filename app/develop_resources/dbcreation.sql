@@ -28,7 +28,7 @@ CREATE TABLE replica (
 
 
 CREATE TABLE protocol (
-                          id INTEGER PRIMARY KEY AUTOINCREMENT,
+                          protocol_id INTEGER PRIMARY KEY AUTOINCREMENT,
                           transcript_id INTEGER UNIQUE,
                           conclusion TEXT,
                           FOREIGN KEY (transcript_id) REFERENCES transcript(id)
@@ -42,7 +42,7 @@ CREATE TABLE task (
 );
 
 CREATE TABLE transcript_tag (
-                                 transcript INTEGER,
+                                 transcript_id INTEGER,
                                  tag_id INTEGER,
                                  PRIMARY KEY (transcript_id, tag_id),
                                  FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE,
