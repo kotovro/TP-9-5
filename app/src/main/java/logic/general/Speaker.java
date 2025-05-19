@@ -2,6 +2,8 @@ package logic.general;
 
 import javafx.scene.image.Image;
 
+import java.util.Objects;
+
 public class Speaker {
     private int id;
     private final Image image;
@@ -37,4 +39,9 @@ public class Speaker {
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Speaker speaker)) return false;
+        return id == speaker.id;
+    }
 }

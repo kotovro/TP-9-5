@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,13 +11,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import logic.general.Speaker;
 import logic.general.Replica;
 import javafx.scene.layout.AnchorPane;
@@ -50,14 +51,78 @@ public class EditController {
     private Button saveButton;
 
     @FXML
-    private Button loadButton;
+    private Button saveAsButton;
+
+    private final int MENU_WIDTH = 200;
+    private boolean isMenuOpen = false;
+
+    @FXML
+    private VBox sideMenu;
+
+    @FXML
+    private Button menuButton;
+
+    @FXML
+    private Button main;
+
+    @FXML
+    private Button save;
+
+    @FXML
+    private Button change;
+
+
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+
+        TranslateTransition animation = new TranslateTransition(Duration.millis(300), sideMenu);
+        animation.setFromX(isMenuOpen ? -MENU_WIDTH : 0);
+        animation.setToX(isMenuOpen ? 0 : -MENU_WIDTH);
+        animation.play();
+    }
+
+    // Обработчики для пунктов меню
+    @FXML
+    private void handleMainClick() {
+        GlobalState.transcript = formTranscript();
+        Stage stage = (Stage) main.getScene().getWindow();
+        MainWindow.setStage(stage);
+    }
+
+    @FXML
+    private Button download;
+
+    @FXML
+    private void handleDownloadClick() {
+        GlobalState.transcript = formTranscript();
+        Stage stage = (Stage) download.getScene().getWindow();
+        DownloadingApp.setStage(stage);
+    }
+
+    @FXML
+    private void handleSavingsClick() {
+        GlobalState.transcript = formTranscript();
+        Stage stage = (Stage) save.getScene().getWindow();
+        LoadStenogrammApp.setStage(stage);
+    }
+
+    @FXML
+    private void handleEditClick() {
+
+    }
+
+    @FXML
+    private void handleExitClick() {
+        System.exit(0);
+    }
 
     @FXML
     public void initialize() {
+        menuButton.setOnAction(event -> toggleMenu());
         speakers = DBManager.getSpeakerDao().getAllSpeakers();
 
         for (Replica replica : transcript.getReplicas()) {
-            ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
+            ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
             textAreaContainer.getChildren().add(comboBox);
             TextArea textArea = initTextArea(replica, comboBox);
             textAreaContainer.getChildren().add(textArea);
@@ -79,10 +144,7 @@ public class EditController {
 
     public Transcript formTranscript() {
         int index = 0;
-        for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {
-            index = Integer.parseInt(transcript.getName().substring(transcript.getName().length() - 1));
-        }
-        Transcript newTranscript = new Transcript("Транскрипция " + (index + 1), new Date());
+        Transcript newTranscript = new Transcript(transcript.getName(), new Date());
 
         int i = 0;
         Speaker speaker = null;
@@ -95,6 +157,7 @@ public class EditController {
             }
             i++;
         }
+        newTranscript.setId(GlobalState.transcript.getId());
         return newTranscript;
     }
 
@@ -139,32 +202,18 @@ public class EditController {
 
     private void initButtons() {
         saveButton.setOnAction(event -> {
-            DBManager.getTranscriptDao().addTranscript(formTranscript());
-
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            LoadStenogrammApp.setStage(stage);
+            if (transcript.getId() < 0)
+            {
+                GlobalState.transcript = formTranscript();
+                Saving.createDialog((Stage) saveAsButton.getScene().getWindow());
+            } else {
+                DBManager.getTranscriptDao().updateTranscript(formTranscript());
+            }
         });
 
-        loadButton.setOnAction(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(EditController.class.getResource("/fx_screens/loadOptional.fxml"));
-                Scene scene = new Scene(loader.load());
-                scene.getStylesheets().add(getClass().getResource("/styles/dialog-style.css").toExternalForm());
-
-                Stage dialog = new Stage();
-                dialog.initOwner(loadButton.getScene().getWindow());
-                dialog.setTitle("Выбор источника загрузки");
-                dialog.setScene(scene);
-                dialog.setResizable(false);
-
-                LoadOptionDialogController controller = loader.getController();
-                Stage mainStage = (Stage) loadButton.getScene().getWindow();
-                controller.setMainStage(mainStage);
-
-                dialog.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        saveAsButton.setOnAction(event -> {
+            GlobalState.transcript = formTranscript();
+            Saving.createDialog((Stage) saveAsButton.getScene().getWindow());
         });
 
         textAreaContainer.getStyleClass().add("vbox-transparent");
@@ -172,7 +221,7 @@ public class EditController {
 
     private void addNewReplica() {
         Replica replica = new Replica("", speakers.getFirst());
-        ComboBox<Speaker> comboBox = new CustomComboBox(speakers);
+        ComboBox<Speaker> comboBox = new CustomComboBox(speakers, speakers.getFirst());
         TextArea textArea = initTextArea(replica, comboBox);
         int index = textAreaContainer.getChildren().indexOf(activeTextArea) + 1;
         StoryPoint storyPoint = new AddReplica(textAreaContainer, comboBox, textArea, index);

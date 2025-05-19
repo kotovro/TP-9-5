@@ -13,7 +13,7 @@ public class EditWindow {
         fxmlLoader.setController(new EditController(transcript));
         Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load(), 600, 450);
+            scene = new Scene(fxmlLoader.load(), 1137, 778);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -23,6 +23,7 @@ public class EditWindow {
     }
 
     public static void setStage(Stage stage, Transcript transcript) {
+        stage.setResizable(false);
         stage.setScene(getScene(transcript));
         stage.setTitle("Загрузка стенограммы");
     }

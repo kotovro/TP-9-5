@@ -32,7 +32,7 @@ public class DownloadingApp extends Application {
         Font.loadFont(DownloadingApp.class.getResourceAsStream("/fonts/TildaSans-Semibold.ttf"), 12);
         FXMLLoader fxmlLoader = new FXMLLoader(DownloadingApp.class.getResource("/fx_screens/downloading.fxml"));
         try {
-            return new Scene(fxmlLoader.load(), 850, 500);
+            return new Scene(fxmlLoader.load(), 1137, 778);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
