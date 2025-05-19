@@ -3,9 +3,10 @@ package ui;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import logic.general.Transcript;
-import logic.video_processing.queue.ResultListener;
+import logic.video_processing.queue.listeners.TranscriptListener;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 
-public class ToEditSwitch implements ResultListener {
+public class ToEditSwitch implements TranscriptListener {
     private final Stage stage;
 
     public ToEditSwitch(Stage stage) {
@@ -13,10 +14,7 @@ public class ToEditSwitch implements ResultListener {
     }
 
     @Override
-    public void onResultReady(Transcript transcript) {
-        GlobalState.transcript = transcript;
-        Platform.runLater(() -> {
-            EditWindow.setStage(stage, transcript);
-        });
+    public void onResultReady(RawTranscript rawTranscript) {
+
     }
 }

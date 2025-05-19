@@ -1,4 +1,4 @@
-package ui.custom_elements;
+package ui.custom_elements.combo_boxes;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,12 +16,12 @@ import logic.general.Speaker;
 
 import java.util.List;
 
-public class SearchableDropdownComboBox extends ComboBox<Speaker> {
+public class SearchableComboBox extends ComboBox<Speaker> {
     private final FilteredList<Speaker> filteredSpeakers;
     private final TextField searchField = new TextField();
     private String defaultText;
 
-    public SearchableDropdownComboBox(List<Speaker> speakers, String defaultText) {
+    public SearchableComboBox(List<Speaker> speakers, String defaultText) {
         ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
         this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
         this.defaultText = defaultText;
@@ -115,7 +115,11 @@ public class SearchableDropdownComboBox extends ComboBox<Speaker> {
                 super.updateItem(speaker, empty);
                 if (empty || speaker == null) {
                     setGraphic(null);
-                    setText(defaultText);
+                    if (defaultText.isEmpty()) {
+                        getSelectionModel().select(0);
+                    } else {
+                        setText(defaultText);
+                    }
                 } else {
                     imageView.setImage(speaker.getImage());
                     setGraphic(imageView);

@@ -7,11 +7,9 @@ import de.kherud.llama.ModelParameters;
 
 
 public class LLMService {
-    private final String modelPath;
-
-    public LLMService(String modelPath) {
-        this.modelPath = modelPath;
-    }
+    private final String MODEL_PATH = "dynamic-resources/ai-models/LLM";
+    private final ModelParameters parameters = new ModelParameters().setModel(MODEL_PATH);
+    private final LlamaModel model = new LlamaModel(parameters);
 
     public String generate(
             String prompt,
@@ -22,11 +20,6 @@ public class LLMService {
             float repeatPenalty,
             float temperature
     ) {
-
-        ModelParameters mp = new ModelParameters()
-                .setModel(modelPath);
-        LlamaModel llama = new LlamaModel(mp);
-
         InferenceParameters ip = new InferenceParameters("")
                 .setPrompt(prompt)
                 .setIgnoreEos(ignoreEos)
@@ -37,10 +30,9 @@ public class LLMService {
                 .setTemperature(temperature);
 
         StringBuilder result = new StringBuilder();
-        for (LlamaOutput tok : llama.generate(ip)) {
+        for (LlamaOutput tok : model.generate(ip)) {
             result.append(tok.text);
         }
-        llama.close();
         return result.toString().trim();
     }
 
@@ -49,21 +41,20 @@ public class LLMService {
             boolean ignoreEos,
             float temperature
     ) {
-
-        ModelParameters mp = new ModelParameters()
-                .setModel(modelPath);
-        LlamaModel llama = new LlamaModel(mp);
-
         InferenceParameters ip = new InferenceParameters("")
                 .setPrompt(prompt)
                 .setIgnoreEos(ignoreEos)
                 .setTemperature(temperature);
 
         StringBuilder result = new StringBuilder();
-        for (LlamaOutput tok : llama.generate(ip)) {
+        for (LlamaOutput tok : model.generate(ip)) {
             result.append(tok.text);
         }
-        llama.close();
         return result.toString().trim();
     }
+
+    public void freeResources() {
+        model.close();
+    }
+
 }

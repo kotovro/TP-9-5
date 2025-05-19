@@ -1,5 +1,6 @@
 package logic.general;
 
+import javafx.concurrent.Task;
 import javafx.util.Pair;
 import logic.text_edit.ReplicaBuffer;
 
@@ -11,12 +12,15 @@ import java.util.List;
 public class Transcript {
     private int id = -1;
     protected List<Replica> replicas = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
     private String name;
     private Date date;
+
 
     public void setReplicas(List<Replica> replicas) {
         this.replicas = replicas;
     }
+    public void setTags(List<Tag> tags) {this.tags = tags;}
 
     public Transcript(String name, Date date) {
         this.name = name;
@@ -47,6 +51,10 @@ public class Transcript {
 
     public Iterable<Replica> getReplicas() {
         return replicas;
+    }
+
+    public Iterable<Tag> getTags() {
+        return tags;
     }
 
     public Replica getReplica(int index) {
