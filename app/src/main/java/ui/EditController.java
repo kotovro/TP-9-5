@@ -29,6 +29,8 @@ import logic.text_edit.action.RemoveReplica;
 import logic.text_edit.action.StoryPoint;
 import ui.custom_elements.CustomComboBox;
 import ui.custom_elements.CustomTextArea;
+import ui.custom_elements.LinkedComboBox;
+import ui.custom_elements.SyncedComboBoxManager;
 
 public class EditController {
     private final Transcript transcript;
@@ -122,7 +124,7 @@ public class EditController {
         speakers = DBManager.getSpeakerDao().getAllSpeakers();
 
         for (Replica replica : transcript.getReplicas()) {
-            ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
+            ComboBox<Speaker> comboBox = new LinkedComboBox(speakers, replica.getSpeaker());
             textAreaContainer.getChildren().add(comboBox);
             TextArea textArea = initTextArea(replica, comboBox);
             textAreaContainer.getChildren().add(textArea);
@@ -150,7 +152,7 @@ public class EditController {
         Speaker speaker = null;
         for (var container : textAreaContainer.getChildren()) {
             if (i % 2 == 0) {
-                speaker = ((CustomComboBox)container).getSelectionModel().getSelectedItem();
+                speaker = ((LinkedComboBox)container).getSelectionModel().getSelectedItem();
             } else {
                 String text = ((CustomTextArea)container).getText();
                 newTranscript.addReplica(new Replica(text, speaker));
@@ -221,12 +223,15 @@ public class EditController {
 
     private void addNewReplica() {
         Replica replica = new Replica("", speakers.getFirst());
-        ComboBox<Speaker> comboBox = new CustomComboBox(speakers, speakers.getFirst());
-        TextArea textArea = initTextArea(replica, comboBox);
-        int index = textAreaContainer.getChildren().indexOf(activeTextArea) + 1;
-        StoryPoint storyPoint = new AddReplica(textAreaContainer, comboBox, textArea, index);
-        storyPoint.apply();
-        editStory.addLast(storyPoint);
+        SyncedComboBoxManager comboBoxManager = new SyncedComboBoxManager(speakers, speakers.getFirst());
+        for (int i = 0; i < 3; i++) {
+            ComboBox<Speaker> comboBox = comboBoxManager.createComboBox();
+            TextArea textArea = initTextArea(replica, comboBox);
+            int index = textAreaContainer.getChildren().indexOf(activeTextArea) + 1;
+            StoryPoint storyPoint = new AddReplica(textAreaContainer, comboBox, textArea, index);
+            storyPoint.apply();
+            editStory.addLast(storyPoint);
+        }
     }
 
     public static Image getImage(String path) {
