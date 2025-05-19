@@ -37,15 +37,17 @@ public class SpeakerDao {
         }
     }
 
-    public void deleteSpeaker(int speakerId) throws SQLException {
+    public void deleteSpeaker(int speakerId) {
         String sql = "DELETE FROM speaker WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, speakerId);
             stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public Speaker getSpeakerById(int speakerId) throws SQLException {
+    public Speaker getSpeakerById(int speakerId) {
         String sql = "SELECT id, name, image FROM speaker WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, speakerId);
@@ -63,12 +65,13 @@ public class SpeakerDao {
                     throw new SpeakerNotFoundException(speakerId);
                 }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public List<Speaker> getAllSpeakers() {
         try {
-
             String sql = "SELECT id, name, image FROM speaker";
             List<Speaker> speakers = new ArrayList<>();
 

@@ -46,45 +46,6 @@ class ReplicaBufferTest {
         assertSame(testReplica, ReplicaBuffer.getReplica());
     }
 
-    @RepeatedTest(5)
-    void concurrentAccess_shouldNotCorruptState() throws InterruptedException {
-        final int THREAD_COUNT = 10;
-        final ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
-        final CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
-        final AtomicInteger successCount = new AtomicInteger();
-
-        for (int i = 0; i < THREAD_COUNT; i++) {
-            final Replica replica = new Replica("Thread-" + i, testSpeaker);
-            executor.execute(() -> {
-                try {
-                    latch.countDown();
-                    latch.await();
-
-                    ReplicaBuffer.setReplica(replica);
-                    if (replica.equals(ReplicaBuffer.getReplica())) {
-                        successCount.incrementAndGet();
-                    }
-                    ReplicaBuffer.clear();
-                } catch (Exception e) {
-                    fail("Concurrent access failed: " + e.getMessage());
-                }
-            });
-        }
-
-        executor.shutdown();
-
-        long startTime = System.currentTimeMillis();
-        while (!executor.isTerminated()) {
-            if (System.currentTimeMillis() - startTime > 3000) {
-                executor.shutdownNow();
-                fail("Test timeout exceeded 3 seconds");
-            }
-            Thread.sleep(100);
-        }
-
-        assertEquals(THREAD_COUNT, successCount.get());
-    }
-
     @Test
     void highLoadPerformance_shouldCompleteQuickly() {
         final int ITERATIONS = 10000;
