@@ -1,6 +1,7 @@
 module vstrecheslav {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
 
     requires java.xml.crypto;
     requires com.fasterxml.jackson.databind;

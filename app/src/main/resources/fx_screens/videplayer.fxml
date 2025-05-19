@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="ui.VideoplayerController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label fx:id="message"/>
+
+    <StackPane maxWidth="640" maxHeight="360">
+        <MediaView fx:id="mediaView" fitWidth="640" fitHeight="360"/>
+    </StackPane>
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="chooseVideoButton" text="Choose Video" onAction="#onChooseVideoButtonClick"/>
+        <Button fx:id="pauseButton" text="Pause" onAction="#onPauseButtonClick"/>
+    </HBox>
+</AnchorPane>
