@@ -1,4 +1,4 @@
-package logic.text_tests;
+package logic.IntegrationTest.text_tests;
 
 import javafx.scene.image.Image;
 import logic.general.Replica;
