@@ -1,4 +1,4 @@
-package logic.audioFile_test;
+package logic.unit_test.video_processing_test;
 
 import logic.video_processing.audio_extractor.VideoValidator;
 import org.junit.jupiter.api.DisplayName;
