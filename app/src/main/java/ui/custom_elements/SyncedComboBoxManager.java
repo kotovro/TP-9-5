@@ -19,22 +19,23 @@ public class SyncedComboBoxManager {
     }
 
     public ComboBox<Speaker> createComboBox() {
-        ComboBox<Speaker> comboBox = new SearchableDropdownComboBox(speakers, speakers.get(0));
+        SearchableDropdownComboBox comboBox = new SearchableDropdownComboBox(speakers, "Speaker 1");
         comboBoxes.add(comboBox);
 
-//        comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Speaker>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Speaker> observableValue, Speaker speaker, Speaker newVal) {
-//                if (newVal != null) {
-//                    comboBoxes.forEach(cb -> {
-//                        if (cb != comboBox) {
-//                            cb.getSelectionModel().select(newVal);
-//                        }
-//                    });
-//                }
-//                comboBox.getSelectionModel().selectedItemProperty().removeListener(this);
-//            }
-//        });
+        comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Speaker>() {
+            @Override
+            public void changed(ObservableValue<? extends Speaker> observableValue, Speaker speaker, Speaker newVal) {
+                if (newVal != null) {
+                    comboBoxes.forEach(cb -> {
+                        if (cb != comboBox) {
+                            cb.getSelectionModel().select(newVal);
+                        }
+                    });
+                }
+                comboBox.getSelectionModel().selectedItemProperty().removeListener(this);
+                comboBox.setDefaultText("");
+            }
+        });
         return comboBox;
     }
 }

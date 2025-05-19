@@ -8,6 +8,7 @@ import logic.video_processing.vosk.analiseDTO.RawReplica;
 import logic.video_processing.vosk.analiseDTO.RawSpeaker;
 import logic.Platform;
 import logic.PlatformDependent;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import org.vosk.Model;
 import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
@@ -92,14 +93,14 @@ public class VoskRecognizer implements AudioStreamConsumer {
         onAudioChunkReceived(audioStream);
     }
 
-    public List<RawReplica> getFinalResult() {
+    public RawTranscript getFinalResult() {
         try {
             var result = parseReplica(recognizer.getFinalResult());
             result.ifPresent(replicas::add);
-        } catch (JsonProcessingException e) {
-        }
+        } catch (JsonProcessingException ignored) {}
+
         correctSpeakers();
-        return replicas;
+        return new RawTranscript(speakers.size(), replicas);
     }
 
     //Не оптимально

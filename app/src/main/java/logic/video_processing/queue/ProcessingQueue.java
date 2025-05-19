@@ -5,6 +5,7 @@ import logic.video_processing.ProcessStatus;
 import logic.video_processing.audio_extractor.AudioExtractorStreamer;
 import logic.video_processing.audio_extractor.ProcessListener;
 import logic.video_processing.vosk.VoskRecognizer;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -37,14 +38,10 @@ public class ProcessingQueue implements Processor {
             String extractionPath = extractionTasks.poll();
             audioExtractorStreamer.processAudio(extractionPath, voskRecognizer);
         }
-        Transcript transcript;
-        try {
-            transcript = TranscriptFormer.formTranscript(voskRecognizer.getFinalResult());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        resultListener.onResultReady(transcript);
+        RawTranscript rawTranscript = voskRecognizer.getFinalResult();
+
+        resultListener.onResultReady(rawTranscript);
         processStatus = ProcessStatus.MODEL_UNLOAD;
         statusListener.onStatusChanged(processStatus);
         voskRecognizer.freeResources();

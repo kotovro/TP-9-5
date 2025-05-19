@@ -29,7 +29,7 @@ import logic.text_edit.action.RemoveReplica;
 import logic.text_edit.action.StoryPoint;
 import ui.custom_elements.CustomComboBox;
 import ui.custom_elements.CustomTextArea;
-import ui.custom_elements.LinkedComboBox;
+import ui.custom_elements.SearchableDropdownComboBox;
 import ui.custom_elements.SyncedComboBoxManager;
 
 public class EditController {
@@ -124,7 +124,7 @@ public class EditController {
         speakers = DBManager.getSpeakerDao().getAllSpeakers();
 
         for (Replica replica : transcript.getReplicas()) {
-            ComboBox<Speaker> comboBox = new LinkedComboBox(speakers, replica.getSpeaker());
+            ComboBox<Speaker> comboBox = new SearchableDropdownComboBox(speakers, "Speaker 1");
             textAreaContainer.getChildren().add(comboBox);
             TextArea textArea = initTextArea(replica, comboBox);
             textAreaContainer.getChildren().add(textArea);
@@ -152,7 +152,7 @@ public class EditController {
         Speaker speaker = null;
         for (var container : textAreaContainer.getChildren()) {
             if (i % 2 == 0) {
-                speaker = ((LinkedComboBox)container).getSelectionModel().getSelectedItem();
+                speaker = ((SearchableDropdownComboBox)container).getSelectionModel().getSelectedItem();
             } else {
                 String text = ((CustomTextArea)container).getText();
                 newTranscript.addReplica(new Replica(text, speaker));
