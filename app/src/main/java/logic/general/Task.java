@@ -22,7 +22,14 @@ public class Task {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
     public int getTranscriptId() {
         return transcriptId;
+    }
+
+    public void setTranscriptId(int transcriptId) {
+        this.transcriptId = transcriptId;
     }
 }

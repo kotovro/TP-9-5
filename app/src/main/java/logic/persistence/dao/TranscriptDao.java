@@ -217,7 +217,7 @@ public class TranscriptDao {
             if (e.getErrorCode() == 19) {
                 throw new UniqueTranscriptNameViolationException(transcript.getName());
             } else {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
