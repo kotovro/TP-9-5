@@ -9,6 +9,7 @@ import logic.video_processing.audio_extractor.AudioExtractorStreamer;
 import logic.video_processing.audio_extractor.ProcessListener;
 import logic.video_processing.queue.listeners.*;
 import logic.video_processing.vosk.VoskRecognizer;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -83,8 +84,8 @@ public class ProcessingQueue implements Processor {
 
         if (isTranscriptQueueActive) {
             audioExtractorStreamer.processAudio(makeTranscriptQueue.poll(), voskRecognizer);
-            Transcript transcript = TranscriptFormer.formTranscript(voskRecognizer.getFinalResult());
-            transcriptListener.onResultReady(transcript);
+            RawTranscript rawTranscript = voskRecognizer.getFinalResult();
+            transcriptListener.onResultReady(rawTranscript);
         } else {
             Transcript transcript = makeProtocolQueue.poll();
             Protocol protocol = llm.summarize(transcript);
