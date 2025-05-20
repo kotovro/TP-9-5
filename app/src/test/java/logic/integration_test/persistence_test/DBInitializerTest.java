@@ -7,7 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -89,7 +88,7 @@ public class DBInitializerTest {
     }
 
     @Test
-    void testSpeakerDaoIntegration() throws IOException, SQLException {
+    void testSpeakerDaoIntegration() throws SQLException {
         DBInitializer.reinitDB();
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH)) {
@@ -105,17 +104,14 @@ public class DBInitializerTest {
     }
 
     @Test
-    void testAddNewSpeaker() throws IOException, SQLException {
-        // Run the database initialization
+    void testAddNewSpeaker() throws SQLException {
         DBInitializer.reinitDB();
 
-        // Add a new speaker using SpeakerDao
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH)) {
             SpeakerDao speakerDao = new SpeakerDao(conn);
             Speaker newSpeaker = new Speaker("Тест", getImage("/images/default_users/undefined.png"), 8); // Заглушка вместо getImage
             speakerDao.addSpeaker(newSpeaker);
 
-            // Verify the new speaker
             List<Speaker> speakers = speakerDao.getAllSpeakers();
             assertEquals(8, speakers.size(), "Eight speakers should exist after adding one");
 

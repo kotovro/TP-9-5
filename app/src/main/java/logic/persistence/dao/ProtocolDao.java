@@ -32,7 +32,7 @@ public class ProtocolDao {
                 stmt.executeUpdate();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
     

@@ -61,19 +61,18 @@ public class TaskDaoTest {
         assertNull(taskDao.getTaskById(task.getId()), "Task should be deleted");
     }
 
-    //TODO: нужно добавить обновление таска в класс Task
-//    @Test
-//    void testUpdateTask() {
-//        Task task = new Task(1, "Initial Task");
-//        taskDao.addTask(task);
-//
-//
-//        taskDao.updateTask(task); // Здесь вызывается updateTask, но описание не меняется
-//
-//        Task updatedTask = taskDao.getTaskById(task.getId());
-//        assertEquals("Updated Task", updatedTask.getDescription(), "Task description should be updated");
-//        assertEquals(1, updatedTask.getTranscriptId(), "Transcript ID should remain unchanged");
-//    }
+    @Test
+    void testUpdateTask() {
+        Task task = new Task(1, "Initial Task");
+        taskDao.addTask(task);
+
+        task.setDescription("Updated Task");
+        taskDao.updateTask(task); // Здесь вызывается updateTask, но описание не меняется
+
+        Task updatedTask = taskDao.getTaskById(task.getId());
+        assertEquals("Updated Task", updatedTask.getDescription(), "Task description should be updated");
+        assertEquals(1, updatedTask.getTranscriptId(), "Transcript ID should remain unchanged");
+    }
 
     @Test
     void testGetTasksByTranscriptId() {

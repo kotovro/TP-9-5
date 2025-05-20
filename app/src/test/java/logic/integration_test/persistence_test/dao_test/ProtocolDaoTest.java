@@ -54,12 +54,12 @@ public class ProtocolDaoTest {
         }
     }
 
-//    @Test
-//    void testAddProtocolInvalidTranscript() {
-//        Protocol protocol = new Protocol(-1, "Test conclusion");
-//        assertThrows(Exception.class, () -> protocolDao.addProtocol(protocol),
-//                "Should throw TranscriptDoesNotExistException for invalid transcript ID");
-//    }
+    @Test
+    void testAddProtocolInvalidTranscript() {
+        Protocol protocol = new Protocol(-1, "Test conclusion");
+        assertThrows(Exception.class, () -> protocolDao.addProtocol(protocol),
+                "Should throw TranscriptDoesNotExistException for invalid transcript ID");
+    }
 
     @Test
     void testUpdateProtocol() throws SQLException {
