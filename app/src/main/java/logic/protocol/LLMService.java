@@ -7,49 +7,49 @@ import de.kherud.llama.ModelParameters;
 
 
 public class LLMService {
-    private final String MODEL_PATH = "dynamic-resources/ai-models/LLM";
-    private final ModelParameters parameters = new ModelParameters().setModel(MODEL_PATH);
+    private static final int MAX_CONTEXT_TOKENS = 131072;
+    private final String MODEL_PATH = "dynamic-resources/ai-models/LLM/LLM.gguf";
+    private final ModelParameters parameters = new ModelParameters()
+                                                                    .setModel(MODEL_PATH)
+                                                                    .setThreads(3)
+                                                                    .enableMlock();
     private final LlamaModel model = new LlamaModel(parameters);
 
-    public String generate(
-            String prompt,
-            boolean ignoreEos,
-            float minP,
-            float topP,
-            boolean penalizeNl,
-            float repeatPenalty,
-            float temperature
-    ) {
-        InferenceParameters ip = new InferenceParameters("")
-                .setPrompt(prompt)
-                .setIgnoreEos(ignoreEos)
-                .setMinP(minP)
-                .setTopP(topP)
-                .setPenalizeNl(penalizeNl)
-                .setRepeatPenalty(repeatPenalty)
-                .setTemperature(temperature);
-
-        StringBuilder result = new StringBuilder();
-        for (LlamaOutput tok : model.generate(ip)) {
-            result.append(tok.text);
-        }
-        return result.toString().trim();
+    public int calculateNPredict(String prompt) {
+        int[] tokens = model.encode(prompt);
+        int promptTokens = tokens.length;
+        int available = MAX_CONTEXT_TOKENS - promptTokens;
+        return Math.max(available, 0);
     }
 
     public String generate(
             String prompt,
-            boolean ignoreEos,
-            float temperature
+            int nPredict,
+            float temperature,
+            float topP,
+            float minP,
+            float repeatPenalty,
+            float presencePenalty,
+            float frequencyPenalty,
+            String stopStrings
     ) {
         InferenceParameters ip = new InferenceParameters("")
                 .setPrompt(prompt)
-                .setIgnoreEos(ignoreEos)
-                .setTemperature(temperature);
+                .setNPredict(nPredict)
+                .setTemperature(temperature)
+                .setTopP(topP)
+                .setMinP(minP)
+                .setRepeatPenalty(repeatPenalty)
+                .setPresencePenalty(presencePenalty)
+                .setFrequencyPenalty(frequencyPenalty)
+                .setStopStrings(stopStrings)
+                .setRepeatLastN(128);
 
         StringBuilder result = new StringBuilder();
         for (LlamaOutput tok : model.generate(ip)) {
             result.append(tok.text);
         }
+
         return result.toString().trim();
     }
 
