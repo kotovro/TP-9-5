@@ -1,18 +1,15 @@
 package logic.protocol;
 
-import logic.general.Protocol;
-import logic.general.Replica;
-import logic.general.Task;
-import logic.general.Transcript;
+import logic.general.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LLMWrapper {
+    private JsonTaskFiller jsonTaskFiller;
     private LLMService service = null;
 
     public List<Task> getTasks(Transcript transcript) {
-        List<Task> tasks = new ArrayList<>();
+        List<Task> tasks;
         StringBuilder textSB = new StringBuilder();
         for (Replica replicas: transcript.getReplicas()) {
             textSB.append(replicas.getText());
@@ -20,35 +17,38 @@ public class LLMWrapper {
         String inputText = textSB.toString();
         String prompt = String.format("""
         Ты — русский языковой помощник для анализа текстов.
-        Извлеки ТОП‑5 самых важных задач из текста ниже.
-        Если задач больше пяти — выбери ключевые, остальные проигнорируй.
+        Извлеки самые важные задачи из текста ниже.
+        Выведи результат строго в формате JSON — без лишних пояснений.
         
-        Формат для каждой задачи (каждая задача — новая строка):
-        1. [Суть задачи, 10–20 слов]. Ответственный: [имя/должность или «не указан»]. Метки: [если есть], Срок: [дата или «не указан»].
-        
-        Пример:
-        1. Запуск MVP нейроинтерфейсов для ритейла. Ответственный: отдел R&D. Метки: ИИ, Срок: 29.09.2025.
-        2. Разработка API для мобильного приложения. Ответственный: команда backend. Метки: REST, Срок: 15.06.2025.
-        
-        Важно: каждую задачу выводи с новой строки — без пустых строк между ними.
+        Требуемая схема JSON:
+        [
+          {
+            "task": "10–20 слов — суть задачи",
+            "responsible": "Имя и/или фамилия",
+            "due_date": "ДД.MM.ГГГГ"
+          }
+        ]
         
         ТЕКСТ:
         %s
+        <<END>>
         """, inputText);
 
+        int n_pred = service.calculateNPredict(prompt);
 
         String tasksSTR = service.generate(
                 prompt,
-                false,
-                0.25f
-        );
+                n_pred,
+                0.1f,
+                0.75f,
+                0.01f,
+                1.10f,
+                0.00f,
+                0.0f,
+                "<<END>>");
 
-        String[] lines = tasksSTR.split("\\r?\\n");
+        tasks = JsonTaskFiller.createTasksList(tasksSTR, transcript.getId());
 
-        for (String line : lines) {
-            if (line.isBlank()) continue;
-            tasks.add(new Task(transcript.getId(), line));
-        }
         return tasks;
     }
 
@@ -66,24 +66,28 @@ public class LLMWrapper {
             - Максимально сжатым, но содержательным.
             - Без HTML‑тегов: используй обычные переносы строк, а не <br>.
             - Сохраняй точность и ключевые детали оригинала.
+            
             ТЕКСТ:
             %s
-
-            ПЕРЕСКАЗ:
+            <<END>>
             """, inputText);
+
+        int n_pred = service.calculateNPredict(prompt);
 
         String summary = service.generate(
                 prompt,
-                false,
-                0.06f,
-                0.92f,
-                true,
-                1.05f,
-                0.25f
-        );
+                n_pred,
+                0.25f,
+                0.90f,
+                0.00f,
+                1.30f,
+                0.40f,
+                0.10f,
+                "<<END>>");
 
         return new Protocol(summary);
     }
+
 
     public void init() {
         if (service == null) service = new LLMService();
@@ -97,4 +101,5 @@ public class LLMWrapper {
         service.freeResources();
         service = null;
     }
+
 }
