@@ -30,30 +30,15 @@ public class Replica {
     }
 
     public ArrayList<Integer> findAllOccurrences(String searchText) {
-        if (searchText.isEmpty())
-            return new ArrayList<>();
-
         ArrayList<Integer> indices = new ArrayList<>();
-        int searchLength = searchText.length();
-        int textLength = text.length();
-        int index = 0;
 
-        while (index <= textLength - searchLength) {
-            boolean found = true;
-
-            for (int i = 0; i < searchLength; i++) {
-                if (text.charAt(index + i) != searchText.charAt(i)) {
-                    found = false;
-                    break;
-                }
-            }
-
-            if (found) {
-                indices.add(index);
-                index += searchLength;
-            } else {
-                index++;
-            }
+        if (searchText == null || searchText.isEmpty() || text == null) {
+            return indices;
+        }
+        int pos = text.indexOf(searchText);
+        while (pos != -1) {
+            indices.add(pos);
+            pos = text.indexOf(searchText, pos + 1);
         }
         return indices;
     }

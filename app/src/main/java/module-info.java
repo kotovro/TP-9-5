@@ -31,4 +31,6 @@ module vstrecheslav {
 
     exports ui;
     exports ui.custom_elements;
+    exports ui.custom_elements.combo_boxes;
+    opens ui.custom_elements.combo_boxes to javafx.fxml;
 }

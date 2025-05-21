@@ -183,4 +183,63 @@ public class TranscriptDaoTest {
         var notFound = transcriptDao.getTranscriptByName("Non-existent");
         assertFalse(notFound.isPresent(), "Non-existent transcript should not be found");
     }
+
+//    @Test
+//    void testUpdateTranscriptWithTags() throws Exception {
+//        Transcript transcript = new Transcript("Test Transcript", new Date());
+//        transcriptDao.addTranscript(transcript);
+//
+//        Tag newTag = new Tag("New Test Tag");
+//        tagDao.addTag(newTag);
+//        List<Tag> tags = new ArrayList<>();
+//        tags.add(testTag);
+//        tags.add(newTag);
+//        transcript.setTags(tags);
+//
+//        transcriptDao.updateTranscript(transcript);
+//
+//        Transcript updated = transcriptDao.getTranscriptById(transcript.getId());
+//        assertNotNull(updated, "Updated transcript should not be null");
+//        List<Tag> updatedTags = StreamSupport.stream(updated.getTags().spliterator(), false)
+//                .collect(Collectors.toList());
+//        assertEquals(2, updatedTags.size(), "Transcript should have two tags");
+//        assertTrue(updatedTags.contains(testTag), "Should contain first tag");
+//        assertTrue(updatedTags.contains(newTag), "Should contain second tag");
+//    }
+//
+//    @Test
+//    void testUpdateTranscriptRemovingAllReplicas() throws Exception {
+//        Transcript transcript = new Transcript("Test Transcript", new Date());
+//        List<Replica> replicas = new ArrayList<>();
+//        replicas.add(new Replica("Initial content", testSpeaker));
+//        transcript.setReplicas(replicas);
+//        transcriptDao.addTranscript(transcript);
+//
+//        transcript.setReplicas(new ArrayList<>());
+//        transcriptDao.updateTranscript(transcript);
+//
+//        Transcript updated = transcriptDao.getTranscriptById(transcript.getId());
+//        assertTrue(StreamSupport.stream(updated.getReplicas().spliterator(), false)
+//                .collect(Collectors.toList()).isEmpty(), "Transcript should have no replicas");
+//    }
+//
+//    @Test
+//    void testGetTranscriptsWithFiltering() throws Exception {
+//        Date now = new Date();
+//        Transcript transcript1 = new Transcript("AAA Transcript", now);
+//        Transcript transcript2 = new Transcript("BBB Transcript", now);
+//        Transcript transcript3 = new Transcript("CCC Transcript", now);
+//
+//        transcriptDao.addTranscript(transcript1);
+//        transcriptDao.addTranscript(transcript2);
+//        transcriptDao.addTranscript(transcript3);
+//
+//        List<Transcript> transcripts = transcriptDao.getTranscripts();
+//        List<Transcript> filteredTranscripts = transcripts.stream()
+//                .filter(t -> t.getName().contains("BBB"))
+//                .collect(Collectors.toList());
+//
+//        assertEquals(1, filteredTranscripts.size(), "Should find one transcript");
+//        assertEquals("BBB Transcript", filteredTranscripts.get(0).getName(), "Should find correct transcript");
+//    }
 }

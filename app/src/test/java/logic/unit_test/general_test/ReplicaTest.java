@@ -81,4 +81,36 @@ public class ReplicaTest {
         assertEquals(5, result.get(1));
         assertEquals(10, result.get(2));
     }
+
+    @Test
+    void testFindAllOccurrencesCaseSensitive() {
+        replica.setText("Test TEST test");
+        ArrayList<Integer> result = replica.findAllOccurrences("Test");
+        assertEquals(1, result.size());
+        assertEquals(0, result.get(0));
+    }
+
+    @Test
+    void testFindAllOccurrencesWithSpecialCharacters() {
+        replica.setText("Hello! World? Hello.");
+        ArrayList<Integer> result = replica.findAllOccurrences("Hello");
+        assertEquals(2, result.size());
+        assertEquals(0, result.get(0));
+        assertEquals(14, result.get(1));
+    }
+
+    @Test
+    void testFindAllOccurrencesWithOverlappingMatches() {
+        replica.setText("aaaa");
+        ArrayList<Integer> result = replica.findAllOccurrences("aa");
+        assertEquals(3, result.size());
+        assertEquals(0, result.get(0));
+        assertEquals(1, result.get(1));
+    }
+
+    @Test
+    void testSetNullText() {
+        replica.setText(null);
+        assertNull(replica.getText());
+    }
 }
