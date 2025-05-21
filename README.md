@@ -55,12 +55,17 @@
 
 ### Диаграммы, usert storty & use case
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM); [обновленная](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_sequence_diagram.pdf)
-- ER [PDF](https://shorturl.at/GvHCe) [DOCX](https://bit.ly/erd_docx)
+- ER [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_er_%D0%B4%D0%B8%D0%B0%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B0.pdf)
 - [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing), [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/User_stories_and_use_cases.pdf)  
  ## Материалы по аттестациям
  ### Аттестация 1
- - [Кросс-проверка команд](https://docs.google.com/spreadsheets/d/16dYTz6zW2YxYeqqG0Wbo7U_hYHtsoE2jADToYRZJZ2s/edit?usp=sharing)
+ - [Кросс-проверка команд](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%92%D0%93%D0%A3-%D0%A2%D0%9F.%20%D0%A7%D0%B5%D0%BA%D0%BB%D0%B8%D1%81%D1%82%201%20%D1%8D%D1%82%D0%B0%D0%BF%20-%20%D1%87%D0%B5%D0%BA%D0%BB%D0%B8%D1%81%D1%82.pdf)
  - [Защита тех задания](https://drive.google.com/file/d/1Fx6a6WyuxJ6CGGZiUwpdNjLTP9FReBP4/view?usp=drivesdk)
+#### Нас проверяли:
+- Команда 8.4 [репозиторий](https://github.com/nmasalkin/Project-work) [чек-лиcт](https://github.com/nmasalkin/Project-work/blob/main/%D0%A7%D0%B5%D0%BA-%D0%BB%D0%B8%D1%81%D1%82/%D0%9A%D1%80%D0%BE%D1%81%D1%81-%D0%BF%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0.pdf)
+- Команда 9.2 [репозиторий](https://github.com/LatinMapsLives/GigaGuide) [чек-лист](https://github.com/LatinMapsLives/GigaGuide/blob/main/documentation/%D0%A7%D0%B5%D0%BA%D0%BB%D0%B8%D1%81%D1%82%209.2.pdf)
+- Команда 6.2 [репозиторий](https://github.com/AlexanderLaptev/Taskbench) [чек-лист](https://github.com/AlexanderLaptev/Taskbench/blob/main/docs/%D0%A7%D0%B5%D0%BA%D0%BB%D0%B8%D1%81%D1%82%201%20%D1%8D%D1%82%D0%B0%D0%BF.pdf)
+- Команда 8.1 [репозиторий](https://github.com/mxnmiraii/Vkatun) [чек-лист](https://shorturl.at/spIYB)
  ### Аттестация 2
  - Защита второй аттестации [Rutube](https://rutube.ru/video/f2f09203d8218bb849fc84aa4cc1bc8b/)
  - PM отчет [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/PM_report__second__att.pdf)
