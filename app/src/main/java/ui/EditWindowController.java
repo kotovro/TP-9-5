@@ -42,7 +42,6 @@ public class EditWindowController implements PaneController{
     }
 
     public void loadTabs() {
-        System.out.println("Active: " + active);
         tabs.getChildren().clear();
         HBox tabBase = new HBox();
         for (Stenogramm stenogramm : new ArrayList<>(stenogramms)) {
