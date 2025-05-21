@@ -1,15 +1,10 @@
-package ui.main_panes;
+package ui.custom_elements;
 
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.util.Objects;
 
@@ -17,6 +12,7 @@ public class BasePane extends Pane {
     public ComboBox combobox;
     public TextArea textarea;
     public ImageView deleteButton;
+
     public BasePane(ComboBox combobox, TextArea textarea, ImageView deleteButton) {
         this.combobox = combobox;
         this.textarea = textarea;
@@ -46,6 +42,9 @@ public class BasePane extends Pane {
         this.getChildren().addAll(combobox, p);
         Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/CloseCircle2.png")).toExternalForm());
         deleteButton.setImage(image);
+    }
 
+    public boolean isSelected() {
+        return true;
     }
 }

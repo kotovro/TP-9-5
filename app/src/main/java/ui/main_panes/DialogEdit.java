@@ -7,7 +7,6 @@ import ui.BaseController;
 import ui.PaneController;
 
 public class DialogEdit extends Pane {
-    //private BaseController BaseController;
     public DialogEdit() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/DialogEdit.fxml"));
