@@ -3,7 +3,6 @@ package logic.persistence;
 import javafx.scene.image.Image;
 import logic.general.Speaker;
 import logic.persistence.dao.SpeakerDao;
-import ui.EditController;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -85,6 +84,6 @@ public class DBInitializer {
     }
 
     public static Image getImage(String path) {
-        return new Image(Objects.requireNonNull(EditController.class.getResourceAsStream(path)));
+        return new Image(Objects.requireNonNull(DBInitializer.class.getResourceAsStream(path)));
     }
 }

@@ -3,16 +3,12 @@ package ui;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui.main_panes.*;
 
@@ -45,7 +41,6 @@ public class BaseController {
     private PaneController paneController;
     private PaneController DialogController;
 
-    //Их лучше создавать не здесь
     private final EditPane editPane = new EditPane(this);
     private final MainPane mainPane = new MainPane();
     private final LoadPane loadPane = new LoadPane();
@@ -113,7 +108,7 @@ public class BaseController {
         }
     }
 
-    public void loaddialog() {
+    public void loadDialog() {
         try {
             dialog = new DialogWindow(menuButton.getScene().getWindow());
         } catch (IOException e) {
