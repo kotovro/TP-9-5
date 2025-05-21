@@ -1,0 +1,125 @@
+@font-face {
+    font-family: 'Manrope';
+    src: url('/fonts/Manrope-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Manrope-medium';
+    src: url('/fonts/Manrope-Medium.ttf');
+}
+
+.custom-text-area {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #7678F1;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 3px;
+    -fx-text-fill: black;
+}
+
+.custom-text-area .scroll-pane {
+    -fx-background-radius: 10px;
+    -fx-vbar-policy: never;
+    -fx-hbar-policy: never;
+    -fx-border-radius: 7px;
+}
+
+.custom-text-area .scroll-bar:vertical,
+.custom-text-area .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+    -fx-min-height: 0;
+}
+
+.custom-text-area:focused {
+    -fx-border-width: 3;
+    -fx-border-color: #3338D5;
+}
+
+.custom-text-area .content {
+    -fx-background-color: #F5F5F5;
+    -fx-background-radius: 10;
+}
+
+.custom-text-area:focused .content {
+    -fx-border-width: 3px;
+}
+
+.custom-combobox {
+    -fx-background-color: rgba(11, 15, 133, 0.75);
+    -fx-background-radius: 10px;
+    -fx-text-fill: #F5F5F5;
+    -fx-font-family: 'Manrope';
+    -fx-font-size: 14px;
+}
+
+.custom-combobox .arrow-button {
+    -fx-background-color: rgba(157, 160, 250, 0.3);
+    -fx-background-radius: 10;
+    -fx-translate-x: -8px;
+    -fx-scale-x: 0.75;
+    -fx-scale-y: 0.75;
+}
+
+.custom-combobox .arrow {
+    -fx-background-color: white;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #9DA0FA;
+    -fx-background-radius: 15px;
+    -fx-border-color: #6366B5;
+    -fx-border-radius: 15;
+     -fx-border-width: 3;
+     -fx-font-family: 'Manrope-medium';
+     -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #9DA0FA;
+    -fx-background-radius: 15px;
+    -fx-text-fill: white;
+    -fx-border-color: #6366B5;
+    -fx-border-width: 0 0 3px 0;
+    -fx-font-family: 'Manrope-medium';
+    -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #8c8ef0;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-background-radius: 18;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 1;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-translate-x: -16px;
+}
+
+.scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgba(11, 15, 133, 0.75);
+}
+
+.scroll-pane .scroll-bar .track {
+    -fx-background-color: #9DA0FA;
+}
+
+.vbox-transparent {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}
