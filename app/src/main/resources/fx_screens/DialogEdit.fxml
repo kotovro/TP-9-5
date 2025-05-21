@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DialogEditController">
+<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DialogEditController">
     <children>
         <Label layoutX="115.0" layoutY="26.0" text="Сейчас не выбрана" textFill="WHITE">
             <font>

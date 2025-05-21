@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200" prefWidth="400" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SavingController">
+<AnchorPane prefHeight="200" prefWidth="400" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SavingController">
     <Circle fill="#0a0c31" layoutX="83.0" radius="100.0" strokeType="INSIDE">
         <effect>
             <BoxBlur height="43.13" width="47.9" />

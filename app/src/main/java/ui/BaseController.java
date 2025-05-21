@@ -61,7 +61,6 @@ public class BaseController {
         menuButton.setOnMouseClicked(event -> toggleMenu());
         downloadLane.setOnMouseClicked(event -> toggleDownloads());
         setContent(mainPane);
-
     }
 
     @FXML
@@ -74,7 +73,6 @@ public class BaseController {
 
     @FXML
     private void editClick() {
-        paneController.load();
         toggleMenu();
         changeImage();
         setContent(editPane);
@@ -106,14 +104,18 @@ public class BaseController {
     }
 
     public void setContent(ContentPane contentPane) {
-        this.contentPane.getChildren().clear();
-        this.contentPane.getChildren().add(contentPane);
-        paneController = contentPane.getController();
+
+        boolean load = contentPane.getController().load();
+        if (load) {
+            this.contentPane.getChildren().clear();
+            this.contentPane.getChildren().add(contentPane);
+            paneController = contentPane.getController();
+        }
     }
 
     public void loaddialog() {
         try {
-            dialog = new DialogWindow(editMenu.getScene().getWindow());
+            dialog = new DialogWindow(menuButton.getScene().getWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

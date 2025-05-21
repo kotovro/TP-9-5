@@ -92,7 +92,7 @@ public class MainWindowController implements PaneController {
     }
 
     @Override
-    public void load() {
-
+    public boolean load() {
+        return true;
     }
 }

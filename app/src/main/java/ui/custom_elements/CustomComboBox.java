@@ -11,8 +11,6 @@ import java.util.List;
 public class CustomComboBox extends ComboBox<Speaker> {
     public CustomComboBox(List<Speaker> speakers, Speaker defaultSpeaker) {
         getItems().addAll(speakers);
-        setPrefWidth(160);
-        setPrefHeight(32);
         getStyleClass().add("custom-combobox");
 
         setCellFactory(lv -> new ListCell<>() {

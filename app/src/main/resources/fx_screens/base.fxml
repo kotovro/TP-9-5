@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="778.0" maxWidth="1137.0" prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.BaseController">
+<AnchorPane maxHeight="778.0" maxWidth="1137.0" prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.BaseController">
    <children>
       <ImageView fx:id="fonImage" fitHeight="778.0" fitWidth="1137.0" pickOnBounds="true" preserveRatio="true">
          <image>

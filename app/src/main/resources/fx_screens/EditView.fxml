@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="618.0" maxWidth="1137.0" prefHeight="618.0" prefWidth="1137.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="618.0" maxWidth="1137.0" prefHeight="618.0" prefWidth="1137.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane opacity="0.7" prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: #4143B9;" />
-      <Pane fx:id="replicas" layoutY="70.0" opacity="0.3" prefHeight="550.0" prefWidth="1138.0" style="-fx-background-color: #3338D5;">
+      <Pane fx:id="tabs" prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: rgba(65, 67, 185, 0.7);" />
+      <Pane layoutY="70.0" prefHeight="550.0" prefWidth="1138.0" style="-fx-background-color: rgba(51, 56, 213, 0.3);">
          <children>
             <Pane layoutX="61.0" layoutY="61.0" prefHeight="428.0" prefWidth="1017.0" style="-fx-background-color: #DADBFF; -fx-background-radius: 40;">
                <children>
-                  <ScrollBar layoutX="988.0" layoutY="17.0" orientation="VERTICAL" prefHeight="395.0" prefWidth="15.0" style="-fx-background-radius: 10; -fx-background-color: #0A0C31;" visibleAmount="10.0" />
+                  <ScrollPane fx:id="replicas" layoutX="19.0" prefHeight="428.0" prefWidth="979.0" style="-fx-background-color: #DADBFF;" />
                </children>
             </Pane>
          </children>

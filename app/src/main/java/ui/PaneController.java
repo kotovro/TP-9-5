@@ -6,5 +6,5 @@ public interface PaneController {
     void stopAnimation();
     void startAnimation();
 
-    void load();
+    boolean load();
 }

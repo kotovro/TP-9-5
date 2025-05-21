@@ -111,7 +111,7 @@ public class LoadController implements PaneController{
     }
 
     @Override
-    public void load() {
-
+    public boolean load() {
+        return true;
     }
 }

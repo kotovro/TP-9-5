@@ -1,8 +1,10 @@
 package ui;
 
-import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +24,7 @@ import ui.main_panes.BasePane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Stenogramm {
     private Transcript transcript;
@@ -29,21 +32,43 @@ public class Stenogramm {
     VBox textAreaContainer = new VBox();
     private CustomTextArea activeTextArea = null;
     private final EditStory editStory = new EditStory();
+    private boolean alreadyLoaded = false;
 
     public Stenogramm(Transcript transcript) {
         this.transcript = transcript;
     }
 
-    public Pane fillPane(Pane replicas) {
+    public ScrollPane fillPane(ScrollPane replicas) {
+        if (alreadyLoaded) return replicas;
         speakers = DBManager.getSpeakerDao().getAllSpeakers();
+        if (replicas.getScene() != null) {
+            replicas.getScene().getStylesheets().add(
+                    Objects.requireNonNull(getClass().getResource("/styles/style.css")).toExternalForm()
+            );
+        } else {
+            replicas.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    newScene.getStylesheets().add(
+                            Objects.requireNonNull(getClass().getResource("/styles/style.css")).toExternalForm()
+                    );
+                }
+            });
+        }
         for (Replica replica : transcript.getReplicas()) {
             ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
             TextArea textArea = initTextArea(replica, comboBox);
-            BasePane basepane = new BasePane(comboBox, textArea);
+            ImageView deleteButton = new ImageView();
+            BasePane basepane = new BasePane(comboBox, textArea, deleteButton);
+            textAreaContainer.setMargin(basepane, new Insets(10, 50, 0, 50));
             textAreaContainer.getChildren().add(basepane);
         }
-        replicas.getChildren().add(textAreaContainer);
+        replicas.setContent(textAreaContainer);
+        alreadyLoaded = true;
         return replicas;
+    }
+
+    public String getName() {
+        return transcript.getName();
     }
 
     private TextArea initTextArea(Replica replica, ComboBox<Speaker> comboBox) {

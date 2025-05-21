@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LaneController">
+<AnchorPane prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LaneController">
    <Circle fill="#14165a" layoutX="321.0" layoutY="168.0" radius="116.0" strokeType="INSIDE">
       <effect>
          <BoxBlur height="134.05" iterations="2" width="100.69" />
