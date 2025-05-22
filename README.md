@@ -19,7 +19,7 @@
 - [Руководство для пользователя по установке и использованию приложения](https://vk.com/wall-230195371_2)
 #### Актуальная версия[1.0.1]
 - [Релиз 1.0.1 под Windows 10](https://drive.google.com/file/d/15dtJjIcSMX09tpr1YzgqxvBS_qXRjlhn/view?usp=drive_link)
-- [Релиз 1.0.1 под MacOS](https://drive.google.com/file/d/1AEuYtw0EjzJGn3Yn8vBzn8uOSS3WZiGi/view?usp=drive_link)
+- [Релиз 1.0.1 под macOS](https://drive.google.com/file/d/1AEuYtw0EjzJGn3Yn8vBzn8uOSS3WZiGi/view?usp=drive_link)
 - [Релиз 1.0.1 под Linux(Ubuntu)](https://drive.google.com/file/d/1fcwTLWJodw0yyQj6fdYjF-l6aD44hHoV/view?usp=drive_link)
 #### Прошлые версии
 ##### Версия 1.0.0
@@ -53,7 +53,7 @@
 - [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
 - [Roadmap](https://github.com/kotovro/TP-9-5/blob/main/Documents/RoadmapPDF.pdf)
 
-### Диаграммы, usert storty & use case
+### Диаграммы, user story & use case
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM); [обновленная](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_sequence_diagram.pdf)
 - ER [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_er_%D0%B4%D0%B8%D0%B0%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B0.pdf)
 - [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing), [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/User_stories_and_use_cases.pdf)  
