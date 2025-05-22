@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label layoutX="144.0" layoutY="26.0" text="Вы уверены," textFill="WHITE">
             <font>
@@ -19,7 +19,7 @@
                 <Font name="Manrope SemiBold" size="20.0" />
             </font>
         </Label>
-        <Button layoutX="50.0" layoutY="132.0" mnemonicParsing="false" opacity="0.8" prefHeight="44.0" prefWidth="93.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 18;" text="да" textFill="WHITE">
+        <Button layoutX="50.0" layoutY="132.0" mnemonicParsing="false" opacity="0.8" prefHeight="44.0" prefWidth="93.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 18;" text="да" textFill="WHITE">
             <font>
                 <Font name="Manrope SemiBold" size="14.0" />
             </font>
@@ -31,7 +31,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button layoutX="266.0" layoutY="132.0" mnemonicParsing="false" opacity="0.8" prefHeight="44.0" prefWidth="94.0" style="-fx-background-color: #3338D5; -fx-background-radius: 18;" text="нет" textFill="WHITE">
+        <Button layoutX="266.0" layoutY="132.0" mnemonicParsing="false" opacity="0.8" prefHeight="44.0" prefWidth="94.0" style="-fx-background-color: #2A4CD5; -fx-background-radius: 18;" text="нет" textFill="WHITE">
             <font>
                 <Font name="Manrope SemiBold" size="14.0" />
             </font>

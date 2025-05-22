@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="618.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LoadController">
+<AnchorPane prefHeight="618.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.LoadController">
    <children>
-      <Pane layoutX="149.0" layoutY="32.0" prefHeight="310.0" prefWidth="840.0" style="-fx-background-color: #9DA0FA; -fx-background-radius: 50;">
+      <Pane layoutX="149.0" layoutY="32.0" prefHeight="310.0" prefWidth="840.0" style="-fx-background-color: #7AA3FA; -fx-background-radius: 50;">
          <children>
-            <Pane fx:id="dropPane" layoutX="66.0" layoutY="24.0" prefHeight="189.0" prefWidth="720.0" style="-fx-border-color: #0B0F85; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-style: dashed; -fx-border-width: 3;">
+            <Pane fx:id="dropPane" layoutX="66.0" layoutY="24.0" prefHeight="189.0" prefWidth="720.0" style="-fx-border-color: #0A2A85; -fx-background-radius: 50; -fx-border-radius: 50; -fx-border-style: dashed; -fx-border-width: 3;">
                <children>
                   <ImageView fitHeight="80.0" fitWidth="109.0" layoutX="320.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -26,14 +26,14 @@
                         <Font name="Manrope SemiBold" size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="loadFromFileButton" layoutX="292.0" layoutY="133.0" mnemonicParsing="false" onAction="#onFileButtonClick" prefHeight="30.0" prefWidth="136.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="выбрать файл" textFill="WHITE">
+                  <Button fx:id="loadFromFileButton" layoutX="292.0" layoutY="133.0" mnemonicParsing="false" onAction="#onFileButtonClick" prefHeight="30.0" prefWidth="136.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="выбрать файл" textFill="WHITE">
                      <font>
                         <Font name="Manrope Regular" size="16.0" />
                      </font>
                   </Button>
                </children>
             </Pane>
-            <Button fx:id="downloadButton" disable="true" layoutX="341.0" layoutY="227.0" mnemonicParsing="false" onAction="#onDownloadButtonClick" prefHeight="30.0" prefWidth="170.0" style="-fx-background-color: #D0D0FF; -fx-background-radius: 16;" text="загрузить файл">
+            <Button fx:id="downloadButton" disable="true" layoutX="341.0" layoutY="227.0" mnemonicParsing="false" onAction="#onDownloadButtonClick" prefHeight="30.0" prefWidth="170.0" style="-fx-background-color: #D0D8FF; -fx-background-radius: 16;" text="загрузить файл">
                <font>
                   <Font name="Manrope Regular" size="16.0" />
                </font>
@@ -87,12 +87,12 @@
             <Image url="@../images/CloseCircle.png" />
          </image>
       </ImageView>
-      <Button layoutX="517.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #3338D5; -fx-background-radius: 16;" text="загрузить" textFill="WHITE">
+      <Button layoutX="517.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="загрузить" textFill="WHITE">
          <font>
             <Font name="Manrope Regular" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="149.0" layoutY="546.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="198.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 13;" text="Начать запись" textFill="WHITE">
+      <Button layoutX="149.0" layoutY="546.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="198.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 13;" text="Начать запись" textFill="WHITE">
          <font>
             <Font name="Manrope SemiBold" size="18.0" />
          </font>
@@ -126,6 +126,6 @@
             <Font name="Manrope Medium" size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="399.0" prefHeight="40.0" prefWidth="840.0" promptText="ссылка из мудла" style="-fx-border-color: #3338D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <TextField layoutX="149.0" layoutY="399.0" prefHeight="40.0" prefWidth="840.0" promptText="ссылка из мудла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
    </children>
 </AnchorPane>

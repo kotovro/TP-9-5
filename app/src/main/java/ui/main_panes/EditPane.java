@@ -21,7 +21,7 @@ public class EditPane extends ContentPane {
         try {
 
             Transcript t = new Transcript("nenfieji", new Date());
-            Transcript t1 = new Transcript("влйцщвойцщвоцщузвозщаоцуi", new Date());
+            Transcript t1 = new Transcript("cfnqekaifhnwiowfhwpdfjqpo", new Date());
             t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
             t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
             t1.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));

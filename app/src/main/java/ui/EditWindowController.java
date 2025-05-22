@@ -12,6 +12,7 @@ import logic.persistence.DBManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class EditWindowController implements PaneController {
     @FXML
@@ -27,7 +28,9 @@ public class EditWindowController implements PaneController {
 
     @FXML
     public void initialize() {
-        tabPane.getChildren().add(tabRow);
+        ScrollPane sc = new ScrollPane();
+        sc.setContent(tabRow);
+        tabPane.getChildren().add(sc);
         initSize();
         Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
         addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));

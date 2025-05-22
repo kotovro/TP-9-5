@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 public class Tab extends HBox {
     private TranscriptDisplayer transcriptDisplayer;
@@ -28,8 +29,10 @@ public class Tab extends HBox {
     }
 
     public void setActive() {
-        setStyle("-fx-background-color: #0B0F85; -fx-background-radius: 11 11 0 0");
-        name.setStyle("-fx-font-family: 'Manrope'; -fx-font-size: 16; -fx-text-fill: white;");
+        this.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 11 11 0 0");
+        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
+        name.setStyle("-fx-font-family: \"Manrope Bold\";-fx-font-size: 16; -fx-text-fill: white;");
+        name.setFont(manropeFont);
         setMargin(name, new Insets(16, 6, 6, 20));
         setMargin(close, new Insets(12, 6, 6, 6));
         HBox.setMargin(this, new Insets(10, 10, 0, 10));
@@ -38,8 +41,10 @@ public class Tab extends HBox {
     }
 
     public void setInactive() {
-        setStyle("-fx-background-color: #CDCEFF; -fx-background-radius: 11");
-        name.setStyle("-fx-font-family: 'Manrope'; -fx-font-size: 14; -fx-text-fill: black;");
+        this.setStyle("-fx-background-color: #B8D0FF; -fx-background-radius: 11");
+        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
+        name.setFont(manropeFont);
+        name.setStyle("-fx-font-family: \"Manrope Bold\"; -fx-font-size: 14; -fx-text-fill: black;");
         setMargin(name, new Insets(14, 6, 6, 20));
         setMargin(close, new Insets(8, 6, 6, 6));
         HBox.setMargin(this, new Insets(10, 10, 10, 10));

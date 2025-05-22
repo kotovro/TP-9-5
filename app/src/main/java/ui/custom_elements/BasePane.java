@@ -30,7 +30,7 @@ public class BasePane extends Pane {
         this.textarea.setLayoutX(18);
         this.textarea.setLayoutY(18);
         //textarea.setStyle("-fx-background-radius: 10; -fx-border-radius: 10;");
-        p.setStyle("-fx-background-color: #8788E5; -fx-background-radius: 10;");
+        p.setStyle("-fx-background-color: #6F9AE5; -fx-background-radius: 10;");
         p.getChildren().add(textarea);
         p.setLayoutX(0);
         p.setLayoutY(71);

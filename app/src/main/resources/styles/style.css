@@ -10,7 +10,7 @@
 
 .custom-text-area {
     -fx-background-color: #F5F5F5;
-    -fx-border-color: #7678F1;
+    -fx-border-color: #5A7CF1;
     -fx-border-radius: 7px;
     -fx-background-radius: 10px;
     -fx-border-width: 3px;
@@ -37,7 +37,7 @@
 
 .custom-text-area:focused {
     -fx-border-width: 3;
-    -fx-border-color: #3338D5;
+    -fx-border-color: #2A55D5;
 }
 
 .custom-text-area .content {
@@ -58,7 +58,7 @@
 }
 
 .custom-combobox .arrow-button {
-    -fx-background-color: rgba(157, 160, 250, 0.3);
+    -fx-background-color: rgba(122, 163, 250, 0.3);
     -fx-background-radius: 10;
     -fx-translate-x: -8px;
     -fx-scale-x: 0.75;
@@ -70,9 +70,9 @@
 }
 
 .combo-box-popup .list-view {
-    -fx-background-color: #9DA0FA;
+    -fx-background-color: #7AA3FA;
     -fx-background-radius: 15px;
-    -fx-border-color: #6366B5;
+    -fx-border-color: #4A6DB5;
     -fx-border-radius: 15;
      -fx-border-width: 3;
      -fx-font-family: 'Manrope-medium';
@@ -80,10 +80,10 @@
 }
 
 .combo-box-popup .list-cell {
-    -fx-background-color: #9DA0FA;
+    -fx-background-color: #7AA3FA;
     -fx-background-radius: 15px;
     -fx-text-fill: white;
-    -fx-border-color: #6366B5;
+    -fx-border-color: #4A6DB5;
     -fx-border-width: 0 0 3px 0;
     -fx-font-family: 'Manrope-medium';
     -fx-font-size: 14px;
@@ -113,11 +113,11 @@
 }
 
 .scroll-pane .scroll-bar .thumb {
-    -fx-background-color: rgba(11, 15, 133, 0.75);
+    -fx-background-color: rgba(10, 42, 133, 0.75);
 }
 
 .scroll-pane .scroll-bar .track {
-    -fx-background-color: #9DA0FA;
+    -fx-background-color: #B8D0FF;
 }
 
 .vbox-transparent {
