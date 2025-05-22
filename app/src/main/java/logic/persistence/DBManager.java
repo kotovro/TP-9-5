@@ -1,10 +1,7 @@
 package logic.persistence;
 
 import logic.PlatformDependent;
-import logic.persistence.dao.ProtocolDao;
-import logic.persistence.dao.SpeakerDao;
-import logic.persistence.dao.TranscriptDao;
-import logic.video_processing.vosk.VoskRecognizer;
+import logic.persistence.dao.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,7 +25,11 @@ public class DBManager {
     }
     private static final TranscriptDao TRANSCRIPT_DAO = new TranscriptDao(connection);
     private static final ProtocolDao PROTOCOL_DAO = new ProtocolDao(connection);
+    private static final TaskDao TASK_DAO = new TaskDao(connection);
     private static final SpeakerDao SPEAKER_DAO = new SpeakerDao(connection);
+    private static final TagDao TAG_DAO = new TagDao(connection);
+
+
 
     public static void initConnection() throws Exception {
         String url = "jdbc:sqlite:" + PlatformDependent.getPrefix() + DEFAULT_DB_PATH;
@@ -50,5 +51,13 @@ public class DBManager {
 
     public static SpeakerDao getSpeakerDao() {
         return SPEAKER_DAO;
+    }
+
+    public static TaskDao getTaskDao() {
+        return TASK_DAO;
+    }
+
+    public static TagDao getTagDao() {
+        return TAG_DAO;
     }
 }

@@ -41,6 +41,7 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation 'org.mockito:mockito-core:3.12.4'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
+    implementation group: 'de.kherud', name: 'llama', version: '4.1.0'
 }
 
 java {

@@ -16,6 +16,7 @@ module vstrecheslav {
     requires org.bytedeco.ffmpeg.windows.x86_64;
     requires org.bytedeco.ffmpeg.macosx.arm64;
     requires org.bytedeco.ffmpeg.macosx.x86_64;
+    requires llama;
 
     opens ui to javafx.fxml;
     opens ui.custom_elements to javafx.fxml;
@@ -30,4 +31,6 @@ module vstrecheslav {
 
     exports ui;
     exports ui.custom_elements;
+    exports ui.custom_elements.combo_boxes;
+    opens ui.custom_elements.combo_boxes to javafx.fxml;
 }

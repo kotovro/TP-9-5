@@ -3,6 +3,7 @@ package logic.persistence.dao;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
+import logic.general.Tag;
 import logic.persistence.exception.UniqueTranscriptNameViolationException;
 
 import java.sql.*;
@@ -56,6 +57,33 @@ public class TranscriptDao {
         }
     }
 
+    private void deleteTranscriptTags(int transcriptId) {
+        String sql = "DELETE FROM transcript_tag WHERE transcript_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, transcriptId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void insertTranscriptTags(int transcriptId, List<Tag> tags) {
+        if (tags.isEmpty()) {
+            return;
+        }
+
+        String sql = "INSERT INTO transcript_tag (transcript_id, tag_id) VALUES (?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            for (Tag tag : tags) {
+                stmt.setInt(1, transcriptId);
+                stmt.setInt(2, tag.getId());
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateTranscript(Transcript transcript) {
         try {
             int transcriptId = transcript.getId();
@@ -94,6 +122,10 @@ public class TranscriptDao {
             deleteReplicas(transcriptId);
             List<Replica> replicas = (List<Replica>) transcript.getReplicas();
             insertReplicas(transcriptId, replicas);
+
+            List<Tag> tags = (List<Tag>) transcript.getTags();
+            deleteTranscriptTags(transcriptId);
+            insertTranscriptTags(transcriptId, tags);
 
         } catch (SQLException e) {
             if (e.getErrorCode() == 19) {
@@ -178,11 +210,14 @@ public class TranscriptDao {
             List<Replica> replicas = (List<Replica>) transcript.getReplicas();
             insertReplicas(transcript.getId(), replicas);
 
+            List<Tag> tags = (List<Tag>) transcript.getTags();
+            insertTranscriptTags(transcript.getId(), tags);
+
         } catch (SQLException e) {
             if (e.getErrorCode() == 19) {
                 throw new UniqueTranscriptNameViolationException(transcript.getName());
             } else {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }
