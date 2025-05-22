@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="778.0" maxWidth="1137.0" prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.BaseController">
+<AnchorPane maxHeight="778.0" maxWidth="1137.0" prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.BaseController">
    <children>
       <ImageView fx:id="fonImage" fitHeight="778.0" fitWidth="1137.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -21,21 +21,21 @@
          </image>
       </ImageView>
       <Pane fx:id="contentPane" layoutY="65.0" prefHeight="618.0" prefWidth="1138.0" />
-      <Pane fx:id="downloadPane" layoutX="732.0" layoutY="600.0" opacity="0.0" prefHeight="93.0" prefWidth="334.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 20;" />
-      <Pane fx:id="disablePane" layoutY="63.0" opacity="0.2" prefHeight="717.0" prefWidth="1137.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 20;" visible="false">
+      <Pane fx:id="downloadPane" layoutX="732.0" layoutY="600.0" opacity="0.0" prefHeight="93.0" prefWidth="334.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 20;" />
+      <Pane fx:id="disablePane" layoutY="63.0" opacity="0.2" prefHeight="717.0" prefWidth="1137.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 20;" visible="false">
          <effect>
             <GaussianBlur radius="2.0" />
          </effect>
       </Pane>
       <Group fx:id="menuButton" layoutX="25.0" layoutY="20.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#14165a" height="6.0" layoutY="10.0" strokeType="INSIDE" width="32.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#14165a" height="6.0" strokeType="INSIDE" width="32.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#14165a" height="6.0" layoutY="20.0" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#131f5a" height="6.0" layoutY="10.0" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#131f5a" height="6.0" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#131f5a" height="6.0" layoutY="20.0" strokeType="INSIDE" width="32.0" />
             <Pane prefHeight="27.0" prefWidth="33.0" />
          </children>
       </Group>
-      <Label layoutX="81.0" layoutY="17.0" text="Встречеслав" textFill="#0a0c31">
+      <Label layoutX="81.0" layoutY="17.0" text="Встречеслав" textFill="#0a1631">
          <font>
             <Font name="Fyodor Bold Expanded" size="24.0" />
          </font>
@@ -50,15 +50,15 @@
             <Image url="@../images/CloseCircle.png" />
          </image>
       </ImageView>
-      <Pane fx:id="downloadLane" layoutX="733.0" layoutY="700.0" prefHeight="18.0" prefWidth="334.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 5;" />
-      <VBox fx:id="sideMenu" layoutX="0.0" layoutY="65.0" prefHeight="715.0" prefWidth="363.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 0 30 30 0;" translateX="-363.0">
+      <Pane fx:id="downloadLane" layoutX="733.0" layoutY="700.0" prefHeight="18.0" prefWidth="334.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 5;" />
+      <VBox fx:id="sideMenu" layoutX="0.0" layoutY="65.0" prefHeight="715.0" prefWidth="363.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 0 30 30 0;" translateX="-363.0">
          <children>
             <Pane prefHeight="419.0" prefWidth="363.0">
                <VBox.margin>
                   <Insets top="40.0" />
                </VBox.margin>
                <children>
-                  <Pane fx:id="mainMenu" layoutX="28.0" layoutY="25.0" onMouseClicked="#mainClick" prefHeight="60.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 30;">
+                  <Pane fx:id="mainMenu" layoutX="28.0" layoutY="25.0" onMouseClicked="#mainClick" prefHeight="60.0" prefWidth="308.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 30;">
                      <children>
                         <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="21.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -72,7 +72,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="loadMenu" layoutX="28.0" layoutY="117.0" onMouseClicked="#loadClick" prefHeight="60.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 30;">
+                  <Pane fx:id="loadMenu" layoutX="28.0" layoutY="117.0" onMouseClicked="#loadClick" prefHeight="60.0" prefWidth="308.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 30;">
                      <children>
                         <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="21.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -86,7 +86,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="editMenu" layoutX="28.0" layoutY="210.0" onMouseClicked="#editClick" prefHeight="78.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 40;">
+                  <Pane fx:id="editMenu" layoutX="28.0" layoutY="210.0" onMouseClicked="#editClick" prefHeight="78.0" prefWidth="308.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 40;">
                      <children>
                         <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="20.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -105,7 +105,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane fx:id="savedMenu" layoutX="28.0" layoutY="321.0" onMouseClicked="#savedClick" prefHeight="78.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 40;">
+                  <Pane fx:id="savedMenu" layoutX="28.0" layoutY="321.0" onMouseClicked="#savedClick" prefHeight="78.0" prefWidth="308.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 40;">
                      <children>
                         <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="20.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -133,7 +133,7 @@
                         <Image url="@../images/Group3.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="exitMenu" layoutX="65.0" layoutY="179.0" mnemonicParsing="false" onAction="#exitClick" prefHeight="43.0" prefWidth="220.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 30;" text="ВЫХОД">
+                  <Button fx:id="exitMenu" layoutX="65.0" layoutY="179.0" mnemonicParsing="false" onAction="#exitClick" prefHeight="43.0" prefWidth="220.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 30;" text="ВЫХОД">
                      <font>
                         <Font name="Manrope ExtraBold" size="18.0" />
                      </font>

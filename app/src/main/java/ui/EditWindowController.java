@@ -13,6 +13,7 @@ import logic.video_processing.vosk.analiseDTO.RawTranscript;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class EditWindowController implements PaneController, TranscriptListener {
     @FXML
@@ -31,7 +32,9 @@ public class EditWindowController implements PaneController, TranscriptListener 
 
     @FXML
     public void initialize() {
-        tabPane.getChildren().add(tabRow);
+        ScrollPane sc = new ScrollPane();
+        sc.setContent(tabRow);
+        tabPane.getChildren().add(sc);
         initSize();
 //        Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
 //        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));

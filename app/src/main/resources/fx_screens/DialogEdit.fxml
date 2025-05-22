@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DialogEditController">
+<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DialogEditController">
     <children>
         <Label layoutX="115.0" layoutY="26.0" text="Сейчас не выбрана" textFill="WHITE">
             <font>
@@ -19,7 +19,7 @@
                 <Font name="Manrope SemiBold" size="20.0" />
             </font>
         </Label>
-        <Button layoutX="107.0" layoutY="123.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="198.0" style="-fx-background-color: #3338D5; -fx-background-radius: 18;" text="загрузить из видео" textFill="WHITE">
+        <Button layoutX="107.0" layoutY="123.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="198.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 18;" text="загрузить из видео" textFill="WHITE">
             <font>
                 <Font name="Manrope SemiBold" size="14.0" />
             </font>
@@ -31,7 +31,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button layoutX="84.0" layoutY="189.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="244.0" style="-fx-background-color: #3338D5; -fx-background-radius: 18;" text="выбрать из сохраненных" textFill="WHITE">
+        <Button layoutX="84.0" layoutY="189.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="244.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 18;" text="выбрать из сохраненных" textFill="WHITE">
             <font>
                 <Font name="Manrope SemiBold" size="14.0" />
             </font>

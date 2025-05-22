@@ -1,0 +1,70 @@
+package ui;
+
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.image.ImageView;
+import logic.general.Transcript;
+
+import java.text.SimpleDateFormat;
+
+public class StAndPrBuilder extends HBox {
+    public Pane st = new Pane();
+    public Button pr = new Button();
+    public Transcript transcript;
+
+    public StAndPrBuilder(Transcript transcript) {
+        this.transcript = transcript;
+
+        Label name = new Label(transcript.getName()); //внутрь вставить название стенограммы
+        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 16);
+        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
+        Font manropeFont3 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+        name.setStyle("-fx-font-family: \"Manrope ExtraBold\"; -fx-font-size: 18; -fx-text-fill: black;");
+        name.setFont(manropeFont);
+        name.setLayoutY(24);
+        name.setLayoutX(18);
+
+        Pane dateP = new Pane();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        String formattedDate = sdf.format(transcript.getDate());
+        Label date = new Label(formattedDate); // сюда вставить нормальную дату (числа месяца и года достаточно)
+        date.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 14; -fx-text-fill: black;");
+        date.setFont(manropeFont3);
+        date.setLayoutY(10);
+        date.setLayoutX(10);
+
+        dateP.setLayoutY(72);
+        dateP.setLayoutX(578);
+        dateP.setPrefSize(92, 37);
+        dateP.setStyle("-fx-background-color: #E7EFFF; -fx-background-radius: 8;");
+        dateP.getChildren().add(date);
+
+
+        ImageView im = new ImageView();
+        im.setImage(new Image("/images/SquareAltArrowRight.png"));
+        im.setFitWidth(37);
+        im.setFitHeight(37);
+        im.setLayoutX(633);
+        im.setLayoutY(31);
+
+        st.setPrefSize(684, 123);
+        st.setLayoutY(27);
+        st.setLayoutX(21);
+        st.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 20; -fx-border-color: #2A55D5; -fx-border-width: 3; " +
+                "-fx-border-radius: 20;");
+        st.getChildren().addAll(name, dateP, im);
+
+        pr.setFont(manropeFont2);
+        //if есть протокол:
+        pr.setText("Открыть протокол");
+        pr.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 10; -fx-text-fill: white;");
+        pr.setPrefSize(154, 50);
+        this.setMargin(pr,  new Insets(30, 0, 5, 20));
+        this.getChildren().addAll(st, pr);
+    }
+}
