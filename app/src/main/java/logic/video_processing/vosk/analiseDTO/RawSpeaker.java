@@ -19,11 +19,6 @@ public class RawSpeaker {
         count++;
     }
 
-    @Override
-    public String toString() {
-        return "Speaker" + ID;
-    }
-
     public boolean equals(RawSpeaker speaker) {
         return this.ID == speaker.ID;
     }

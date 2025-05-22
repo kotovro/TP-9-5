@@ -7,36 +7,40 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import logic.general.Speaker;
-import logic.general.Transcript;
 import logic.persistence.DBManager;
+import logic.video_processing.queue.listeners.TranscriptListener;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditWindowController implements PaneController {
+public class EditWindowController implements PaneController, TranscriptListener {
     @FXML
     private ScrollPane replicas;
     @FXML
     private Pane tabPane;
     private HBox tabRow = new HBox();
-    private final Transcript transcript;
     private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
     public Tab active = null;
     public List<Tab> tabs = new ArrayList<>();
-    BaseController bc;
+    BaseController baseController;
+
+    public EditWindowController(BaseController baseController) {
+        this.baseController = baseController;
+    }
 
     @FXML
     public void initialize() {
         tabPane.getChildren().add(tabRow);
         initSize();
-        Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
-        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-        addTab(st);
-        setActive(st);
+//        Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
+//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+//        addTab(st);
+//        setActive(st);
     }
 
     public void setActive(Tab active) {
@@ -53,6 +57,9 @@ public class EditWindowController implements PaneController {
     public void addTab(Tab tab) {
         tabs.add(tab);
         tabRow.getChildren().add(tab);
+        if (active == null) {
+            setActive(tab);
+        }
     }
 
     public void removeTab(Tab tab) {
@@ -69,15 +76,10 @@ public class EditWindowController implements PaneController {
         }
     }
 
-    public EditWindowController(Transcript transcript, BaseController bc) {
-        this.bc = bc;
-        this.transcript = transcript;
-    }
-
     @Override
     public boolean load() {
         if (active == null) {
-            bc.loadDialog();
+            baseController.loadDialog();
             return false;
         }
         return true;
@@ -98,5 +100,12 @@ public class EditWindowController implements PaneController {
         HBox.setMargin(tmp, new Insets(0, 0, 10, 0));
         tmp.setPrefHeight(59);
         tabRow.getChildren().add(tmp);
+    }
+
+    @Override
+    public void onResultReady(RawTranscript rawTranscript) {
+        Platform.runLater(() -> {
+            addTab(new Tab(new TranscriptDisplayer(rawTranscript, speakers), this));
+        });
     }
 }

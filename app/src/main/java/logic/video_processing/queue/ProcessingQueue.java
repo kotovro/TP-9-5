@@ -94,7 +94,7 @@ public class ProcessingQueue implements Processor {
         }
 
         setProcessStatus(ProcessStatus.TASK_FINISHED);
-        if (isTasksReady()) closeModels();
+        if (!isTasksReady()) closeModels();
     }
 
     private boolean isTasksReady() {

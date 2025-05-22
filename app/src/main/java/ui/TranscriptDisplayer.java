@@ -17,48 +17,43 @@ import logic.text_edit.EditStory;
 import logic.text_edit.action.AddReplica;
 import logic.text_edit.action.RemoveReplicas;
 import logic.text_edit.action.StoryPoint;
-import ui.custom_elements.CustomComboBox;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import ui.custom_elements.CustomTextArea;
 import ui.custom_elements.BasePane;
+import ui.custom_elements.combo_boxes.ComboBoxCreator;
+import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TranscriptDisplayer {
+    private static final String PREFIX = "Без названия ";
     private static final String STYLE = TranscriptDisplayer.class.getResource("/styles/style.css").toExternalForm();
-    private final Transcript transcript;
     private final List<Speaker> speakers;
     VBox textAreaContainer = new VBox();
     private final EditStory editStory = new EditStory();
-    private final EventHandler<KeyEvent> keyEventHandler;
+    private EventHandler<KeyEvent> keyEventHandler;
+    private final String name;
+    private final Insets basePaneInsets = new Insets(10, 50, 0, 50);
 
     public TranscriptDisplayer(Transcript transcript, List<Speaker> speakers) {
-        this.transcript = transcript;
+        this.name = transcript.getName();
         this.speakers = speakers;
 
-        if (textAreaContainer.getScene() != null) {
-            textAreaContainer.getScene().getStylesheets().add(STYLE);
-        } else {
-            textAreaContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
-                if (newScene != null) {
-                    newScene.getStylesheets().add(STYLE);
-                }
-            });
-        }
         for (Replica replica : transcript.getReplicas()) {
             textAreaContainer.getChildren().add(formReplicaView(replica));
         }
+        init();
+    }
 
-        this.keyEventHandler = event -> {
-            if (event.getCode() == KeyCode.DELETE) {
-                System.out.println("Delete pressed");
-                StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
-                storyPoint.apply();
-                editStory.addLast(storyPoint);
-            } else if (event.getCode() == KeyCode.N && event.isControlDown()) {
-                addNewReplica(0);
-            }
-        };
+    public TranscriptDisplayer(RawTranscript transcript, List<Speaker> speakers) {
+        this.name = PREFIX + (transcript.getID() + 1);
+        this.speakers = speakers;
+        ComboBoxCreator comboBoxCreator = new ComboBoxCreator(transcript);
+        for (int i = 0; i < transcript.getPhraseCount(); i++) {
+            textAreaContainer.getChildren().add(formReplicaView(transcript, comboBoxCreator, i));
+        }
+        init();
     }
 
     public void setupPane(ScrollPane replicas) {
@@ -74,12 +69,35 @@ public class TranscriptDisplayer {
     }
 
     public String getName() {
-        return transcript.getName();
+        return name;
     }
 
-    private TextArea initTextArea(Replica replica, ComboBox<Speaker> comboBox) {
-        TextArea textArea = new CustomTextArea(replica);
-        textArea.setText(replica.getText());
+    private void init() {
+        if (textAreaContainer.getScene() != null) {
+            textAreaContainer.getScene().getStylesheets().add(STYLE);
+        } else {
+            textAreaContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    newScene.getStylesheets().add(STYLE);
+                }
+            });
+        }
+
+        this.keyEventHandler = event -> {
+            if (event.getCode() == KeyCode.DELETE) {
+                System.out.println("Delete pressed");
+                StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
+                storyPoint.apply();
+                editStory.addLast(storyPoint);
+            } else if (event.getCode() == KeyCode.N && event.isControlDown()) {
+                addNewReplica(0);
+            }
+        };
+    }
+
+    private TextArea initTextArea(String text) {
+        TextArea textArea = new CustomTextArea();
+        textArea.setText(text);
 
         VBox.setMargin(textArea, new javafx.geometry.Insets(0, 0, 15, 0));
         textArea.setEditable(true);
@@ -94,12 +112,21 @@ public class TranscriptDisplayer {
     }
 
     private BasePane formReplicaView(Replica replica) {
-        ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
-        TextArea textArea = initTextArea(replica, comboBox);
+        ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
+        TextArea textArea = initTextArea(replica.getText());
         ImageView deleteButton = new ImageView();
         BasePane basepane = new BasePane(comboBox, textArea, deleteButton);
-        VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
+        VBox.setMargin(basepane, basePaneInsets);
         return basepane;
+    }
+
+    private BasePane formReplicaView(RawTranscript rawTranscript, ComboBoxCreator comboBoxCreator, int index) {
+        ComboBox<Speaker> comboBox = comboBoxCreator.createComboBox(index);
+        TextArea textArea = initTextArea(rawTranscript.getPhrase(index));
+        ImageView deleteButton = new ImageView();
+        BasePane basePane = new BasePane(comboBox, textArea, deleteButton);
+        VBox.setMargin(basePane, basePaneInsets);
+        return basePane;
     }
 
     private List<Integer> getToRemove() {

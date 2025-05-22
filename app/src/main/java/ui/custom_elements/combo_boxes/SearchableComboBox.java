@@ -21,11 +21,22 @@ public class SearchableComboBox extends ComboBox<Speaker> {
     private final TextField searchField = new TextField();
     private String defaultText;
 
+    public SearchableComboBox(List<Speaker> speakers, Speaker defaultSpeaker) {
+        ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
+        this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
+        this.defaultText = "";
+        init();
+        this.getSelectionModel().select(defaultSpeaker);
+    }
+
     public SearchableComboBox(List<Speaker> speakers, String defaultText) {
         ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
         this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
         this.defaultText = defaultText;
+        init();
+    }
 
+    private void init() {
         configureSearchField();
         configureCellFactory();
         setupEventHandlers();
@@ -129,7 +140,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             }
         });
 
-        setPrefWidth(160);
+        setPrefWidth(250);
         setPrefHeight(32);
         getStyleClass().add("custom-combobox");
         VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));

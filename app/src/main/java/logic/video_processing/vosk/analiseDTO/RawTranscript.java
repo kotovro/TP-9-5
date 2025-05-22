@@ -35,4 +35,8 @@ public class RawTranscript {
     public int getID() {
         return ID;
     }
+
+    public int getPhraseCount() {
+        return phrases.size();
+    }
 }

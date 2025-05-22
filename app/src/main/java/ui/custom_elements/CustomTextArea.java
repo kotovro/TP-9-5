@@ -7,7 +7,7 @@ import logic.general.Replica;
 
 public class CustomTextArea extends TextArea {
 
-    public CustomTextArea(Replica replica) {
+    public CustomTextArea() {
         setWrapText(true);
         setPrefRowCount(1);
         setMinHeight(Region.USE_PREF_SIZE);

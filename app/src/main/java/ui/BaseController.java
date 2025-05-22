@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import logic.video_processing.queue.ProcessingQueue;
 import ui.main_panes.*;
 
 import java.io.IOException;
@@ -40,10 +41,11 @@ public class BaseController {
     private final int MENU_WIDTH = 363;
     private PaneController paneController;
     private PaneController DialogController;
+    private final ProcessingQueue processingQueue = new ProcessingQueue();
 
-    private final EditPane editPane = new EditPane(this);
+    private final EditPane editPane = new EditPane(this, processingQueue);
     private final MainPane mainPane = new MainPane();
-    private final LoadPane loadPane = new LoadPane();
+    private final LoadPane loadPane = new LoadPane(processingQueue);
     private final SavesPane savesPane = new SavesPane();
     private final DialogEdit dialogEdit = new DialogEdit();
     private final DialogExit dialogExit = new DialogExit();
@@ -99,7 +101,6 @@ public class BaseController {
     }
 
     public void setContent(ContentPane contentPane) {
-
         boolean load = contentPane.getController().load();
         if (load) {
             this.contentPane.getChildren().clear();

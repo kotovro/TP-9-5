@@ -23,7 +23,12 @@ public class ComboBoxCreator {
     }
 
     public ComboBox<Speaker> createComboBox(int orderNumber) {
-        return comboBoxGroupList.get(rawTranscript.getGroupID(orderNumber)).createComboBox();
+        int groupID = rawTranscript.getGroupID(orderNumber);
+        if (groupID != -1) {
+            return comboBoxGroupList.get(groupID).createComboBox();
+        } else {
+            return createNewComboBox();
+        }
     }
 
     public ComboBox<Speaker> createNewComboBox() {

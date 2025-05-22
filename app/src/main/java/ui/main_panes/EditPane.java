@@ -5,6 +5,9 @@ import javafx.scene.Node;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
+import logic.video_processing.queue.ProcessingQueue;
+import logic.video_processing.queue.listeners.TranscriptListener;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import ui.BaseController;
 import ui.EditWindowController;
 import ui.PaneController;
@@ -16,18 +19,13 @@ public class EditPane extends ContentPane {
     PaneController paneController;
     BaseController bc;
 
-
-    public EditPane(BaseController bc) {
+    public EditPane(BaseController bc, ProcessingQueue processingQueue) {
         try {
-
-            Transcript t = new Transcript("nenfieji", new Date());
-            Transcript t1 = new Transcript("влйцщвойцщвоцщузвозщаоцуi", new Date());
-            t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
-            t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
-            t1.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
             this.bc = bc;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-            loader.setController(new EditWindowController(t, bc));
+            EditWindowController controller = new EditWindowController(bc);
+            loader.setController(controller);
+            processingQueue.setTranscriptListener(controller);
             Node node = loader.load();
             this.getChildren().setAll(node);
 

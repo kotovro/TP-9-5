@@ -98,7 +98,7 @@ public class LLMWrapper {
     }
 
     public void freeResources() {
-        service.freeResources();
+        if (service != null) service.freeResources();
         service = null;
     }
 

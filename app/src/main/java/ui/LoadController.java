@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.video_processing.audio_extractor.VideoValidator;
+import logic.video_processing.queue.ProcessingQueue;
 
 import java.awt.*;
 import java.io.File;
@@ -29,6 +30,12 @@ public class LoadController implements PaneController{
     @FXML
     private Button downloadButton;
 
+    private ProcessingQueue processingQueue;
+
+    public LoadController(ProcessingQueue processingQueue) {
+        this.processingQueue = processingQueue;
+    }
+
     @FXML
     public void initialize() {
         initDropPaneEvents();
@@ -36,7 +43,10 @@ public class LoadController implements PaneController{
 
     @FXML
     protected void onDownloadButtonClick() {
-
+        sucsessPane.setVisible(false);
+        errorPane.setVisible(false);
+        downloadButton.setDisable(true);
+        processingQueue.add(selectedFile.getAbsolutePath());
     }
 
     @FXML
@@ -82,6 +92,7 @@ public class LoadController implements PaneController{
                         selectedFile = file;
                         downloadButton.setDisable(false);
                         sucsessPane.setVisible(true);
+                        successLabel.setText("Успешно! Файл " + file.getName() + " выбран");
                         errorPane.setVisible(false);
                         success = true;
                         break;

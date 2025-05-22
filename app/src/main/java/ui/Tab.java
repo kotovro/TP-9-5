@@ -16,15 +16,7 @@ public class Tab extends HBox {
     public Tab(TranscriptDisplayer transcriptDisplayer, EditWindowController controller) {
         this.transcriptDisplayer = transcriptDisplayer;
         this.editWindowController = controller;
-
-        setPrefHeight(49);
-        name.setText(transcriptDisplayer.getName());
-        close.setImage(new Image("/images/CloseCircle1.png"));
-        close.setFitHeight(32);
-        close.setFitWidth(32);
-        getChildren().addAll(this.name, this.close);
-        setInactive();
-        initListeners();
+        init();
     }
 
     public void setActive() {
@@ -48,6 +40,17 @@ public class Tab extends HBox {
 
     public TranscriptDisplayer getTranscriptDisplayer() {
         return transcriptDisplayer;
+    }
+
+    private void init() {
+        setPrefHeight(49);
+        name.setText(transcriptDisplayer.getName());
+        close.setImage(new Image("/images/CloseCircle1.png"));
+        close.setFitHeight(32);
+        close.setFitWidth(32);
+        getChildren().addAll(this.name, this.close);
+        setInactive();
+        initListeners();
     }
 
     private void initListeners() {

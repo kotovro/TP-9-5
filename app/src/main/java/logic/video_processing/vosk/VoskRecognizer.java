@@ -100,7 +100,10 @@ public class VoskRecognizer implements AudioStreamConsumer {
         } catch (JsonProcessingException ignored) {}
 
         correctSpeakers();
-        return new RawTranscript(speakers.size(), replicas);
+        RawTranscript transcript = new RawTranscript(speakers.size(), replicas);
+        speakers = new ArrayList<>();
+        replicas = new ArrayList<>();
+        return transcript;
     }
 
     //Не оптимально
