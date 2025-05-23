@@ -1,13 +1,11 @@
 package logic.video_processing.vosk.analiseDTO;
 
-import java.time.Instant;
-
 public class RawReplica {
     public String text;
     public RawSpeaker speaker;
     public double[] speakerVoiceSample;
     public double frameCount;
-    private Instant startInstant;
+    private double startTime;
 
 
     public RawReplica(String text, RawSpeaker speaker, double[] speakerVoiceSample, double frameCount) {
@@ -17,12 +15,12 @@ public class RawReplica {
         this.frameCount = frameCount;
     }
 
-    public Instant getStartInstant() {
-        return startInstant;
+    public double getStartTime() {
+        return startTime;
     }
 
-    public void setStartInstant(Instant startInstant) {
-        this.startInstant = startInstant;
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
     }
 
     @Override

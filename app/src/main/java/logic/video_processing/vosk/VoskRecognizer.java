@@ -32,7 +32,8 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private static final int CHUNK_SIZE = 4096;
     private static final int MINIMUM_FREQUENCY = 3;
     private final ObjectMapper jsonMapper = new ObjectMapper();
-    private Instant lastReplicaInstant;
+    private double audioTime;
+    private double lastReplicaStartTime;
     private boolean inSpeech = false;
 
     private Model model;
@@ -98,6 +99,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
         try {
 
             boolean isFinal = recognizer.acceptWaveForm(audioData, bytesRead);
+            audioTime += (double) bytesRead / 2 / 16000;
 
             String partialJson = recognizer.getPartialResult();
             String partialText = "";
@@ -109,14 +111,14 @@ public class VoskRecognizer implements AudioStreamConsumer {
             } catch (Exception ignore) { }
 
             if (!inSpeech && !partialText.isEmpty()) {
-                lastReplicaInstant = Instant.now();
+                lastReplicaStartTime = audioTime;
                 inSpeech = true;
             }
 
             if (isFinal) {
                 Optional<RawReplica> opt = parseReplica(recognizer.getResult());
                 opt.ifPresent(replica -> {
-                    replica.setStartInstant(lastReplicaInstant);
+                    replica.setStartTime(lastReplicaStartTime);
                     replicas.add(replica);
                 });
                 inSpeech = false;
