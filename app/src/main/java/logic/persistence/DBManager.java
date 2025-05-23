@@ -60,4 +60,8 @@ public class DBManager {
     public static TagDao getTagDao() {
         return TAG_DAO;
     }
+
+    public static ProtocolDao getProtocolDao() {
+        return PROTOCOL_DAO;
+    }
 }

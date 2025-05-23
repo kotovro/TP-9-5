@@ -32,7 +32,7 @@ public class ProcessingQueue implements Processor {
     private TranscriptListener transcriptListener = new DeafTranscriptListener();
     private SummarizeListener summarizeListener = new DeafSummarizeListener();
 
-    private boolean isTranscriptQueueActive = false;
+    private QueueState state = QueueState.NO_ACTIVE;
 
     public void add(String path) {
         makeTranscriptQueue.add(path);
@@ -82,15 +82,16 @@ public class ProcessingQueue implements Processor {
         initModelForTask();
         setProcessStatus(ProcessStatus.TASK_PROCESSING);
 
-        if (isTranscriptQueueActive) {
+        if (state == QueueState.TRANSCRIPT_ACTIVE) {
             audioExtractorStreamer.processAudio(makeTranscriptQueue.poll(), voskRecognizer);
             RawTranscript rawTranscript = voskRecognizer.getFinalResult();
             transcriptListener.onResultReady(rawTranscript);
-        } else {
+        }
+        if (state == QueueState.PROTOCOL_ACTIVE) {
             Transcript transcript = makeProtocolQueue.poll();
             Protocol protocol = llm.summarize(transcript);
             List<Task> tasks = llm.getTasks(transcript);
-            summarizeListener.onResultReady(protocol, tasks);
+            summarizeListener.onResultReady(transcript, protocol, tasks);
         }
 
         setProcessStatus(ProcessStatus.TASK_FINISHED);
@@ -102,25 +103,26 @@ public class ProcessingQueue implements Processor {
     }
 
     private void initModelForTask() {
-        if (!isTranscriptQueueActive && makeProtocolQueue.isEmpty()) {
+        if (state != QueueState.TRANSCRIPT_ACTIVE && makeProtocolQueue.isEmpty()) {
             setProcessStatus(ProcessStatus.MODEL_UNLOAD);
             llm.freeResources();
             setProcessStatus(ProcessStatus.MODEL_UPLOAD);
             voskRecognizer.init();
-            isTranscriptQueueActive = true;
+            state = QueueState.TRANSCRIPT_ACTIVE;
         }
-        if (isTranscriptQueueActive && makeTranscriptQueue.isEmpty()) {
+        if (state != QueueState.PROTOCOL_ACTIVE && makeTranscriptQueue.isEmpty()) {
             setProcessStatus(ProcessStatus.MODEL_UNLOAD);
             voskRecognizer.freeResources();
             setProcessStatus(ProcessStatus.MODEL_UPLOAD);
             llm.init();
-            isTranscriptQueueActive = false;
+            state = QueueState.PROTOCOL_ACTIVE;
         }
     }
 
     private void closeModels() {
         if (llm.isInit()) llm.freeResources();
         if (voskRecognizer.isInit()) voskRecognizer.freeResources();
+        state = QueueState.NO_ACTIVE;
     }
 
     public ProcessStatus getProcessStatus() {

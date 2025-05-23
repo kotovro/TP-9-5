@@ -1,20 +1,20 @@
-package ui;
+package ui.custom_elements;
 
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
+import ui.EditWindowController;
 
 public class Tab extends HBox {
-    private TranscriptDisplayer transcriptDisplayer;
+    private EditableDisplayer transcriptDisplayer;
     private Label name = new Label();
     private ImageView close = new ImageView();
     private EditWindowController editWindowController;
 
-    public Tab(TranscriptDisplayer transcriptDisplayer, EditWindowController controller) {
+    public Tab(EditableDisplayer transcriptDisplayer, EditWindowController controller) {
         this.transcriptDisplayer = transcriptDisplayer;
         this.editWindowController = controller;
         init();
@@ -43,7 +43,7 @@ public class Tab extends HBox {
 //        transcriptDisplayer.unbindHotKeys();
     }
 
-    public TranscriptDisplayer getTranscriptDisplayer() {
+    public EditableDisplayer getTranscriptDisplayer() {
         return transcriptDisplayer;
     }
 

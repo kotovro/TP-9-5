@@ -8,19 +8,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
+import logic.general.Protocol;
+import logic.general.Task;
 import logic.general.Transcript;
+import logic.video_processing.queue.ProcessingQueue;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class StAndPrBuilder extends HBox {
-    public Pane st = new Pane();
-    public Button pr = new Button();
-    public Transcript transcript;
+    private Pane st = new Pane();
+    private Button pr = new Button();
 
-    public StAndPrBuilder(Transcript transcript) {
-        this.transcript = transcript;
-
-        Label name = new Label(transcript.getName()); //внутрь вставить название стенограммы
+    public StAndPrBuilder(Transcript transcript, Protocol protocol, List<Task> tasks,
+                          EditWindowController editWindowController, ProcessingQueue processingQueue) {
+        Label name = new Label(transcript.getName());
         Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 16);
         Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
         Font manropeFont3 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
@@ -32,7 +34,7 @@ public class StAndPrBuilder extends HBox {
         Pane dateP = new Pane();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String formattedDate = sdf.format(transcript.getDate());
-        Label date = new Label(formattedDate); // сюда вставить нормальную дату (числа месяца и года достаточно)
+        Label date = new Label(formattedDate);
         date.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 14; -fx-text-fill: black;");
         date.setFont(manropeFont3);
         date.setLayoutY(10);
@@ -60,11 +62,20 @@ public class StAndPrBuilder extends HBox {
         st.getChildren().addAll(name, dateP, im);
 
         pr.setFont(manropeFont2);
-        //if есть протокол:
-        pr.setText("Открыть протокол");
+        if (protocol != null) {
+            pr.setText("Открыть/nпротокол");
+            pr.setOnAction(e -> {
+                editWindowController.addProtocol(protocol, transcript, tasks);
+            });
+        } else {
+            pr.setText("Создать/nпротокол");
+            pr.setOnAction(e -> {
+                processingQueue.add(transcript);
+            });
+        }
         pr.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 10; -fx-text-fill: white;");
         pr.setPrefSize(154, 50);
-        this.setMargin(pr,  new Insets(30, 0, 5, 20));
+        setMargin(pr,  new Insets(30, 0, 5, 20));
         this.getChildren().addAll(st, pr);
     }
 }

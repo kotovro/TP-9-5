@@ -32,6 +32,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private static final int MINIMUM_FREQUENCY = 3;
 
     private Model model;
+    private SpeakerModel speakerModel;
     private Recognizer recognizer;
     private List<RawSpeaker> speakers;
     private List<RawReplica> replicas;
@@ -44,9 +45,9 @@ public class VoskRecognizer implements AudioStreamConsumer {
     public void init() {
         try {
             model = new Model(PlatformDependent.getPrefix() + SPEECH_PATH);
-            recognizer = new Recognizer(model, 16000);
-            SpeakerModel speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
-            recognizer.setSpeakerModel(speakerModel);
+            speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
+            recognizer = new Recognizer(model, 16000, speakerModel);
+
             speakers = new ArrayList<>();
             replicas = new ArrayList<>();
         } catch (IOException e) {
@@ -57,8 +58,10 @@ public class VoskRecognizer implements AudioStreamConsumer {
     public void freeResources() {
         recognizer.close();
         model.close();
+        speakerModel.close();
         recognizer = null;
         model = null;
+        speakerModel = null;
     }
 
     @Override

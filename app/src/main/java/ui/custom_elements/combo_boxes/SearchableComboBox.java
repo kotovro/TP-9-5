@@ -107,7 +107,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                     imageView.setImage(speaker.getImage());
                     setGraphic(imageView);
                     setText(speaker.getName());
-                    setStyle("-fx-background-color: #9DA0FA; -fx-text-fill: white; -fx-border-color: #6366B5; -fx-border-width: 0 0 1px 0;");
+                    setStyle("-fx-background-color: #7AA3FA; -fx-text-fill: white; -fx-border-color: #4A6DB5; -fx-border-width: 0 0 2px 0;");
                 }
             }
         });

@@ -6,16 +6,23 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import logic.general.Protocol;
 import logic.general.Speaker;
+import logic.general.Task;
+import logic.general.Transcript;
 import logic.persistence.DBManager;
+import logic.video_processing.queue.listeners.SummarizeListener;
 import logic.video_processing.queue.listeners.TranscriptListener;
 import logic.video_processing.vosk.analiseDTO.RawTranscript;
+import ui.custom_elements.ProtocolDisplayer;
+import ui.custom_elements.RawTranscriptDisplayer;
+import ui.custom_elements.Tab;
+import ui.custom_elements.TranscriptDisplayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class EditWindowController implements PaneController, TranscriptListener {
+public class EditWindowController implements PaneController, TranscriptListener, SummarizeListener  {
     @FXML
     private ScrollPane replicas;
     @FXML
@@ -69,7 +76,7 @@ public class EditWindowController implements PaneController, TranscriptListener 
         tabs.remove(tab);
         tabRow.getChildren().remove(tab);
         if (tab.equals(active)) {
-            setActive(!tabs.isEmpty() ? tabs.getLast() : null);
+            setActive(!tabs.isEmpty() ? tabs.getFirst() : null);
         }
         if (active != null) {
             active.getTranscriptDisplayer().setupPane(replicas);
@@ -98,6 +105,18 @@ public class EditWindowController implements PaneController, TranscriptListener 
 
     }
 
+    public void addTranscript(Transcript transcript) {
+        Platform.runLater(() -> {
+            addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        });
+    }
+
+    public void addProtocol(Protocol protocol, Transcript transcript, List<Task> tasks) {
+        Platform.runLater(() -> {
+            addTab(new Tab(new ProtocolDisplayer(protocol, transcript, speakers, tasks), this));
+        });
+    }
+
     private void initSize() {
         HBox tmp = new HBox();
         HBox.setMargin(tmp, new Insets(0, 0, 10, 0));
@@ -108,7 +127,14 @@ public class EditWindowController implements PaneController, TranscriptListener 
     @Override
     public void onResultReady(RawTranscript rawTranscript) {
         Platform.runLater(() -> {
-            addTab(new Tab(new TranscriptDisplayer(rawTranscript, speakers), this));
+            addTab(new Tab(new RawTranscriptDisplayer(rawTranscript, speakers), this));
+        });
+    }
+
+    @Override
+    public void onResultReady(Transcript transcript, Protocol protocol, List<Task> tasks) {
+        Platform.runLater(() -> {
+            addTab(new Tab(new ProtocolDisplayer(protocol, transcript, speakers, tasks), this));
         });
     }
 }
