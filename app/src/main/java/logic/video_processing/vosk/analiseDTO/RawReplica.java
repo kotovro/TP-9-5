@@ -5,6 +5,7 @@ public class RawReplica {
     public RawSpeaker speaker;
     public double[] speakerVoiceSample;
     public double frameCount;
+    private double startTime;
 
 
     public RawReplica(String text, RawSpeaker speaker, double[] speakerVoiceSample, double frameCount) {
@@ -12,6 +13,14 @@ public class RawReplica {
         this.speaker = speaker;
         this.speakerVoiceSample = speakerVoiceSample;
         this.frameCount = frameCount;
+    }
+
+    public double getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
     }
 
     @Override
