@@ -48,7 +48,7 @@
 ### Материалы предпроектного исследования
 #### Аналитика
 - Бенчмаркинг [XLSX](https://shorturl.at/X3Igz), [выводы](https://docs.google.com/document/d/1G0JKdgnGKwCzXxGnt9JjcxBIZKs8HunQ/edit?usp=sharing&ouid=114850176025970822206&rtpof=true&sd=true)
-- SWOT анализ [XLSX](https://shorturl.at/58z0T)
+- SWOT анализ [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9F%D1%80%D0%B5%D0%B4%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5%20%D0%B8%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F/SWOT_%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7_pdf.pdf)
 - [Анализ рынка; модель моонетизации](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Анализ%20рынка%20и%20модель%20монетизации.pdf)
 - [Портрет целевой аудитории](https://github.com/kotovro/TP-9-5/blob/main/Documents/Предпроектные%20исследования/Портрет%20целевой%20аудитории.pdf)
 - [Roadmap](https://github.com/kotovro/TP-9-5/blob/main/Documents/RoadmapPDF.pdf)
