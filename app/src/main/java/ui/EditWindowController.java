@@ -12,13 +12,12 @@ import logic.persistence.DBManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class EditWindowController implements PaneController {
     @FXML
     private ScrollPane replicas;
     @FXML
-    private Pane tabPane;
+    private ScrollPane tabPane;
     private HBox tabRow = new HBox();
     private final Transcript transcript;
     private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
@@ -26,13 +25,23 @@ public class EditWindowController implements PaneController {
     public List<Tab> tabs = new ArrayList<>();
     BaseController bc;
 
+
     @FXML
     public void initialize() {
-        ScrollPane sc = new ScrollPane();
-        sc.setContent(tabRow);
-        tabPane.getChildren().add(sc);
+        tabPane.getStyleClass().add("tab-scroll-pane");
+        replicas.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        tabPane.setContent(tabRow);
         initSize();
         Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
         addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
         addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
         addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));

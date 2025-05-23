@@ -3,6 +3,7 @@ package ui;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -62,6 +63,7 @@ public class TranscriptDisplayer {
     }
 
     public void setupPane(ScrollPane replicas) {
+        replicas.getStyleClass().add("tab-scroll-pane");
         replicas.setContent(textAreaContainer);
     }
 
@@ -97,7 +99,8 @@ public class TranscriptDisplayer {
         ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica, comboBox);
         ImageView deleteButton = new ImageView();
-        BasePane basepane = new BasePane(comboBox, textArea, deleteButton);
+        CheckBox cb = new CheckBox();
+        BasePane basepane = new BasePane(comboBox, textArea, deleteButton, cb);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
     }

@@ -24,7 +24,7 @@ public class EditPane extends ContentPane {
             Transcript t1 = new Transcript("cfnqekaifhnwiowfhwpdfjqpo", new Date());
             t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
             t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
-            t1.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
+            t.addReplica(new Replica("dwodkow", new Speaker("msowdow", null, 100)));
             this.bc = bc;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
             loader.setController(new EditWindowController(t, bc));

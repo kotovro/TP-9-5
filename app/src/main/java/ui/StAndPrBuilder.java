@@ -61,7 +61,7 @@ public class StAndPrBuilder extends HBox {
 
         pr.setFont(manropeFont2);
         //if есть протокол:
-        pr.setText("Открыть протокол");
+        pr.setText("Открыть\nпротокол");
         pr.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 10; -fx-text-fill: white;");
         pr.setPrefSize(154, 50);
         this.setMargin(pr,  new Insets(30, 0, 5, 20));

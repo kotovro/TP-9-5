@@ -6,12 +6,16 @@
 
 <AnchorPane maxHeight="618.0" maxWidth="1137.0" prefHeight="618.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="tabPane" prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: rgba(58, 92, 185, 0.7);" />
+      <Pane prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: rgba(58, 92, 185, 0.7);">
+         <children>
+            <ScrollPane fx:id="tabPane" prefHeight="88.0" prefWidth="1138.0" />
+         </children>
+      </Pane>
       <Pane layoutY="70.0" prefHeight="550.0" prefWidth="1138.0" style="-fx-background-color: rgba(42, 76, 213, 0.3);">
          <children>
             <Pane layoutX="61.0" layoutY="61.0" prefHeight="428.0" prefWidth="1017.0" style="-fx-background-color: #DAE6FF; -fx-background-radius: 40;">
                <children>
-                  <ScrollPane fx:id="replicas" layoutX="19.0" prefHeight="428.0" prefWidth="979.0" style="-fx-background-color: #DAE6FF;" />
+                  <ScrollPane fx:id="replicas" layoutX="8.0" prefHeight="428.0" prefWidth="990.0" style="-fx-background-color: #DAE6FF;" />
                </children>
             </Pane>
          </children>
