@@ -17,6 +17,7 @@ import javax.sound.sampled.AudioInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,9 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private static final double MINIMUM_FRAME_COUNT = 200;
     private static final int CHUNK_SIZE = 4096;
     private static final int MINIMUM_FREQUENCY = 3;
+    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private Instant lastReplicaInstant;
+    private boolean inSpeech = false;
 
     private Model model;
     private Recognizer recognizer;
@@ -77,13 +81,47 @@ public class VoskRecognizer implements AudioStreamConsumer {
         }
     }
 
-    @Override
+   /* @Override
     public void onAudioChunkReceived(byte[] audioData, int bytesRead) {
         try {
             if (recognizer.acceptWaveForm(audioData, bytesRead)) {
                 var result = parseReplica(recognizer.getResult());
                 result.ifPresent(replicas::add);
             }
+        } catch (Exception e) {
+            System.err.println("Can't read file");
+        }
+    }*/
+
+    @Override
+    public void onAudioChunkReceived(byte[] audioData, int bytesRead) {
+        try {
+
+            boolean isFinal = recognizer.acceptWaveForm(audioData, bytesRead);
+
+            String partialJson = recognizer.getPartialResult();
+            String partialText = "";
+
+            try {
+                JsonNode root = jsonMapper.readTree(partialJson);
+                JsonNode p = root.get("partial");
+                partialText = (p != null ? p.asText().trim() : "");
+            } catch (Exception ignore) { }
+
+            if (!inSpeech && !partialText.isEmpty()) {
+                lastReplicaInstant = Instant.now();
+                inSpeech = true;
+            }
+
+            if (isFinal) {
+                Optional<RawReplica> opt = parseReplica(recognizer.getResult());
+                opt.ifPresent(replica -> {
+                    replica.setStartInstant(lastReplicaInstant);
+                    replicas.add(replica);
+                });
+                inSpeech = false;
+            }
+
         } catch (Exception e) {
             System.err.println("Can't read file");
         }
