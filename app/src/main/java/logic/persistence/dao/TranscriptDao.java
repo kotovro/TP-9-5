@@ -4,17 +4,14 @@ import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
 import logic.general.Tag;
+import logic.persistence.exception.EmptyTranscriptSaveAttemptException;
 import logic.persistence.exception.UniqueTranscriptNameViolationException;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class TranscriptDao {
     private final Connection connection;
@@ -84,11 +81,40 @@ public class TranscriptDao {
         }
     }
 
+    private void setTranscriptTags(Transcript transcript) {
+        String fetchTagsSql = "SELECT t.id, t.name FROM tag t " +
+                            "JOIN transcript_tag tt ON t.id = tt.tag_id " +
+                            "WHERE tt.transcript_id = ?";
+        List<Tag> tags = new ArrayList<>();
+        try (PreparedStatement tagStmt = connection.prepareStatement(fetchTagsSql)) {
+            tagStmt.setInt(1, transcript.getId());
+            try (ResultSet tagRs = tagStmt.executeQuery()) {
+                while (tagRs.next()) {
+                    Tag tag = new Tag(tagRs.getString("name"));
+                    tag.setId(tagRs.getInt("id"));
+                    tags.add(tag);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        transcript.setTags(tags);
+    }
+
+    private boolean isTranscriptEmpty(Transcript transcript) {
+        return transcript.getReplicas().isEmpty();
+    }
+
     public void updateTranscript(Transcript transcript) {
         try {
             int transcriptId = transcript.getId();
             if (transcriptId == -1) {
                 return;
+            }
+
+            if (isTranscriptEmpty(transcript))
+            {
+                throw new EmptyTranscriptSaveAttemptException("Нельзя сохранить пустую стенограмму!");
             }
 
             String checkNameSql = "SELECT name FROM transcript WHERE id = ?";
@@ -120,8 +146,7 @@ public class TranscriptDao {
             }
 
             deleteReplicas(transcriptId);
-            List<Replica> replicas = (List<Replica>) transcript.getReplicas();
-            insertReplicas(transcriptId, replicas);
+            insertReplicas(transcriptId, transcript.getReplicas());
 
             List<Tag> tags = (List<Tag>) transcript.getTags();
             deleteTranscriptTags(transcriptId);
@@ -135,6 +160,8 @@ public class TranscriptDao {
             }
         }
     }
+
+
 
     private void deleteReplicas(int transcriptId) throws SQLException {
         String deleteSql = "DELETE FROM replica WHERE transcript_id = ?";
@@ -176,6 +203,7 @@ public class TranscriptDao {
                         transcript = new Transcript(rs.getString("name"), date);
                         transcript.setId(transcriptId);
                         transcript.setReplicas(new ArrayList<>());
+                        setTranscriptTags(transcript);
                     }
                     Replica replica = new Replica();
                     replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
@@ -193,6 +221,10 @@ public class TranscriptDao {
 
     public void addTranscript(Transcript transcript) {
         try {
+            if (isTranscriptEmpty(transcript))
+            {
+                throw new EmptyTranscriptSaveAttemptException("Нельзя сохранить пусутю стенограмму!");
+            }
             String insertTranscriptSql = "INSERT INTO transcript (name, date) VALUES (?, ?)";
             try (PreparedStatement stmt = connection.prepareStatement(insertTranscriptSql)) {
                 stmt.setString(1, transcript.getName());
@@ -207,8 +239,7 @@ public class TranscriptDao {
                 }
             }
 
-            List<Replica> replicas = (List<Replica>) transcript.getReplicas();
-            insertReplicas(transcript.getId(), replicas);
+            insertReplicas(transcript.getId(), transcript.getReplicas());
 
             List<Tag> tags = (List<Tag>) transcript.getTags();
             insertTranscriptTags(transcript.getId(), tags);
@@ -240,8 +271,8 @@ public class TranscriptDao {
                     Date date = sdf.parse(rawDate);
                     transcript = new Transcript(rs.getString("name"), date);
                     transcript.setId(transcriptId);
-
                     transcript.setReplicas(new ArrayList<>());
+                    setTranscriptTags(transcript);
                     transcriptMap.put(transcriptId, transcript);
                 }
                 Replica replica = new Replica();
@@ -274,6 +305,7 @@ public class TranscriptDao {
                         transcript = new Transcript(rs.getString("name"), date);
                         transcript.setId(rs.getInt("transcript_id"));
                         transcript.setReplicas(new ArrayList<>());
+                        setTranscriptTags(transcript);
                     }
                     Replica replica = new Replica();
                     replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
