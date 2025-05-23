@@ -37,6 +37,7 @@ public class SpeakerDao {
         }
     }
 
+    ///may be removed in future - we won't delte them in near future
     public void deleteSpeaker(int speakerId) {
         String sql = "DELETE FROM speaker WHERE id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
