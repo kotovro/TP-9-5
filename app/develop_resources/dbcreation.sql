@@ -38,6 +38,8 @@ CREATE TABLE task (
                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                       description TEXT NOT NULL,
                       transcript_id INTEGER,
+                      assignee_id INTEGER DEFAULT 1,
+                      FOREIGN KEY (assignee_id) REFERENCES speaker(id) ON DELETE SET DEFAULT,
                       FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE
 );
 

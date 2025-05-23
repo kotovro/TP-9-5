@@ -4,10 +4,12 @@ public class Task {
     private int id;
     private String description;
     private int transcriptId;
+    private int assigneeId = 1;
 
-    public Task(int transcriptId, String description) {
+    public Task(int transcriptId, int assigneeId, String description) {
         this.transcriptId = transcriptId;
         this.description = description;
+        this.assigneeId = assigneeId;
     }
 
 
@@ -32,5 +34,13 @@ public class Task {
 
     public void setTranscriptId(int transcriptId) {
         this.transcriptId = transcriptId;
+    }
+
+    public int getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(int assigneeId) {
+        this.assigneeId = assigneeId;
     }
 }
