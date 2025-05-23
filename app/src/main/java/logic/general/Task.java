@@ -12,6 +12,11 @@ public class Task {
         this.assigneeId = assigneeId;
     }
 
+    public Task(int transcriptId, String description) {
+        this.transcriptId = transcriptId;
+        this.description = description;
+    }
+
 
     public int getId() {
         return id;
