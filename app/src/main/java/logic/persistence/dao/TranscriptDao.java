@@ -257,7 +257,8 @@ public class TranscriptDao {
         List<Transcript> transcripts;
         String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
                 "FROM transcript t " +
-                "JOIN replica r ON t.id = r.transcript_id ";
+                "JOIN replica r ON t.id = r.transcript_id " +
+                "ORDER BY t.id";
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
