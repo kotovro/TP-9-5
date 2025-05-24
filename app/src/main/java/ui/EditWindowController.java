@@ -26,7 +26,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @FXML
     private ScrollPane replicas;
     @FXML
-    private Pane tabPane;
+    private ScrollPane tabPane;
     private HBox tabRow = new HBox();
     private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
     public Tab active = null;
@@ -39,9 +39,9 @@ public class EditWindowController implements PaneController, TranscriptListener,
 
     @FXML
     public void initialize() {
-        ScrollPane sc = new ScrollPane();
-        sc.setContent(tabRow);
-        tabPane.getChildren().add(sc);
+        tabPane.getStyleClass().add("tab-scroll-pane");
+        replicas.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        tabPane.setContent(tabRow);
         initSize();
 //        Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
 //        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));

@@ -15,6 +15,7 @@
     -fx-background-radius: 10px;
     -fx-border-width: 3px;
     -fx-text-fill: black;
+    -fx-font-size: 14px;
 }
 
 .custom-text-area .scroll-pane {
@@ -93,30 +94,30 @@
     -fx-background-color: #8c8ef0;
 }
 
-.scroll-pane {
+.tab-scroll-pane {
     -fx-background-color: transparent;
     -fx-background: transparent;
-    -fx-background-radius: 18;
+    -fx-background-radius: 25;
 }
 
-.scroll-pane .viewport {
+.tab-scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
-.scroll-pane .scroll-bar:vertical,
-.scroll-pane .scroll-bar:horizontal {
+.tab-scroll-pane .scroll-bar:vertical,
+.tab-scroll-pane .scroll-bar:horizontal {
     -fx-opacity: 1;
 }
 
-.scroll-pane .scroll-bar:vertical {
+.tab-scroll-pane .scroll-bar:vertical {
     -fx-translate-x: -16px;
 }
 
-.scroll-pane .scroll-bar .thumb {
+.tab-scroll-pane .scroll-bar .thumb {
     -fx-background-color: rgba(10, 42, 133, 0.75);
 }
 
-.scroll-pane .scroll-bar .track {
+.tab-scroll-pane .scroll-bar .track {
     -fx-background-color: #B8D0FF;
 }
 

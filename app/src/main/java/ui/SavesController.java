@@ -32,6 +32,7 @@ public class SavesController implements PaneController{
 
     @FXML
     public void initialize() {
+        saves.getStyleClass().add("saves-scroll-pane");
         VBox v = new VBox();
 //        DBManager.getProtocolDao().
         for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {

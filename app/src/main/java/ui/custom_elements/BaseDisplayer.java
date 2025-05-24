@@ -3,6 +3,7 @@ package ui.custom_elements;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -95,8 +96,9 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica.getText());
         ImageView deleteButton = new ImageView();
-        BasePane basepane = new BasePane(comboBox, textArea, deleteButton);
-        VBox.setMargin(basepane, basePaneInsets);
+        CheckBox cb = new CheckBox();
+        BasePane basepane = new BasePane(comboBox, textArea, deleteButton, cb);
+        VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
     }
 
