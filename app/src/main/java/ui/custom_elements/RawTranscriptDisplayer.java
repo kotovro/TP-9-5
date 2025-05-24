@@ -1,5 +1,6 @@
 package ui.custom_elements;
 
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
@@ -37,7 +38,8 @@ public class RawTranscriptDisplayer extends BaseDisplayer{
         ComboBox<Speaker> comboBox = comboBoxCreator.createComboBox(index);
         TextArea textArea = initTextArea(rawTranscript.getPhrase(index));
         ImageView deleteButton = new ImageView();
-        BasePane basePane = new BasePane(comboBox, textArea, deleteButton);
+        CheckBox cb = new CheckBox();
+        BasePane basePane = new BasePane(comboBox, textArea, deleteButton, cb);
         VBox.setMargin(basePane, basePaneInsets);
         return basePane;
     }

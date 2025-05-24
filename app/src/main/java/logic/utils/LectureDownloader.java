@@ -1,5 +1,7 @@
 package logic.utils;
 
+import logic.video_processing.audio_extractor.DeafProcessListener;
+import logic.video_processing.audio_extractor.ProcessListener;
 import logic.video_processing.queue.Processor;
 
 import java.io.BufferedInputStream;
@@ -12,6 +14,7 @@ import java.net.URL;
 public class LectureDownloader implements Processor {
     private long bytesDownloaded = 0;
     private long totalBytes = -1;
+    private ProcessListener processListener = new DeafProcessListener();
 
     public File downloadLectureVideo(String lectureURL) throws IOException {
         File outputFile = new File("dynamic-resources/lectures/lecture.webm");
@@ -32,6 +35,7 @@ public class LectureDownloader implements Processor {
 
         totalBytes = connection.getContentLength();
         bytesDownloaded = 0;
+        processListener.notifyStart(this);
 
         try (BufferedInputStream in = new BufferedInputStream(url.openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
@@ -42,11 +46,17 @@ public class LectureDownloader implements Processor {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
                 bytesDownloaded += bytesRead;
             }
+        } finally {
+            processListener.notifyStop(this);
         }
     }
 
     @Override
     public int getProcessPercent() {
         return (int) (bytesDownloaded * 100 / totalBytes);
+    }
+
+    public void subscribe(ProcessListener processListener) {
+        this.processListener = processListener;
     }
 }

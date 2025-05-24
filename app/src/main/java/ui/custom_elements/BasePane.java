@@ -43,7 +43,6 @@ public class BasePane extends Pane {
         this.combobox.setPrefHeight(34);
         this.combobox.setLayoutX(14 + 25);
         this.combobox.setLayoutY(22);
-        // динамически изменять размер combobox в зависимости от содержимого
 
 
         Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/CloseCircle2.png")).toExternalForm());

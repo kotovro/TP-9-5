@@ -12,21 +12,23 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import logic.video_processing.queue.ProcessingQueue;
+import ui.custom_elements.DownloadScrollPane;
+import ui.custom_elements.ListenProgressBar;
+import ui.custom_elements.StatusLabel;
 import ui.main_panes.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class BaseController {
     @FXML
     private Pane contentPane;
-    @FXML
-    private ScrollPane downloadScroll;
     @FXML
     private Group menuButton;
     @FXML
@@ -58,9 +60,9 @@ public class BaseController {
     private final DialogEdit dialogEdit = new DialogEdit();
     private final DialogExit dialogExit = new DialogExit();
     private final DialogRecord dialogRecord = new DialogRecord();
+    DownloadScrollPane downloadScrollPane = new DownloadScrollPane();
 
-    private static final double MAX_HEIGHT_WITHOUT_SCROLL = 332;
-    private static final String STYLE = TranscriptDisplayer.class.getResource("/styles/download.css").toExternalForm();
+    private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
     DialogWindow dialog;
 
 
@@ -133,6 +135,8 @@ public class BaseController {
     }
 
     private void toggleDownloads() {
+        if (downloadScrollPane.isEmpty()) return;
+
         isDownloadsOpen = !isDownloadsOpen;
         FadeTransition fade = new FadeTransition(Duration.millis(500), downloadPane);
         if (isDownloadsOpen) {
@@ -145,47 +149,30 @@ public class BaseController {
         else {
             fade.setFromValue(1.0);
             fade.setToValue(0.0);
-            fade.setOnFinished(e -> downloadPane.setVisible(false));
+            fade.setOnFinished(e -> downloadPane.setVisible(isDownloadsOpen));
             downloadLane.setStyle("-fx-background-color:  #B8D0FF; -fx-background-radius: 20;");
         }
         fade.play();
     }
 
     private void setDownloadLane() {
-        //if есть что загружать
-        ProgressBar load = new ProgressBar();
-        load.setPrefSize(317, 14);
-        load.setProgress(-1.0); //это имитация, надо прикрутить нормальную загрузку
-        load.setStyle("-fx-control-inner-background: #B8D0FF; -fx-accent: #131F5A; -fx-background-radius: 6;" +
-                "-fx-background-color: transparent; -fx-background-insets: 0; -fx-effect: none; -fx-padding: 0; " +
-                "-fx-border-insets: 0;");
-        load.setLayoutY(5);
-        load.setLayoutX(14);
+        ListenProgressBar loadBar = new ListenProgressBar();
+        StatusLabel statusLabel = new StatusLabel();
+        processingQueue.setProcessListener(loadBar);
+        processingQueue.addStatusListener(statusLabel);
+        processingQueue.addStatusListener(loadBar);
 
-        Label status = new Label("Status");
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
-        status.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 12; -fx-text-fill: #131F5A;");
-        status.setFont(manropeFont2);
-        status.setLayoutX(38);
-        status.setLayoutY(20);
-
-        load.setOnMouseClicked(event -> toggleDownloads());
-
-        downloadLane.getChildren().addAll(load, status);
+        loadBar.setOnMouseClicked(event -> toggleDownloads());
+        downloadLane.getChildren().addAll(loadBar, statusLabel);
     }
 
     private void setDownloadPane() {
-        VBox contentContainer = new VBox();
-        downloadScroll.setContent(contentContainer);
+        downloadPane.getChildren().add(downloadScrollPane);
+        processingQueue.setQueueChangeListener(downloadScrollPane);
 
-        downloadScroll.setPrefHeight(93);
-        downloadScroll.setFitToWidth(true);
+        downloadPane.prefWidthProperty().bind(downloadScrollPane.widthProperty());
+        downloadPane.prefHeightProperty().bind(downloadScrollPane.heightProperty());
 
-        for (int i = 0; i < 6; i++) {
-            addItem(contentContainer);
-        }
-
-        configureScrollPane(contentContainer);
         if (downloadPane.getScene() != null) {
             downloadPane.getScene().getStylesheets().add(STYLE);
         } else {
@@ -195,78 +182,6 @@ public class BaseController {
                 }
             });
         }
-    }
-
-    private void configureScrollPane(VBox contentContainer) {
-        contentContainer.heightProperty().removeListener(this::contentHeightChanged);
-        contentContainer.heightProperty().addListener(this::contentHeightChanged);
-        downloadScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        downloadScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-    }
-
-
-    private void contentHeightChanged(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
-        double newHeight = newVal.doubleValue();
-        double maxBottomY = downloadPane.getLayoutY() + downloadPane.getPrefHeight();
-
-        if (newHeight > MAX_HEIGHT_WITHOUT_SCROLL) {
-            downloadScroll.setPrefHeight(MAX_HEIGHT_WITHOUT_SCROLL);
-            downloadPane.setPrefHeight(MAX_HEIGHT_WITHOUT_SCROLL);
-        } else {
-            downloadScroll.setPrefHeight(newHeight);
-            downloadPane.setPrefHeight(newHeight);
-        }
-        double newTopY = maxBottomY - downloadPane.getPrefHeight();
-        if (newTopY < 590) {
-            downloadPane.setLayoutY(newTopY);
-        }
-    }
-
-    private void addItem(VBox container) {
-        Pane item = new Pane();
-        item.setStyle("-fx-background-color: #3A5CB9; -fx-background-radius: 16;");
-        item.setPrefSize(250,74);
-
-        Label name = new Label("Name");
-        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
-        name.setStyle("-fx-font-family: \"Manrope Medium\";-fx-font-size: 14; -fx-text-fill: white;");
-        name.setFont(manropeFont);
-        name.setLayoutX(49);
-        name.setLayoutY(5);
-
-        ProgressBar load = new ProgressBar();
-        load.setPrefSize(200, 14);
-        load.setProgress(-1.0);
-        load.setStyle("-fx-control-inner-background: #B8D0FF; -fx-accent: #131F5A; -fx-background-radius: 6;" +
-                "-fx-background-color: transparent; -fx-background-insets: 0; -fx-effect: null;");
-        load.setLayoutY(30);
-        load.setLayoutX(49);
-        downloadScroll.getStyleClass().add("download-scroll-pane");
-
-        Label status = new Label("В ожидании обработки");
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
-        status.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 12; -fx-text-fill: #131F5A;");
-        status.setFont(manropeFont2);
-        status.setLayoutX(49);
-        status.setLayoutY(50);
-
-        ImageView im = new ImageView();
-        im.setImage(new Image("/images/Group9.png"));
-        im.setFitHeight(38);
-        im.setFitWidth(28);
-        im.setLayoutX(8);
-        im.setLayoutY(15);
-
-        ImageView close = new ImageView();
-        close.setImage(new Image("/images/CloseCircle4.png"));
-        close.setFitHeight(27);
-        close.setFitWidth(27);
-        close.setLayoutX(265);
-        close.setLayoutY(25);
-
-        VBox.setMargin(item, new javafx.geometry.Insets(7, 10, 7, 7));
-        item.getChildren().addAll(name, im, load, close, status);
-        container.getChildren().add(item);
     }
 
     private void toggleMenu() {

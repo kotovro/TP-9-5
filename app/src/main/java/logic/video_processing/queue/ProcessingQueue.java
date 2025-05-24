@@ -33,7 +33,7 @@ public class ProcessingQueue implements Processor {
     private final LectureDownloader lectureDownloader = new LectureDownloader();
 
     private ProcessStatus processStatus = ProcessStatus.WAITING_FOR_START;
-    private StatusListener statusListener = new DeafStatusListener();
+    private List<StatusListener> statusListeners = new ArrayList<>();
     private TranscriptListener transcriptListener = new DeafTranscriptListener();
     private SummarizeListener summarizeListener = new DeafSummarizeListener();
     private QueueChangeListener queueChangeListener = new DeafQueueChangeListener();
@@ -58,12 +58,13 @@ public class ProcessingQueue implements Processor {
         startProcessingIfNeeded();
     }
 
-    public void setStatusListener(StatusListener statusListener) {
-        this.statusListener = statusListener;
+    public void addStatusListener(StatusListener statusListener) {
+        statusListeners.add(statusListener);
     }
 
     public void setProcessListener(ProcessListener processListener) {
         audioExtractorStreamer.subscribe(processListener);
+        lectureDownloader.subscribe(processListener);
     }
 
     public void setTranscriptListener(TranscriptListener transcriptListener) {
@@ -94,8 +95,7 @@ public class ProcessingQueue implements Processor {
             for (Transcript transcript : makeProtocolQueue) {
                 taskPlan.add(transcript.getName());
             }
-        }
-        if (state == QueueState.PROTOCOL_ACTIVE) {
+        } else if (state == QueueState.PROTOCOL_ACTIVE) {
             for (Transcript transcript : makeProtocolQueue) {
                 taskPlan.add(transcript.getName());
             }
@@ -104,6 +104,17 @@ public class ProcessingQueue implements Processor {
             }
             for (String url : downloadLectureQueue) {
                 taskPlan.add(url);
+            }
+        } else if (state == QueueState.NO_ACTIVE &&
+                (!makeTranscriptQueue.isEmpty() || !downloadLectureQueue.isEmpty() || !makeProtocolQueue.isEmpty())) {
+            for (String file : makeTranscriptQueue) {
+                taskPlan.add(new File(file).getName());
+            }
+            for (String url : downloadLectureQueue) {
+                taskPlan.add(url);
+            }
+            for (Transcript transcript : makeProtocolQueue) {
+                taskPlan.add(transcript.getName());
             }
         }
         return taskPlan;
@@ -137,8 +148,8 @@ public class ProcessingQueue implements Processor {
         if (state == QueueState.LECTURE_ACTIVE) {
             String url = downloadLectureQueue.poll();
             queueChangeListener.onQueueChange(getTaskPlan());
+            setProcessStatus(ProcessStatus.DOWNLOAD_LECTURE);
             try {
-                setProcessStatus(ProcessStatus.DOWNLOAD_LECTURE);
                 File file = lectureDownloader.downloadLectureVideo(url);
                 setProcessStatus(ProcessStatus.TASK_PROCESSING);
                 audioExtractorStreamer.processAudio(file.getAbsolutePath(), voskRecognizer);
@@ -197,6 +208,8 @@ public class ProcessingQueue implements Processor {
 
     private void setProcessStatus(ProcessStatus processStatus) {
         this.processStatus = processStatus;
-        statusListener.onStatusChanged(processStatus);
+        for (StatusListener statusListener : statusListeners) {
+            statusListener.onStatusChanged(processStatus);
+        }
     }
 }
