@@ -14,23 +14,27 @@ public class MeetingMaterialsDao {
     private final Connection connection;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-    public MeetingMaterialsDao(Connection connection) {
+    private TranscriptDao transcriptDao;
+    private TaskDao taskDao;
+    private ProtocolDao protocolDao;
+
+    public MeetingMaterialsDao(Connection connection, TranscriptDao transcriptDao, TaskDao taskDao, ProtocolDao protocolDao) {
         this.connection = connection;
+        this.transcriptDao = transcriptDao;
+        this.taskDao = taskDao;
+        this.protocolDao = protocolDao;
     }
 
     public List<MeetingMaterials> getAllMeetingMaterials() {
         try {
-            TranscriptDao transcriptDao = new TranscriptDao(connection);
             List<Transcript> transcripts = transcriptDao.getTranscripts();
 
-            ProtocolDao protocolDao = new ProtocolDao(connection);
             List<Protocol> protocols = protocolDao.getAllProtocols();
             Map<Integer, Protocol> protocolsByTranscript = new HashMap<>();
             for (Protocol protocol : protocols) {
                 protocolsByTranscript.put(protocol.getTranscriptId(), protocol);
             }
 
-            TaskDao taskDao = new TaskDao(connection);
             Map<Integer, List<Task>> tasksByTranscript = new HashMap<>();
             for (Transcript transcript : transcripts) {
                 List<Task> tasks = taskDao.getTasksByTranscriptId(transcript.getId());
