@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="629.0" maxWidth="1137.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController">
+<AnchorPane maxHeight="629.0" maxWidth="1137.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainWindowController">
    <children>
       <ImageView fx:id="animatedImageView" fitHeight="249.0" fitWidth="332.0" layoutX="808.0" pickOnBounds="true" preserveRatio="true">
          <image>

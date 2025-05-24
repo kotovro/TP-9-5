@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="618.0" maxWidth="1137.0" prefHeight="618.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="618.0" maxWidth="1137.0" prefHeight="618.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane fx:id="tabPane" prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: rgba(58, 92, 185, 0.7);" />
       <Pane layoutY="70.0" prefHeight="550.0" prefWidth="1138.0" style="-fx-background-color: rgba(42, 76, 213, 0.3);">

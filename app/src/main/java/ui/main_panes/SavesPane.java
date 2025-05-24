@@ -3,17 +3,20 @@ package ui.main_panes;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import logic.general.Transcript;
+import logic.video_processing.queue.ProcessingQueue;
+import ui.EditWindowController;
+import ui.LoadController;
 import ui.PaneController;
+import ui.SavesController;
 
 import java.util.Date;
 
 public class SavesPane extends ContentPane {
     PaneController paneController;
-    public SavesPane() {
+    public SavesPane(EditWindowController editWindowController, ProcessingQueue processingQueue) {
         try {
-            Transcript t = new Transcript("nenfieji", new Date());
-            Transcript t1 = new Transcript("cfnqekaifhnwiowfhwpdfjqpo", new Date());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/saves.fxml"));
+            loader.setController(new SavesController(editWindowController, processingQueue));
             Node node = loader.load();
             this.getChildren().setAll(node);
 

@@ -63,12 +63,12 @@ public class StAndPrBuilder extends HBox {
 
         pr.setFont(manropeFont2);
         if (protocol != null) {
-            pr.setText("Открыть/nпротокол");
+            pr.setText("Открыть\nпротокол");
             pr.setOnAction(e -> {
                 editWindowController.addProtocol(protocol, transcript, tasks);
             });
         } else {
-            pr.setText("Создать/nпротокол");
+            pr.setText("Создать\nпротокол");
             pr.setOnAction(e -> {
                 processingQueue.add(transcript);
             });

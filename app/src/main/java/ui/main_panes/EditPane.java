@@ -16,7 +16,7 @@ import java.util.Date;
 
 
 public class EditPane extends ContentPane {
-    PaneController paneController;
+    EditWindowController paneController;
     BaseController bc;
 
     public EditPane(BaseController bc, ProcessingQueue processingQueue) {
@@ -36,7 +36,7 @@ public class EditPane extends ContentPane {
     }
 
     @Override
-    public PaneController getController() {
+    public EditWindowController getController() {
         return paneController;
     }
 }

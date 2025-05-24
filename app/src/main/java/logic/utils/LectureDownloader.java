@@ -1,56 +1,52 @@
 package logic.utils;
 
+import logic.video_processing.queue.Processor;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
-public class LectureDownloader {
+public class LectureDownloader implements Processor {
+    private long bytesDownloaded = 0;
+    private long totalBytes = -1;
 
-    private static String constructVideoUrl(String baseUrl, String format) {
-        String[] urlParts = baseUrl.split("/");
-        return String.format("%s//%s/%s/%s/video/webcams.%s",
-                urlParts[0],
-                urlParts[2],
-                urlParts[4],
-                urlParts[6],
-                format
-        );
-    }
-
-    /**
-     *
-     * @param lectureURL
-     * URL лекции с BigBlueButton(bbb)
-     * @return
-     * outputFile видеофайл  - класса File - в формате webm или mp4
-     * @throws IOException
-     *
-     */
-    public static File downloadLectureVideo(String lectureURL) throws IOException {
-        String webmFormatUrl = constructVideoUrl(lectureURL, "webm");
-        String mp4FormatUrl = constructVideoUrl(lectureURL, "mp4");
-
+    public File downloadLectureVideo(String lectureURL) throws IOException {
+        File outputFile = new File("dynamic-resources/lectures/lecture.webm");
         try {
-            File outputFile = new File("lecture.webm");
-            downloadFile(webmFormatUrl, outputFile);
+            downloadFile(lectureURL, outputFile);
             return outputFile;
         } catch (IOException e) {
-            File outputFile = new File("lecture.mp4");
-            downloadFile(mp4FormatUrl, outputFile);
+            String mp4Url = lectureURL.replace("webm", "mp4");
+            outputFile = new File("dynamic-resources/lectures/lecture.mp4");
+            downloadFile(mp4Url, outputFile);
             return outputFile;
         }
     }
 
-    private static void downloadFile(String urlString, File outputFile) throws IOException {
-        try (BufferedInputStream in = new BufferedInputStream(URI.create(urlString).toURL().openStream());
+    private void downloadFile(String urlString, File outputFile) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        totalBytes = connection.getContentLength();
+        bytesDownloaded = 0;
+
+        try (BufferedInputStream in = new BufferedInputStream(url.openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            byte[] dataBuffer = new byte[1024];
+            byte dataBuffer[] = new byte[8192];
             int bytesRead;
-            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+
+            while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
+                bytesDownloaded += bytesRead;
             }
         }
+    }
+
+    @Override
+    public int getProcessPercent() {
+        return (int) (bytesDownloaded * 100 / totalBytes);
     }
 }

@@ -5,12 +5,14 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import logic.general.Protocol;
+import logic.general.Task;
 import logic.general.Transcript;
 import logic.persistence.DBManager;
 import logic.persistence.dao.ProtocolDao;
 import logic.video_processing.queue.ProcessingQueue;
 import ui.custom_elements.TranscriptDisplayer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,16 +28,20 @@ public class SavesController implements PaneController{
     public SavesController(EditWindowController editWindowController, ProcessingQueue processingQueue) {
         this.editWindowController = editWindowController;
         this.processingQueue = processingQueue;
+    }
 
+    @FXML
+    public void initialize() {
         VBox v = new VBox();
-//        List<Protocol> protocols = DBManager.getProtocolDao().getAllProtocols();
+//        DBManager.getProtocolDao().
         for (Transcript transcript : DBManager.getTranscriptDao().getTranscripts()) {
-            StAndPrBuilder stAndPrBuilder = new StAndPrBuilder(transcript, pro);
-            VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 15));
-            v.getChildren().add(stAndPrBuilder);
+//            StAndPrBuilder stAndPrBuilder = new StAndPrBuilder(transcript, );
+//            VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 15));
+//            v.getChildren().add(stAndPrBuilder);
         }
         for (int i = 0; i < 4; i++){
-            StAndPrBuilder sp = new StAndPrBuilder(new Transcript("nenfieji", new Date()));
+            StAndPrBuilder sp = new StAndPrBuilder(new Transcript("nenfieji", new Date()), null, new ArrayList<>(),
+                    editWindowController, processingQueue);
             VBox.setMargin(sp, new Insets(20, 0, 10, 15));
             v.getChildren().add(sp);
         }

@@ -87,7 +87,7 @@
             <Image url="@../images/CloseCircle.png" />
          </image>
       </ImageView>
-      <Button layoutX="517.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="загрузить" textFill="WHITE">
+      <Button fx:id="moodleLoadButton" layoutX="517.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="загрузить" textFill="WHITE">
          <font>
             <Font name="Manrope Regular" size="16.0" />
          </font>
@@ -126,6 +126,6 @@
             <Font name="Manrope Medium" size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="149.0" layoutY="399.0" prefHeight="40.0" prefWidth="840.0" promptText="ссылка из мудла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <TextField fx:id="moodleField" layoutX="149.0" layoutY="399.0" prefHeight="40.0" prefWidth="840.0" promptText="ссылка из мудла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
    </children>
 </AnchorPane>

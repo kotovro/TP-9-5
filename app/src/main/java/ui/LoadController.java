@@ -3,6 +3,7 @@ package ui;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
@@ -10,10 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import logic.Platform;
+import logic.PlatformDependent;
+import logic.utils.LectureDownloader;
 import logic.video_processing.audio_extractor.VideoValidator;
 import logic.video_processing.queue.ProcessingQueue;
-
-import java.awt.*;
 import java.io.File;
 
 public class LoadController implements PaneController{
@@ -29,6 +31,10 @@ public class LoadController implements PaneController{
     private Pane errorPane;
     @FXML
     private Button downloadButton;
+    @FXML
+    private TextField moodleField;
+    @FXML
+    private Button moodleLoadButton;
 
     private ProcessingQueue processingQueue;
 
@@ -39,6 +45,15 @@ public class LoadController implements PaneController{
     @FXML
     public void initialize() {
         initDropPaneEvents();
+        moodleLoadButton.setOnAction(event -> {
+            if (!moodleField.getText().isEmpty()) {
+                try {
+                    processingQueue.addLecture(moodleField.getText());
+                } catch (Exception e) {
+                    System.out.println("Can't load using this link");
+                }
+            }
+        });
     }
 
     @FXML

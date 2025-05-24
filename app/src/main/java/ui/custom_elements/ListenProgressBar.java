@@ -8,15 +8,13 @@ import logic.video_processing.audio_extractor.ProcessListener;
 import logic.video_processing.queue.Processor;
 
 public class ListenProgressBar extends ProgressBar implements ProcessListener {
-    private Processor processor;
-    Task<Void> requests;
 
     public ListenProgressBar() {
         setProgress(0);
     }
 
     @Override
-    public void notifyStart() {
+    public void notifyStart(Processor processor) {
         requests = new Task<>() {
             @Override
             protected Void call() throws Exception {
@@ -34,11 +32,9 @@ public class ListenProgressBar extends ProgressBar implements ProcessListener {
     }
 
     @Override
-    public void notifyStop() {
+    public void notifyStop(Processor processor) {
         requests.cancel();
     }
 
-    public void setProcessor(Processor processor) {
-        this.processor = processor;
-    }
+    Task<Void> requests;
 }

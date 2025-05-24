@@ -46,7 +46,7 @@ public class BaseController {
     private final EditPane editPane = new EditPane(this, processingQueue);
     private final MainPane mainPane = new MainPane();
     private final LoadPane loadPane = new LoadPane(processingQueue);
-    private final SavesPane savesPane = new SavesPane();
+    private final SavesPane savesPane = new SavesPane(editPane.getController(), processingQueue);
     private final DialogEdit dialogEdit = new DialogEdit();
     private final DialogExit dialogExit = new DialogExit();
     private final DialogRecord dialogRecord = new DialogRecord();
