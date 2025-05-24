@@ -66,7 +66,7 @@ public class TaskDao {
     public List<Task> getTasksByTranscriptId(int transcriptId) {
         List<Task> tasks = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM task WHERE transcript_id = ?";
+            String sql = "SELECT * FROM task WHERE transcript_id = ? ORDER BY transcript_id";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, transcriptId);
                 try (ResultSet rs = stmt.executeQuery()) {
