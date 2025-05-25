@@ -13,8 +13,8 @@
                 <Font name="Manrope SemiBold" size="20.0" />
             </font>
         </Label>
-      <TextField layoutX="39.0" layoutY="143.0" prefHeight="37.0" prefWidth="342.0" promptText="название файла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
-      <Button layoutX="163.0" layoutY="211.0" mnemonicParsing="false" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
+      <TextField fx:id="fileName" layoutX="39.0" layoutY="143.0" prefHeight="37.0" prefWidth="342.0" promptText="название файла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <Button fx:id="saveButton" layoutX="163.0" layoutY="211.0" mnemonicParsing="false" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
          <font>
             <Font name="Manrope SemiBold" size="14.0" />
          </font>
