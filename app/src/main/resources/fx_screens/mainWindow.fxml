@@ -18,15 +18,6 @@
             <Image url="@../images/menuV.png" />
          </image>
       </ImageView>
-      <Pane layoutX="49.0" layoutY="166.0" prefHeight="450.0" prefWidth="302.0" style="-fx-background-color: #7AA3FA; -fx-background-radius: 20;">
-         <children>
-            <Label layoutX="99.0" layoutY="24.0" text="Создавай">
-               <font>
-                  <Font name="Manrope Bold" size="20.0" />
-               </font>
-            </Label>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0a2a85" height="8.0" layoutX="29.0" layoutY="65.0" strokeType="INSIDE" width="236.0" />
-         </children></Pane>
       <Pane fx:id="cardPane" layoutX="432.0" layoutY="166.0" prefHeight="450.0" prefWidth="302.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 26;">
          <effect>
             <DropShadow height="93.52" radius="45.09" width="88.84">
@@ -153,5 +144,34 @@
             <Font name="Manrope ExtraBold" size="70.0" />
          </font>
       </Label>
+      <Pane layoutX="49.0" layoutY="166.0" prefHeight="450.0" prefWidth="302.0" style="-fx-background-color: #73A8FC; -fx-background-radius: 20;">
+         <children>
+            <Label layoutX="99.0" layoutY="24.0" text="Создавай">
+               <font>
+                  <Font name="Manrope Bold" size="20.0" />
+               </font>
+            </Label>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0a2a85" height="8.0" layoutX="29.0" layoutY="65.0" strokeType="INSIDE" width="236.0" />
+            <Label layoutX="29.0" layoutY="93.0" text="Стенограммы">
+               <font>
+                  <Font name="Manrope SemiBold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="142.0" layoutY="141.0" text="и">
+               <font>
+                  <Font name="Manrope SemiBold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="167.0" layoutY="185.0" text="протоколы">
+               <font>
+                  <Font name="Manrope SemiBold" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="194.0" fitWidth="302.0" layoutY="257.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Create.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
    </children>
 </AnchorPane>

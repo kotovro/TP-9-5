@@ -18,6 +18,14 @@
     -fx-font-size: 14px;
 }
 
+.check-box .box {
+    -fx-background-color: #6F9AE5;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #0A2A85;
+}
+
 .custom-text-area .scroll-pane {
     -fx-background-radius: 10px;
     -fx-vbar-policy: never;

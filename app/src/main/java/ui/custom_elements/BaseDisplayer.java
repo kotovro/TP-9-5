@@ -4,14 +4,13 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.text_edit.EditStory;
@@ -29,8 +28,13 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     protected VBox textAreaContainer = new VBox();
     protected final Insets basePaneInsets = new Insets(10, 50, 0, 50);
     private final EditStory editStory = new EditStory();
-    private EventHandler<KeyEvent> keyEventHandler;
     private final String name;
+    private EventHandler<KeyEvent> keyEventHandler;
+    public Button delete;
+    public Button file;
+    public Button edit;
+    public boolean isOpen = false;
+    public Pane filePane;
 
     public BaseDisplayer(String name, List<Speaker> speakers) {
         this.name = name;
@@ -112,9 +116,10 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     protected BasePane formReplicaView(Replica replica) {
         ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica.getText());
-        ImageView deleteButton = new ImageView();
-        CheckBox cb = new CheckBox();
-        BasePane basepane = new BasePane(comboBox, textArea, deleteButton, cb);
+        ImageView addButton = new ImageView();
+        CheckBox checkBox = new CheckBox();
+        Pane timeCode = new Pane();
+        BasePane basepane = new BasePane(comboBox, textArea, addButton, checkBox, timeCode);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
     }
