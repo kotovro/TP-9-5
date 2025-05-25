@@ -3,14 +3,13 @@ package ui;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
@@ -32,6 +31,11 @@ public class TranscriptDisplayer {
     VBox textAreaContainer = new VBox();
     private final EditStory editStory = new EditStory();
     private final EventHandler<KeyEvent> keyEventHandler;
+    public Button delete;
+    public Button file;
+    public Button edit;
+    public boolean isOpen = false;
+    public Pane filePane;
 
     public TranscriptDisplayer(Transcript transcript, List<Speaker> speakers) {
         this.transcript = transcript;
@@ -47,7 +51,9 @@ public class TranscriptDisplayer {
             });
         }
         for (Replica replica : transcript.getReplicas()) {
-            textAreaContainer.getChildren().add(formReplicaView(replica));
+            BasePane bp = formReplicaView(replica);
+            textAreaContainer.getChildren().add(bp);
+            bp.cb.setOnAction(e -> updateDeleteButtonVisibility());
         }
 
         this.keyEventHandler = event -> {
@@ -65,6 +71,102 @@ public class TranscriptDisplayer {
     public void setupPane(ScrollPane replicas) {
         replicas.getStyleClass().add("tab-scroll-pane");
         replicas.setContent(textAreaContainer);
+    }
+
+    public void setupDelete(Pane paneReplicas) {
+        if (this.delete != null && paneReplicas.getChildren().contains(this.delete)) {
+            paneReplicas.getChildren().remove(this.delete);
+        }
+
+        Button delete = new Button("удалить выбранные");
+        delete.setLayoutY(-38);
+        delete.setLayoutX(750);
+        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+        delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        delete.setFont(manropeFont2);
+        delete.setVisible(false); // Сначала скрыта
+
+        delete.setOnAction(e -> {
+            StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
+            storyPoint.apply();
+            editStory.addLast(storyPoint);
+            updateDeleteButtonVisibility();
+        });
+
+        this.delete = delete;
+        paneReplicas.getChildren().add(delete);
+
+        for (Node node : textAreaContainer.getChildren()) {
+            BasePane basePane = (BasePane) node;
+            basePane.cb.setOnAction(e -> updateDeleteButtonVisibility());
+        }
+        updateDeleteButtonVisibility();
+    }
+
+    public void setupMenu(Pane paneReplicas) {
+        ImageView im = new ImageView("/images/SquareAltArrowDown2.png");
+        im.setFitHeight(18);
+        im.setFitWidth(18);
+
+        Button file = new Button("Файл", im);
+        file.setLayoutY(-180);
+        file.setLayoutX(230);
+        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
+        file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
+                " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
+        file.setFont(manropeFont2);
+        file.setContentDisplay(ContentDisplay.RIGHT);
+
+        Pane filePane = new Pane();
+        filePane.setLayoutY(-140);
+        filePane.setLayoutX(230);
+        filePane.setPrefSize(200, 100);
+        filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
+        filePane.setVisible(false);
+
+        Button save = new Button("Save"); // исправь на русский, меня просто начало бесить, что странно все выводится
+        Button saveAs = new Button("Save As");
+
+        save.setLayoutX(15);
+        save.setLayoutY(15);
+        saveAs.setLayoutX(15);
+        saveAs.setLayoutY(55);
+
+        saveAs.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        saveAs.setFont(manropeFont2);
+
+        save.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        save.setFont(manropeFont2);
+
+        filePane.getChildren().addAll(save, saveAs);
+
+        save.setOnAction(e -> {
+            // как ты тут сохраняешь
+        });
+
+        saveAs.setOnAction(e -> {
+            // вызов DialogSave
+        });
+
+
+        this.file = file;
+        this.filePane = filePane;
+        paneReplicas.getChildren().addAll(file, filePane);
+    }
+
+    private void updateDeleteButtonVisibility() {
+        boolean anySelected = false;
+        for (Node node : textAreaContainer.getChildren()) {
+            BasePane basePane = (BasePane) node;
+            if (basePane.cb.isSelected()) {
+                anySelected = true;
+                break;
+            }
+        }
+        this.delete.setVisible(anySelected);
     }
 
     public void setupHotkeys() {
@@ -98,9 +200,10 @@ public class TranscriptDisplayer {
     private BasePane formReplicaView(Replica replica) {
         ComboBox<Speaker> comboBox = new CustomComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica, comboBox);
-        ImageView deleteButton = new ImageView();
+        ImageView addButton = new ImageView();
         CheckBox cb = new CheckBox();
-        BasePane basepane = new BasePane(comboBox, textArea, deleteButton, cb);
+        Pane timeCode = new Pane();
+        BasePane basepane = new BasePane(comboBox, textArea, addButton, cb, timeCode);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
     }

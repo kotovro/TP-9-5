@@ -16,6 +16,12 @@ import java.util.List;
 public class EditWindowController implements PaneController {
     @FXML
     private ScrollPane replicas;
+
+    @FXML
+    private Pane pane;
+
+    @FXML
+    private Pane paneReplicas;
     @FXML
     private ScrollPane tabPane;
     private HBox tabRow = new HBox();
@@ -55,10 +61,34 @@ public class EditWindowController implements PaneController {
         if (this.active != null) {
             this.active.setInactive();
         }
+
+        if (this.active != null && this.active.getTranscriptDisplayer().delete != null) {
+            paneReplicas.getChildren().remove(this.active.getTranscriptDisplayer().delete);
+        }
+
+        if (this.active != null && this.active.getTranscriptDisplayer().file != null) {
+            paneReplicas.getChildren().remove(this.active.getTranscriptDisplayer().file);
+        }
+
+        if (this.active != null && this.active.getTranscriptDisplayer().filePane != null) {
+            paneReplicas.getChildren().remove(this.active.getTranscriptDisplayer().filePane);
+        }
+
         if (active != null) {
             active.setActive();
             active.getTranscriptDisplayer().setupPane(replicas);
+            active.getTranscriptDisplayer().setupDelete(paneReplicas);
+            active.getTranscriptDisplayer().setupMenu(paneReplicas);
+            active.getTranscriptDisplayer().file.setOnAction(e ->
+            {
+                active.getTranscriptDisplayer().isOpen = !active.getTranscriptDisplayer().isOpen;
+                active.getTranscriptDisplayer().filePane.setVisible(active.getTranscriptDisplayer().isOpen);
+                pane.toFront();
+                //pane.setMouseTransparent(active.getTranscriptDisplayer().isOpen);
+            });
         }
+
+
         this.active = active;
     }
 
@@ -75,6 +105,7 @@ public class EditWindowController implements PaneController {
         }
         if (active != null) {
             active.getTranscriptDisplayer().setupPane(replicas);
+            active.getTranscriptDisplayer().setupDelete(paneReplicas);
         } else {
             replicas.setContent(null);
             load();
