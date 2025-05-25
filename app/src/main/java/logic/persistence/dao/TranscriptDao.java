@@ -31,10 +31,10 @@ public class TranscriptDao {
             }
 
             StringBuilder insertSql = new StringBuilder();
-            insertSql.append("INSERT INTO replica (transcript_id, order_number, speaker_id, content) VALUES ");
+            insertSql.append("INSERT INTO replica (transcript_id, order_number, speaker_id, content, timecode) VALUES ");
 
             for (int i = 0; i < replicas.size(); i++) {
-                insertSql.append("(?, ?, ?, ?)");
+                insertSql.append("(?, ?, ?, ?, ?)");
                 if (i < replicas.size() - 1) {
                     insertSql.append(", ");
                 }
@@ -48,6 +48,7 @@ public class TranscriptDao {
                     insertStmt.setInt(paramIndex++, i + 1);
                     insertStmt.setInt(paramIndex++, replica.getSpeaker().getId());
                     insertStmt.setString(paramIndex++, replica.getText());
+                    insertStmt.setDouble(paramIndex++, replica.getTimecode());
                 }
                 insertStmt.executeUpdate();
             }
@@ -128,7 +129,7 @@ public class TranscriptDao {
     public Transcript getTranscriptById(int transcriptId) {
         Transcript transcript = null;
 
-        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
+        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content, r.timecode " +
                 "FROM transcript t " +
                 "JOIN replica r ON t.id = r.transcript_id " +
                 "WHERE t.id = ?";
@@ -148,6 +149,7 @@ public class TranscriptDao {
                     Replica replica = new Replica();
                     replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
                     replica.setText(rs.getString("content"));
+                    replica.setTimecode(rs.getDouble("timecode"));
                     transcript.addReplica(replica);
                 }
                 return transcript;
@@ -189,7 +191,7 @@ public class TranscriptDao {
 
     public List<Transcript> getTranscripts() {
         List<Transcript> transcripts;
-        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
+        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content, r.timecode " +
                 "FROM transcript t " +
                 "JOIN replica r ON t.id = r.transcript_id ";
 
@@ -212,6 +214,7 @@ public class TranscriptDao {
                 Replica replica = new Replica();
                 replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
                 replica.setText(rs.getString("content"));
+                replica.setTimecode(rs.getDouble("timecode"));
                 transcript.addReplica(replica);
             }
             transcripts = new ArrayList<>(transcriptMap.values());
@@ -222,7 +225,7 @@ public class TranscriptDao {
     }
 
     public Optional<Transcript> getTranscriptByName(String name) {
-        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content " +
+        String sql = "SELECT t.id AS transcript_id, t.name, t.date, r.order_number, r.speaker_id, r.content, r.timecode " +
                 "FROM transcript t " +
                 "JOIN replica r ON t.id = r.transcript_id " +
                 "WHERE t.name = ?";
@@ -243,6 +246,7 @@ public class TranscriptDao {
                     Replica replica = new Replica();
                     replica.setSpeaker(new Speaker(null, null, rs.getInt("speaker_id")));
                     replica.setText(rs.getString("content"));
+                    replica.setTimecode(rs.getDouble("timecode"));
                     transcript.addReplica(replica);
                 }
                 return Optional.ofNullable(transcript);
