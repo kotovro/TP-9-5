@@ -1,5 +1,6 @@
 package ui.custom_elements;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -42,11 +43,27 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     public void setupHotkeys() {
-        textAreaContainer.getScene().addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        if (textAreaContainer.getScene() != null) {
+            textAreaContainer.getScene().addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        } else {
+            textAreaContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    textAreaContainer.getScene().addEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+                }
+            });
+        }
     }
 
     public void unbindHotKeys() {
-        textAreaContainer.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        if (textAreaContainer.getScene() != null) {
+            textAreaContainer.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+        } else {
+            textAreaContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    textAreaContainer.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, keyEventHandler);
+                }
+            });
+        }
     }
 
     public String getName() {

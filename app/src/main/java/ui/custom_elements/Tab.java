@@ -31,7 +31,7 @@ public class Tab extends HBox {
         setMargin(name, new Insets(16, 6, 6, 20));
         setMargin(close, new Insets(12, 6, 6, 6));
         HBox.setMargin(this, new Insets(10, 10, 0, 10));
-//        transcriptDisplayer.setupHotkeys();
+        transcriptDisplayer.setupHotkeys();
 
     }
 
@@ -42,7 +42,7 @@ public class Tab extends HBox {
         setMargin(name, new Insets(14, 6, 6, 20));
         setMargin(close, new Insets(8, 6, 6, 6));
         HBox.setMargin(this, new Insets(10, 10, 10, 10));
-//        transcriptDisplayer.unbindHotKeys();
+        transcriptDisplayer.unbindHotKeys();
     }
 
     public EditableDisplayer getTranscriptDisplayer() {
