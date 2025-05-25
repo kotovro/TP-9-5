@@ -12,12 +12,12 @@ import ui.EditWindowController;
 public class Tab extends HBox {
     private static final Image closeCircle1 = new Image(BaseController.class.getResource("/images/CloseCircle1.png").toExternalForm());
     private static final Font manropeFont = Font.loadFont(Tab.class.getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
-    private EditableDisplayer transcriptDisplayer;
+    private BaseDisplayer transcriptDisplayer;
     private Label name = new Label();
     private ImageView close = new ImageView();
     private EditWindowController editWindowController;
 
-    public Tab(EditableDisplayer transcriptDisplayer, EditWindowController controller) {
+    public Tab(BaseDisplayer transcriptDisplayer, EditWindowController controller) {
         this.transcriptDisplayer = transcriptDisplayer;
         this.editWindowController = controller;
         init();
@@ -45,7 +45,7 @@ public class Tab extends HBox {
         transcriptDisplayer.unbindHotKeys();
     }
 
-    public EditableDisplayer getTranscriptDisplayer() {
+    public BaseDisplayer getTranscriptDisplayer() {
         return transcriptDisplayer;
     }
 

@@ -5,12 +5,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import logic.general.Speaker;
 import logic.general.Transcript;
 import logic.persistence.DBManager;
 import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import ui.custom_elements.combo_boxes.ComboBoxCreator;
+import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.Date;
 import java.util.List;
@@ -45,9 +47,7 @@ public class RawTranscriptDisplayer extends BaseDisplayer{
     private BasePane formReplicaView(RawTranscript rawTranscript, ComboBoxCreator comboBoxCreator, int index) {
         ComboBox<Speaker> comboBox = comboBoxCreator.createComboBox(index);
         TextArea textArea = initTextArea(rawTranscript.getPhrase(index));
-        ImageView deleteButton = new ImageView();
-        CheckBox cb = new CheckBox();
-        BasePane basePane = new BasePane(comboBox, textArea, deleteButton, cb);
+        BasePane basePane = new BasePane(comboBox, textArea, this);
         VBox.setMargin(basePane, basePaneInsets);
         return basePane;
     }

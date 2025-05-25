@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import logic.general.*;
 import logic.persistence.DBManager;
 import logic.video_processing.queue.listeners.SummarizeListener;

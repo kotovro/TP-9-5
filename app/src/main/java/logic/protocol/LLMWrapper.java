@@ -1,6 +1,7 @@
 package logic.protocol;
 
 import logic.general.*;
+import logic.utils.JsonTaskFiller;
 
 import java.util.List;
 

@@ -43,6 +43,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     public void setupPane(ScrollPane replicas) {
+        replicas.getStyleClass().add("tab-scroll-pane");
         replicas.setContent(textAreaContainer);
     }
 
@@ -87,14 +88,103 @@ public abstract class BaseDisplayer implements EditableDisplayer {
 
         this.keyEventHandler = event -> {
             if (event.getCode() == KeyCode.DELETE) {
-                System.out.println("Delete pressed");
-                StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
-                storyPoint.apply();
-                editStory.addLast(storyPoint);
+                removeReplicas();
             } else if (event.getCode() == KeyCode.N && event.isControlDown()) {
                 addNewReplica(0);
             }
         };
+    }
+
+    public void setupDelete(Pane paneReplicas) {
+        if (this.delete != null && paneReplicas.getChildren().contains(this.delete)) {
+            paneReplicas.getChildren().remove(this.delete);
+        }
+
+        Button delete = new Button("Удалить выбранные");
+        delete.setLayoutY(-38);
+        delete.setLayoutX(850);
+        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+        delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        delete.setFont(manropeFont2);
+        delete.setVisible(false); // Сначала скрыта
+
+        delete.setOnAction(e -> {
+            removeReplicas();
+        });
+
+        this.delete = delete;
+        paneReplicas.getChildren().add(delete);
+
+        for (Node node : textAreaContainer.getChildren()) {
+            BasePane basePane = (BasePane) node;
+        }
+        updateDeleteButtonVisibility();
+    }
+
+    public void setupMenu(Pane paneReplicas) {
+        ImageView im = new ImageView("/images/SquareAltArrowDown2.png");
+        im.setFitHeight(18);
+        im.setFitWidth(18);
+
+        Button file = new Button("Файл", im);
+        file.setLayoutY(-180);
+        file.setLayoutX(230);
+        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
+        file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
+                " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
+        file.setFont(manropeFont2);
+        file.setContentDisplay(ContentDisplay.RIGHT);
+
+        Pane filePane = new Pane();
+        filePane.setLayoutY(-140);
+        filePane.setLayoutX(230);
+        filePane.setPrefSize(200, 100);
+        filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
+        filePane.setVisible(false);
+
+        Button save = new Button("Сохранить");
+        Button saveAs = new Button("Сохранить как");
+
+        save.setLayoutX(15);
+        save.setLayoutY(15);
+        saveAs.setLayoutX(15);
+        saveAs.setLayoutY(55);
+
+        saveAs.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        saveAs.setFont(manropeFont2);
+
+        save.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        save.setFont(manropeFont2);
+
+        filePane.getChildren().addAll(save, saveAs);
+
+        save.setOnAction(e -> {
+            // как ты тут сохраняешь
+        });
+
+        saveAs.setOnAction(e -> {
+            // вызов DialogSave
+        });
+
+
+        this.file = file;
+        this.filePane = filePane;
+        paneReplicas.getChildren().addAll(file, filePane);
+    }
+
+    public void updateDeleteButtonVisibility() {
+        boolean anySelected = false;
+        for (Node node : textAreaContainer.getChildren()) {
+            BasePane basePane = (BasePane) node;
+            if (basePane.isSelected()) {
+                anySelected = true;
+                break;
+            }
+        }
+        this.delete.setVisible(anySelected);
     }
 
     protected TextArea initTextArea(String text) {
@@ -106,22 +196,30 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         return textArea;
     }
 
-    protected void addNewReplica(int index) {
+    public void addNewReplica(int index) {
         Replica replica = new Replica("", speakers.getFirst());
         StoryPoint storyPoint = new AddReplica(textAreaContainer, formReplicaView(replica), index);
         storyPoint.apply();
         editStory.addLast(storyPoint);
     }
 
+    public int getIndex(BasePane basePane) {
+        return textAreaContainer.getChildren().indexOf(basePane);
+    }
+
     protected BasePane formReplicaView(Replica replica) {
         ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica.getText());
-        ImageView addButton = new ImageView();
-        CheckBox checkBox = new CheckBox();
-        Pane timeCode = new Pane();
-        BasePane basepane = new BasePane(comboBox, textArea, addButton, checkBox, timeCode);
+        BasePane basepane = new BasePane(comboBox, textArea, this);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
+    }
+
+    private void removeReplicas() {
+        StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
+        storyPoint.apply();
+        editStory.addLast(storyPoint);
+        updateDeleteButtonVisibility();
     }
 
     private List<Integer> getToRemove() {
