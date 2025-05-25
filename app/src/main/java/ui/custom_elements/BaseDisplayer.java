@@ -17,6 +17,8 @@ import logic.text_edit.EditStory;
 import logic.text_edit.action.AddReplica;
 import logic.text_edit.action.RemoveReplicas;
 import logic.text_edit.action.StoryPoint;
+import logic.utils.TimeCode;
+import logic.utils.TimeFormatter;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
@@ -197,7 +199,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     public void addNewReplica(int index) {
-        Replica replica = new Replica("", speakers.getFirst());
+        Replica replica = new Replica("", speakers.getFirst(), 0);
         StoryPoint storyPoint = new AddReplica(textAreaContainer, formReplicaView(replica), index);
         storyPoint.apply();
         editStory.addLast(storyPoint);
@@ -210,7 +212,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     protected BasePane formReplicaView(Replica replica) {
         ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica.getText());
-        BasePane basepane = new BasePane(comboBox, textArea, this);
+        BasePane basepane = new TimeCodeBasePane(comboBox, textArea, TimeFormatter.format(replica.getTimecode()), this);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
     }

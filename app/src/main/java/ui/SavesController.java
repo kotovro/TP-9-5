@@ -58,7 +58,7 @@ public class SavesController implements PaneController{
         }
         for (int i = 0; i < 4; i++){
             Transcript transcript = new Transcript("sad", new Date());
-            transcript.addReplica(new Replica("Задачи: поспать, поесть, не забыть уничтожить Тарасова", new Speaker("Asas", null, -1)));
+            transcript.addReplica(new Replica("Задачи: поспать, поесть, не забыть уничтожить Тарасова", new Speaker("Asas", null, -1), 0));
             StAndPrBuilder sp = new StAndPrBuilder(new MeetingMaterials(
                     transcript, Optional.empty(), null),
                     editWindowController, processingQueue, baseController);

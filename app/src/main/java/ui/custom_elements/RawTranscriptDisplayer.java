@@ -47,7 +47,7 @@ public class RawTranscriptDisplayer extends BaseDisplayer{
     private BasePane formReplicaView(RawTranscript rawTranscript, ComboBoxCreator comboBoxCreator, int index) {
         ComboBox<Speaker> comboBox = comboBoxCreator.createComboBox(index);
         TextArea textArea = initTextArea(rawTranscript.getPhrase(index));
-        BasePane basePane = new BasePane(comboBox, textArea, this);
+        BasePane basePane = new TimeCodeBasePane(comboBox, textArea, rawTranscript.getTimeCode(index), this);
         VBox.setMargin(basePane, basePaneInsets);
         return basePane;
     }

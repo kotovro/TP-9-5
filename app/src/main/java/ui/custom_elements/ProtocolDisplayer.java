@@ -1,8 +1,14 @@
 package ui.custom_elements;
 
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import logic.general.*;
 import logic.persistence.DBManager;
+import logic.utils.TimeFormatter;
+import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,10 +47,18 @@ public class ProtocolDisplayer extends BaseDisplayer {
     @Override
     protected void initTextArea() {
         textAreaContainer.getChildren().add(formReplicaView(
-                new Replica(meetingMaterials.getProtocol().get().getText(), speakers.get(1))));
+                new Replica(meetingMaterials.getProtocol().get().getText(), speakers.get(1), 0)));
         for (Task task : meetingMaterials.getTasks()) {
             textAreaContainer.getChildren().add(formReplicaView(
-                    new Replica(task.getDescription(), speakers.get(2))));
+                    new Replica(task.getDescription(), speakers.get(2), 0)));
         }
+    }
+
+    protected BasePane formReplicaView(Replica replica) {
+        ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
+        TextArea textArea = initTextArea(replica.getText());
+        BasePane basepane = new BasePane(comboBox, textArea, this);
+        VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
+        return basepane;
     }
 }

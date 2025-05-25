@@ -12,32 +12,22 @@ import java.util.Objects;
 
 public class BasePane extends Pane {
     private static final Font manropeFont2 = Font.loadFont(BasePane.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
-    private ComboBox<Speaker> combobox;
-    private TextArea textarea;
-    private CheckBox checkBox;
-    private ImageView addButton;
-    private Pane timeCode;
+    protected ComboBox<Speaker> combobox;
+    protected TextArea textarea;
+    protected CheckBox checkBox;
+    protected ImageView addButton;
+    protected Pane addPane;
 
     public BasePane(ComboBox<Speaker> combobox, TextArea textarea, BaseDisplayer baseDisplayer) {
         this.combobox = combobox;
         this.textarea = textarea;
         this.checkBox = new CheckBox();
         this.addButton = new ImageView();
-        this.timeCode = new Pane();
         this.setWidth(750);
         this.setHeight(154);
         Pane p = new Pane();
         p.setPrefWidth(860);
         p.setPrefHeight(83);
-
-        this.timeCode.setStyle("-fx-background-color: #6F88E5; -fx-background-radius: 10;");
-        this.timeCode.setPrefSize(80, 34);
-        this.timeCode.setLayoutX(310);
-        this.timeCode.setLayoutY(22);
-        Label time = new Label("timecode");
-        time.setLayoutX(10);
-        time.setLayoutY(8);
-        timeCode.getChildren().add(time);
 
         this.textarea.prefHeightProperty().addListener((obs, oldHeight, newHeight) -> {
             p.setPrefHeight(newHeight.doubleValue() + 40);
@@ -62,20 +52,19 @@ public class BasePane extends Pane {
         this.addButton.setImage(image);
         this.addButton.setFitHeight(38);
         this.addButton.setFitWidth(38);
-        this.addButton.setLayoutX(400);
+        this.addButton.setLayoutX(320);
         this.addButton.setLayoutY(20);
 
-        Pane add = getAddPane(baseDisplayer);
+        addPane = getAddPane(baseDisplayer);
         addButton.setOnMouseClicked(e -> {
-            add.setVisible(!add.isVisible());
+            addPane.setVisible(!addPane.isVisible());
         });
 
         checkBox.setLayoutX(0);
         checkBox.setLayoutY(110);
         checkBox.setPrefSize(18, 18);
         checkBox.setOnAction(e -> baseDisplayer.updateDeleteButtonVisibility());
-        getChildren().addAll(combobox, p, checkBox, timeCode, addButton, add);
-
+        getChildren().addAll(combobox, p, checkBox, addButton, addPane);
     }
 
     public boolean isSelected() {
@@ -84,13 +73,12 @@ public class BasePane extends Pane {
 
     public Replica getReplica() {
         Speaker selected = combobox.getSelectionModel().getSelectedItem();
-        System.out.println(combobox.getItems().getFirst().getName());
-        return new Replica(textarea.getText(), selected == null ? combobox.getItems().getFirst() : selected);
+        return new Replica(textarea.getText(), selected == null ? combobox.getItems().get(1) : selected, 0);
     }
 
     private Pane getAddPane(BaseDisplayer baseDisplayer) {
         Pane addPane = new Pane();
-        addPane.setLayoutX(450);
+        addPane.setLayoutX(370);
         addPane.setLayoutY(0);
         addPane.setPrefSize(150, 80);
         addPane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 16;");
