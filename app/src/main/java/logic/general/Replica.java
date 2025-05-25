@@ -5,18 +5,21 @@ import java.util.ArrayList;
 public class Replica {
     private Speaker speaker;
     private String text;
+    private double timecode;
 
     public Replica() {
     }
 
-    public Replica(String text, Speaker speaker) {
+    public Replica(String text, Speaker speaker, double timecode) {
         this.text = text;
         this.speaker = speaker;
+        this.timecode = timecode;
     }
 
     public Speaker getSpeaker() {
         return speaker;
     }
+
     public void setText(String text) {
         this.text = text;
     }
@@ -27,6 +30,14 @@ public class Replica {
 
     public String getText() {
         return text;
+    }
+
+    public double getTimecode() {
+        return timecode;
+    }
+
+    public void setTimecode(double timecode) {
+        this.timecode = timecode;
     }
 
     public ArrayList<Integer> findAllOccurrences(String searchText) {
