@@ -2,18 +2,13 @@ package ui;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import logic.video_processing.queue.ProcessingQueue;
 import ui.custom_elements.DownloadScrollPane;
@@ -22,9 +17,6 @@ import ui.custom_elements.StatusLabel;
 import ui.main_panes.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class BaseController {
     @FXML
@@ -46,6 +38,10 @@ public class BaseController {
     @FXML
     private Button exitMenu;
 
+    private static final Image fon1 = new Image(BaseController.class.getResource("/images/fon1.png").toExternalForm());
+    private static final Image fon2 = new Image(BaseController.class.getResource("/images/fon2.png").toExternalForm());
+    private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
+
     private boolean isMenuOpen = false;
     private boolean isDownloadsOpen = false;
     private final int MENU_WIDTH = 363;
@@ -56,13 +52,12 @@ public class BaseController {
     private final EditPane editPane = new EditPane(this, processingQueue);
     private final MainPane mainPane = new MainPane();
     private final LoadPane loadPane = new LoadPane(processingQueue);
-    private final SavesPane savesPane = new SavesPane(editPane.getController(), processingQueue);
-    private final DialogEdit dialogEdit = new DialogEdit();
-    private final DialogExit dialogExit = new DialogExit();
+    private final SavesPane savesPane = new SavesPane(editPane.getController(), processingQueue, this);
+    private final DialogNoEdit dialogNoEdit = new DialogNoEdit(this);
+    private final DialogExit dialogExit = new DialogExit(this);
     private final DialogRecord dialogRecord = new DialogRecord();
     DownloadScrollPane downloadScrollPane = new DownloadScrollPane();
 
-    private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
     DialogWindow dialog;
 
 
@@ -78,8 +73,7 @@ public class BaseController {
     @FXML
     private void mainClick() {
         toggleMenu();
-        Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/fon1.png")).toExternalForm());
-        fonImage.setImage(image);
+        fonImage.setImage(fon1);
         setContent(mainPane);
     }
 
@@ -115,6 +109,18 @@ public class BaseController {
         dialog.show();
     }
 
+    public void switchToEditPane() {
+        setContent(editPane);
+    }
+
+    public void switchToLoadPane() {
+        setContent(loadPane);
+    }
+
+    public void switchToSavePane() {
+        setContent(savesPane);
+    }
+
     public void setContent(ContentPane contentPane) {
         boolean load = contentPane.getController().load();
         if (load) {
@@ -124,14 +130,18 @@ public class BaseController {
         }
     }
 
-    public void loadDialog() {
+    public void loadEditDialog() {
         try {
             dialog = new DialogWindow(menuButton.getScene().getWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        dialog.setDialogStage(dialogEdit);
+        dialog.setDialogStage(dialogNoEdit);
         dialog.show();
+    }
+
+    public void closeDialog() {
+        dialog.close();
     }
 
     private void toggleDownloads() {
@@ -201,7 +211,6 @@ public class BaseController {
     }
 
     private void changeImage() {
-        Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/fon2.png")).toExternalForm());
-        fonImage.setImage(image);
+        fonImage.setImage(fon2);
     }
 }

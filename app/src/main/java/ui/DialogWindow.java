@@ -39,4 +39,8 @@ public class DialogWindow {
     public void show() {
         dialogStage.show();
     }
+
+    public void close() {
+        dialogStage.close();
+    }
 }

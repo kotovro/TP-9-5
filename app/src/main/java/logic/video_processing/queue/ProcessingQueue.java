@@ -1,8 +1,10 @@
 package logic.video_processing.queue;
 
+import logic.general.MeetingMaterials;
 import logic.general.Protocol;
 import logic.general.Task;
 import logic.general.Transcript;
+import logic.persistence.DBManager;
 import logic.protocol.LLMWrapper;
 import logic.utils.LectureDownloader;
 import logic.video_processing.ProcessStatus;
@@ -15,6 +17,7 @@ import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -165,7 +168,7 @@ public class ProcessingQueue implements Processor {
             queueChangeListener.onQueueChange(getTaskPlan());
             Protocol protocol = llm.summarize(transcript);
             List<Task> tasks = llm.getTasks(transcript);
-            summarizeListener.onResultReady(transcript, protocol, tasks);
+            summarizeListener.onResultReady(new MeetingMaterials(transcript, Optional.of(protocol), tasks));
         }
 
         setProcessStatus(ProcessStatus.TASK_FINISHED);
@@ -173,7 +176,7 @@ public class ProcessingQueue implements Processor {
     }
 
     private boolean isTasksReady() {
-        return !(makeTranscriptQueue.isEmpty() && makeProtocolQueue.isEmpty());
+        return !(makeTranscriptQueue.isEmpty() && makeProtocolQueue.isEmpty() && downloadLectureQueue.isEmpty());
     }
 
     private void initModelForTask() {
@@ -187,12 +190,14 @@ public class ProcessingQueue implements Processor {
             } else {
                 state = QueueState.LECTURE_ACTIVE;
             }
+        } else if (state == QueueState.TRANSCRIPT_ACTIVE && makeTranscriptQueue.isEmpty() && !downloadLectureQueue.isEmpty()) {
+            state = QueueState.LECTURE_ACTIVE;
         } else if (state != QueueState.PROTOCOL_ACTIVE && makeTranscriptQueue.isEmpty()) {
-            setProcessStatus(ProcessStatus.MODEL_UNLOAD);
-            voskRecognizer.freeResources();
-            setProcessStatus(ProcessStatus.MODEL_UPLOAD);
-            llm.init();
-            state = QueueState.PROTOCOL_ACTIVE;
+                setProcessStatus(ProcessStatus.MODEL_UNLOAD);
+                voskRecognizer.freeResources();
+                setProcessStatus(ProcessStatus.MODEL_UPLOAD);
+                llm.init();
+                state = QueueState.PROTOCOL_ACTIVE;
         }
     }
 

@@ -5,11 +5,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import logic.general.Protocol;
-import logic.general.Speaker;
-import logic.general.Task;
-import logic.general.Transcript;
+import logic.general.*;
 import logic.persistence.DBManager;
 import logic.video_processing.queue.listeners.SummarizeListener;
 import logic.video_processing.queue.listeners.TranscriptListener;
@@ -27,6 +23,9 @@ public class EditWindowController implements PaneController, TranscriptListener,
     private ScrollPane replicas;
     @FXML
     private ScrollPane tabPane;
+
+    private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
+
     private HBox tabRow = new HBox();
     private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
     public Tab active = null;
@@ -39,18 +38,10 @@ public class EditWindowController implements PaneController, TranscriptListener,
 
     @FXML
     public void initialize() {
-        tabPane.getStyleClass().add("tab-scroll-pane");
+        tabPane.getStyleClass().add(STYLE);
         replicas.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         tabPane.setContent(tabRow);
         initSize();
-//        Tab st = new Tab(new TranscriptDisplayer(transcript, speakers), this);
-//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-//        addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
-//        addTab(st);
-//        setActive(st);
     }
 
     public void setActive(Tab active) {
@@ -89,7 +80,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @Override
     public boolean load() {
         if (active == null) {
-            baseController.loadDialog();
+            baseController.loadEditDialog();
             return false;
         }
         return true;
@@ -111,9 +102,9 @@ public class EditWindowController implements PaneController, TranscriptListener,
         });
     }
 
-    public void addProtocol(Protocol protocol, Transcript transcript, List<Task> tasks) {
+    public void addProtocol(MeetingMaterials meetingMaterials) {
         Platform.runLater(() -> {
-            addTab(new Tab(new ProtocolDisplayer(protocol, transcript, speakers, tasks), this));
+            addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers), this));
         });
     }
 
@@ -132,9 +123,9 @@ public class EditWindowController implements PaneController, TranscriptListener,
     }
 
     @Override
-    public void onResultReady(Transcript transcript, Protocol protocol, List<Task> tasks) {
+    public void onResultReady(MeetingMaterials meetingMaterials) {
         Platform.runLater(() -> {
-            addTab(new Tab(new ProtocolDisplayer(protocol, transcript, speakers, tasks), this));
+            addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers), this));
         });
     }
 }

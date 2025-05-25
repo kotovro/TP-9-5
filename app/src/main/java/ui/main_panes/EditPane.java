@@ -26,6 +26,7 @@ public class EditPane extends ContentPane {
             EditWindowController controller = new EditWindowController(bc);
             loader.setController(controller);
             processingQueue.setTranscriptListener(controller);
+            processingQueue.setSummarizeListener(controller);
             Node node = loader.load();
             this.getChildren().setAll(node);
 

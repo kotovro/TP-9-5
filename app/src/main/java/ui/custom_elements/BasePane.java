@@ -6,20 +6,22 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import logic.general.Replica;
+import logic.general.Speaker;
 
 import java.util.Objects;
 
 public class BasePane extends Pane {
-    public ComboBox combobox;
+    public ComboBox<Speaker> combobox;
     public TextArea textarea;
     public ImageView deleteButton;
-    public CheckBox cb;
+    public CheckBox checkBox;
 
-    public BasePane(ComboBox combobox, TextArea textarea, ImageView deleteButton, CheckBox cb) {
+    public BasePane(ComboBox<Speaker> combobox, TextArea textarea, ImageView deleteButton, CheckBox checkBox) {
         this.combobox = combobox;
         this.textarea = textarea;
         this.deleteButton = deleteButton;
-        this.cb = cb;
+        this.checkBox = checkBox;
         this.setWidth(750);
         this.setHeight(154);
         Pane p = new Pane();
@@ -48,14 +50,20 @@ public class BasePane extends Pane {
         Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/CloseCircle2.png")).toExternalForm());
         deleteButton.setImage(image);
 
-        this.cb.setLayoutX(0);
-        this.cb.setLayoutY(110);
-        this.cb.setPrefSize(18, 18);
-        this.getChildren().addAll(combobox, p, cb);
+        this.checkBox.setLayoutX(0);
+        this.checkBox.setLayoutY(110);
+        this.checkBox.setPrefSize(18, 18);
+        this.getChildren().addAll(combobox, p, checkBox);
 
     }
 
     public boolean isSelected() {
         return true;
+    }
+
+    public Replica getReplica() {
+        Speaker selected = combobox.getSelectionModel().getSelectedItem();
+        System.out.println(combobox.getItems().getFirst().getName());
+        return new Replica(textarea.getText(), selected == null ? combobox.getItems().getFirst() : selected);
     }
 }

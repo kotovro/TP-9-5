@@ -115,6 +115,5 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         return toRemove;
     }
 
-    public abstract void saveToDB();
     protected abstract void initTextArea();
 }

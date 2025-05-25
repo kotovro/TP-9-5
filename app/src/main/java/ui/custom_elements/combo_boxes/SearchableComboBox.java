@@ -13,15 +13,21 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import logic.general.Speaker;
+import logic.persistence.DBInitializer;
+import logic.persistence.DBManager;
 
 import java.util.List;
 
 public class SearchableComboBox extends ComboBox<Speaker> {
+    private static final Speaker ADD_NEW_SPEAKER = new Speaker("Добавить нового...", DBInitializer.getAddNew(), -1);
+
     private final FilteredList<Speaker> filteredSpeakers;
     private final TextField searchField = new TextField();
     private String defaultText;
+    private Speaker selectedSpeaker = null;
 
     public SearchableComboBox(List<Speaker> speakers, Speaker defaultSpeaker) {
+        selectedSpeaker = defaultSpeaker;
         ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
         this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
         this.defaultText = "";
@@ -37,6 +43,8 @@ public class SearchableComboBox extends ComboBox<Speaker> {
     }
 
     private void init() {
+        setPrefWidth(250);
+        setMinWidth(250);
         configureSearchField();
         configureCellFactory();
         setupEventHandlers();
@@ -74,6 +82,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         ObservableList<Speaker> items = FXCollections.observableArrayList();
         items.add(null);
         items.addAll(filteredSpeakers);
+        items.add(ADD_NEW_SPEAKER);
         setItems(items);
 
         adjustDropdownHeight();
@@ -125,13 +134,23 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             public void updateItem(Speaker speaker, boolean empty) {
                 super.updateItem(speaker, empty);
                 if (empty || speaker == null) {
-                    setGraphic(null);
-                    if (defaultText.isEmpty()) {
-                        getSelectionModel().select(0);
-                    } else {
+                    if (!defaultText.isEmpty()) {
                         setText(defaultText);
+                        return;
+                    }
+                    if (selectedSpeaker == null) {
+                        setGraphic(null);
+                    } else {
+                        imageView.setImage(selectedSpeaker.getImage());
+                        setText(selectedSpeaker.getName());
                     }
                 } else {
+                    if (speaker == ADD_NEW_SPEAKER) {
+                        addNewSpeaker();
+                        getSelectionModel().clearSelection();
+                        return;
+                    }
+                    selectedSpeaker = speaker;
                     imageView.setImage(speaker.getImage());
                     setGraphic(imageView);
                     setText(speaker.getName());
@@ -139,9 +158,6 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                 setStyle("-fx-text-fill: white;");
             }
         });
-
-        setPrefWidth(250);
-        setPrefHeight(32);
         getStyleClass().add("custom-combobox");
         VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
     }
@@ -155,11 +171,13 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         });
 
         searchField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && !filteredSpeakers.isEmpty()) {
-                this.setValue(filteredSpeakers.getFirst());
-                this.hide();
-            } else {
-                //TODO: make add speaker
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!filteredSpeakers.isEmpty()) {
+                    this.setValue(filteredSpeakers.getFirst());
+                    this.hide();
+                } else {
+                    addNewSpeaker();
+                }
             }
         });
 
@@ -173,5 +191,10 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             searchField.requestFocus();
             searchField.selectAll();
         }));
+    }
+
+    private void addNewSpeaker() {
+        // TODO: Реализовать логику добавления нового спикера
+        System.out.println("Добавление нового спикера...");
     }
 }

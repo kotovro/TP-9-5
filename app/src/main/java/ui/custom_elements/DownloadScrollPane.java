@@ -11,12 +11,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import logic.video_processing.queue.listeners.QueueChangeListener;
+import ui.BaseController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadScrollPane extends ScrollPane implements QueueChangeListener {
     private static final double MAX_HEIGHT_WITHOUT_SCROLL = 332;
+    private static final Image closeCircleImage = new Image(BaseController.class.getResource("/images/CloseCircle4.png").toExternalForm());
+    private static final Image groupImage = new Image(BaseController.class.getResource("/images/Group9.png").toExternalForm());
+    private static final Font manropeFont2 = Font.loadFont(DownloadScrollPane.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+    private static final Font manropeFont = Font.loadFont(DownloadScrollPane.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
     private final VBox contentContainer = new VBox();
 
     public DownloadScrollPane() {
@@ -89,7 +94,6 @@ public class DownloadScrollPane extends ScrollPane implements QueueChangeListene
         item.setPrefSize(250,74);
 
         Label name = new Label(taskName);
-        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
         name.setStyle("-fx-font-family: \"Manrope Medium\";-fx-font-size: 14; -fx-text-fill: white;");
         name.setFont(manropeFont);
         name.setLayoutX(49);
@@ -105,21 +109,20 @@ public class DownloadScrollPane extends ScrollPane implements QueueChangeListene
         getStyleClass().add("download-scroll-pane");
 
         Label status = new Label("В ожидании обработки");
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
         status.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 12; -fx-text-fill: #131F5A;");
         status.setFont(manropeFont2);
         status.setLayoutX(49);
         status.setLayoutY(50);
 
         ImageView im = new ImageView();
-        im.setImage(new Image("/images/Group9.png"));
+        im.setImage(groupImage);
         im.setFitHeight(38);
         im.setFitWidth(28);
         im.setLayoutX(8);
         im.setLayoutY(15);
 
         ImageView close = new ImageView();
-        close.setImage(new Image("/images/CloseCircle4.png"));
+        close.setImage(closeCircleImage);
         close.setFitHeight(27);
         close.setFitWidth(27);
         close.setLayoutX(265);

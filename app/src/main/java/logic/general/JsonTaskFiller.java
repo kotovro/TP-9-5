@@ -35,9 +35,8 @@ public class JsonTaskFiller {
             tasks = list.stream()
                     .map(t -> {
                         String desc = String.format(
-                                "%s. Ответственный: %s. Дата: %s.",
+                                "%s. Дата: %s.",
                                 t.task.trim(),
-                                t.responsible.trim(),
                                 t.due_date.trim()
                         );
                         return new Task(transcriptId, desc);

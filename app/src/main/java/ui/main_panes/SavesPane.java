@@ -4,19 +4,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import logic.general.Transcript;
 import logic.video_processing.queue.ProcessingQueue;
-import ui.EditWindowController;
-import ui.LoadController;
-import ui.PaneController;
-import ui.SavesController;
+import ui.*;
 
 import java.util.Date;
 
 public class SavesPane extends ContentPane {
     PaneController paneController;
-    public SavesPane(EditWindowController editWindowController, ProcessingQueue processingQueue) {
+    public SavesPane(EditWindowController editWindowController, ProcessingQueue processingQueue, BaseController baseController) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/saves.fxml"));
-            loader.setController(new SavesController(editWindowController, processingQueue));
+            loader.setController(new SavesController(editWindowController, processingQueue, baseController));
             Node node = loader.load();
             this.getChildren().setAll(node);
 

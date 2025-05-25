@@ -51,7 +51,7 @@
 }
 
 .custom-combobox {
-    -fx-background-color: rgba(11, 15, 133, 0.75);
+    -fx-background-color: rgb(62,89,163);
     -fx-background-radius: 10px;
     -fx-text-fill: #F5F5F5;
     -fx-font-family: 'Manrope';

@@ -8,5 +8,4 @@ public interface EditableDisplayer {
     void setupHotkeys();
     void unbindHotKeys();
     String getName();
-    void saveToDB();
 }
