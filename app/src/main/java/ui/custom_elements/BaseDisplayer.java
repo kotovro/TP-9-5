@@ -151,7 +151,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
 
     private void initButtonsOverlay() {
         delete = new Button("Удалить выбранные");
-        delete.setLayoutY(160);
+        delete.setLayoutY(95);
         delete.setLayoutX(850);
         delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
                 " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
@@ -165,8 +165,8 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         arrow.setFitWidth(18);
 
         file = new Button("Файл", arrow);
-        file.setLayoutY(-45);
-        file.setLayoutX(230);
+        file.setLayoutY(-47);
+        file.setLayoutX(280);
         file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
                 " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
         file.setFont(manropeFont2);
@@ -176,8 +176,8 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         });
 
         filePane = new Pane();
-        filePane.setLayoutY(-5);
-        filePane.setLayoutX(230);
+        filePane.setLayoutY(-7);
+        filePane.setLayoutX(280);
         filePane.setPrefSize(200, 100);
         filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
         filePane.setVisible(false);

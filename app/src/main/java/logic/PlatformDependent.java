@@ -34,7 +34,7 @@ public class PlatformDependent {
         }
 
         if (CURRENT_PLATFORM == Platform.MACOS) {
-            System.load(PLATFORM_PREFIX + LIB_VOSK_PATH);
+            System.load(new File(PLATFORM_PREFIX + LIB_VOSK_PATH).getAbsolutePath());
         }
     }
 
