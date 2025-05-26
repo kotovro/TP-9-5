@@ -15,18 +15,23 @@ import javafx.scene.layout.VBox;
 import logic.general.Speaker;
 import logic.persistence.DBInitializer;
 import logic.persistence.DBManager;
+import ui.BaseController;
 
 import java.util.List;
 
 public class SearchableComboBox extends ComboBox<Speaker> {
     private static final Speaker ADD_NEW_SPEAKER = new Speaker("Добавить нового...", DBInitializer.getAddNew(), -1);
 
-    private final FilteredList<Speaker> filteredSpeakers;
+    private final List<Speaker> speakers;
+    private FilteredList<Speaker> filteredSpeakers;
     private final TextField searchField = new TextField();
     private String defaultText;
     private Speaker selectedSpeaker = null;
+    private final BaseController baseController;
 
-    public SearchableComboBox(List<Speaker> speakers, Speaker defaultSpeaker) {
+    public SearchableComboBox(List<Speaker> speakers, Speaker defaultSpeaker, BaseController baseController) {
+        this.baseController = baseController;
+        this.speakers = speakers;
         selectedSpeaker = defaultSpeaker;
         ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
         this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
@@ -35,7 +40,9 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         this.getSelectionModel().select(defaultSpeaker);
     }
 
-    public SearchableComboBox(List<Speaker> speakers, String defaultText) {
+    public SearchableComboBox(List<Speaker> speakers, String defaultText, BaseController baseController) {
+        this.baseController = baseController;
+        this.speakers = speakers;
         ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
         this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
         this.defaultText = defaultText;
@@ -187,14 +194,17 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             }
         });
 
-        this.setOnShowing(e -> Platform.runLater(() -> {
-            searchField.requestFocus();
-            searchField.selectAll();
-        }));
+        this.setOnShowing(e -> {
+            filteredSpeakers = new FilteredList<>(FXCollections.observableArrayList(speakers), p -> true);
+            updateComboBoxItems();
+            Platform.runLater(() -> {
+                searchField.requestFocus();
+                searchField.selectAll();
+            });
+        });
     }
 
     private void addNewSpeaker() {
-        // TODO: Реализовать логику добавления нового спикера
-        System.out.println("Добавление нового спикера...");
+        baseController.loadSpeakerDialog();
     }
 }

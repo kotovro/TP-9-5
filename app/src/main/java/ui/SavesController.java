@@ -56,15 +56,6 @@ public class SavesController implements PaneController{
             VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 15));
             content.getChildren().add(stAndPrBuilder);
         }
-        for (int i = 0; i < 4; i++){
-            Transcript transcript = new Transcript("sad", new Date());
-            transcript.addReplica(new Replica("Задачи: поспать, поесть, не забыть уничтожить Тарасова", new Speaker("Asas", null, -1), 0));
-            StAndPrBuilder sp = new StAndPrBuilder(new MeetingMaterials(
-                    transcript, Optional.empty(), null),
-                    editWindowController, processingQueue, baseController);
-            VBox.setMargin(sp, new Insets(20, 0, 10, 15));
-            content.getChildren().add(sp);
-        }
     }
 
     @Override

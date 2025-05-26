@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import logic.general.Speaker;
+import ui.BaseController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +16,15 @@ public class ComboBoxGroup {
     private final List<ComboBox<Speaker>> comboBoxes = new ArrayList<>();
     private final ObservableList<Speaker> speakers;
     private final int groupID;
+    private BaseController baseController;
 
-    public ComboBoxGroup(List<Speaker> speakers, int groupID) {
+    public ComboBoxGroup(List<Speaker> speakers, int groupID, BaseController baseController) {
         this.speakers = FXCollections.observableArrayList(speakers);
         this.groupID = groupID;
     }
 
     public ComboBox<Speaker> createComboBox() {
-        SearchableComboBox comboBox = new SearchableComboBox(speakers, SPEAKER + (groupID + 1));
+        SearchableComboBox comboBox = new SearchableComboBox(speakers, SPEAKER + (groupID + 1), baseController);
         comboBoxes.add(comboBox);
 
         comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Speaker>() {

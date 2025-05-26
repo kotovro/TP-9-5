@@ -13,6 +13,7 @@ import logic.general.Transcript;
 import logic.persistence.DBManager;
 import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import ui.BaseController;
+import ui.EditWindowController;
 import ui.custom_elements.combo_boxes.ComboBoxCreator;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
@@ -22,18 +23,15 @@ import java.util.List;
 public class RawTranscriptDisplayer extends BaseDisplayer {
     private static final String PREFIX = "Без названия ";
     private final RawTranscript rawTranscript;
-    private final BaseController baseController;
-
     public RawTranscriptDisplayer(RawTranscript rawTranscript, List<Speaker> speakers, BaseController baseController) {
-        super(PREFIX + (rawTranscript.getID() + 1) + ".tr", speakers);
+        super(PREFIX + (rawTranscript.getID() + 1) + ".tr", speakers, baseController);
         this.rawTranscript = rawTranscript;
-        this.baseController = baseController;
         initTextArea();
     }
 
     @Override
     protected void initTextArea() {
-        ComboBoxCreator comboBoxCreator = new ComboBoxCreator(rawTranscript);
+        ComboBoxCreator comboBoxCreator = new ComboBoxCreator(rawTranscript, speakers, baseController);
         for (int i = 0; i < rawTranscript.getPhraseCount(); i++) {
             textAreaContainer.getChildren().add(formReplicaView(rawTranscript, comboBoxCreator, i));
         }
@@ -43,7 +41,9 @@ public class RawTranscriptDisplayer extends BaseDisplayer {
     protected void initButtonsActions(Button save, Button saveAs) {
         save.setDisable(true);
         saveAs.setOnAction(e -> {
-            baseController.loadSaveAsDialog(this::saveAsToDB);
+            baseController.loadSaveAsDialog(name -> {
+                saveAsToDB(name);
+            });
         });
     }
 

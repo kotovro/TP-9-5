@@ -10,6 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import logic.general.Speaker;
+import logic.persistence.DBManager;
 import logic.video_processing.queue.ProcessingQueue;
 import ui.custom_elements.DownloadScrollPane;
 import ui.custom_elements.ListenProgressBar;
@@ -18,6 +20,7 @@ import ui.custom_elements.StatusLabel;
 import ui.main_panes.*;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BaseController {
     @FXML
@@ -50,13 +53,15 @@ public class BaseController {
     private PaneController DialogController;
     private final ProcessingQueue processingQueue = new ProcessingQueue();
 
-    private final EditPane editPane = new EditPane(this, processingQueue);
+    private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
+    private final EditPane editPane = new EditPane(this, processingQueue, speakers);
     private final MainPane mainPane = new MainPane();
     private final LoadPane loadPane = new LoadPane(processingQueue);
     private final SavesPane savesPane = new SavesPane(editPane.getController(), processingQueue, this);
     private final DialogNoEdit dialogNoEdit = new DialogNoEdit(this);
     private final DialogExit dialogExit = new DialogExit(this);
     private final DialogSave dialogSave = new DialogSave(this);
+    private final DialogSpeaker dialogSpeaker = new DialogSpeaker(this, speakers);
     private final DialogRecord dialogRecord = new DialogRecord();
     DownloadScrollPane downloadScrollPane = new DownloadScrollPane();
 
@@ -129,6 +134,16 @@ public class BaseController {
         }
         dialog.setDialogStage(dialogSave);
         dialogSave.setSaveAsProvider(saveAsProvider);
+        dialog.show();
+    }
+
+    public void loadSpeakerDialog() {
+        try {
+            dialog = new DialogWindow(menuButton.getScene().getWindow());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        dialog.setDialogStage(dialogSpeaker);
         dialog.show();
     }
 

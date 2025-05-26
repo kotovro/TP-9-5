@@ -12,12 +12,10 @@ import java.util.List;
 
 public class TranscriptDisplayer extends BaseDisplayer {
     private final Transcript transcript;
-    private final BaseController baseController;
 
     public TranscriptDisplayer(Transcript transcript, List<Speaker> speakers, BaseController baseController) {
-        super(transcript.getName() + ".tr", speakers);
+        super(transcript.getName() + ".tr", speakers, baseController);
         this.transcript = transcript;
-        this.baseController = baseController;
         initTextArea();
     }
 

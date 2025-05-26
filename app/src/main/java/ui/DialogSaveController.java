@@ -19,9 +19,11 @@ public class DialogSaveController {
     }
 
     public void initialize() {
-        String name = fileName.getText();
         saveButton.setOnAction(e -> {
+            String name = fileName.getText();
             saveAsProvider.saveAs(name);
+            baseController.closeDialog();
+            baseController.switchToSavePane();
         });
     }
 

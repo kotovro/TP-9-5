@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import logic.general.*;
 import logic.persistence.DBManager;
+import ui.BaseController;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ import java.util.List;
 public class ProtocolDisplayer extends BaseDisplayer {
     private final MeetingMaterials meetingMaterials;
 
-    public ProtocolDisplayer(MeetingMaterials meetingMaterials, List<Speaker> speakers) {
-        super(meetingMaterials.getTranscript().getName() + ".pr", speakers);
+    public ProtocolDisplayer(MeetingMaterials meetingMaterials, List<Speaker> speakers, BaseController baseController) {
+        super(meetingMaterials.getTranscript().getName() + ".pr", speakers, baseController);
         if (meetingMaterials.getProtocol().isEmpty()) {
             throw new RuntimeException("Materials don't contain any protocol");
         }
@@ -63,7 +64,7 @@ public class ProtocolDisplayer extends BaseDisplayer {
     }
 
     protected BasePane formReplicaView(Replica replica) {
-        ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
+        ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker(), baseController);
         TextArea textArea = initTextArea(replica.getText());
         BasePane basepane = new BasePane(comboBox, textArea, this);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));

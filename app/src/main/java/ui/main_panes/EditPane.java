@@ -13,17 +13,18 @@ import ui.EditWindowController;
 import ui.PaneController;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class EditPane extends ContentPane {
     EditWindowController paneController;
     BaseController bc;
 
-    public EditPane(BaseController bc, ProcessingQueue processingQueue) {
+    public EditPane(BaseController bc, ProcessingQueue processingQueue, List<Speaker> speakers) {
         try {
             this.bc = bc;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-            EditWindowController controller = new EditWindowController(bc);
+            EditWindowController controller = new EditWindowController(bc, speakers);
             loader.setController(controller);
             processingQueue.setTranscriptListener(controller);
             processingQueue.setSummarizeListener(controller);

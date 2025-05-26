@@ -36,13 +36,14 @@ public class EditWindowController implements PaneController, TranscriptListener,
     private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
 
     private HBox tabRow = new HBox();
-    private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
+    private final List<Speaker> speakers;
     public Tab active = null;
     public List<Tab> tabs = new ArrayList<>();
     BaseController baseController;
 
-    public EditWindowController(BaseController baseController) {
+    public EditWindowController(BaseController baseController, List<Speaker> speakers) {
         this.baseController = baseController;
+        this.speakers = speakers;
     }
 
     @FXML
@@ -110,13 +111,13 @@ public class EditWindowController implements PaneController, TranscriptListener,
 
     public void addTranscript(Transcript transcript) {
         Platform.runLater(() -> {
-            addTab(new Tab(new TranscriptDisplayer(transcript, speakers), this));
+            addTab(new Tab(new TranscriptDisplayer(transcript, speakers, baseController), this));
         });
     }
 
     public void addProtocol(MeetingMaterials meetingMaterials) {
         Platform.runLater(() -> {
-            addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers), this));
+            addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers, baseController), this));
         });
     }
 
@@ -130,14 +131,14 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @Override
     public void onResultReady(RawTranscript rawTranscript) {
         Platform.runLater(() -> {
-            addTab(new Tab(new RawTranscriptDisplayer(rawTranscript, speakers), this));
+            addTab(new Tab(new RawTranscriptDisplayer(rawTranscript, speakers, baseController), this));
         });
     }
 
     @Override
     public void onResultReady(MeetingMaterials meetingMaterials) {
         Platform.runLater(() -> {
-            addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers), this));
+            addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers, baseController), this));
         });
     }
 }

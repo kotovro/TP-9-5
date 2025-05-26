@@ -1,6 +1,5 @@
 package ui.custom_elements;
 
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -8,9 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import logic.general.Replica;
@@ -19,7 +16,6 @@ import logic.text_edit.EditStory;
 import logic.text_edit.action.AddReplica;
 import logic.text_edit.action.RemoveReplicas;
 import logic.text_edit.action.StoryPoint;
-import logic.utils.TimeCode;
 import logic.utils.TimeFormatter;
 import ui.BaseController;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
@@ -29,26 +25,27 @@ import java.util.List;
 
 public abstract class BaseDisplayer implements EditableDisplayer {
     private static final String STYLE = TranscriptDisplayer.class.getResource("/styles/style.css").toExternalForm();
-    private static final ImageView arrow = new ImageView(BaseDisplayer.class.getResource("/images/SquareAltArrowDown2.png").toExternalForm());
     private static final Font manropeFont1 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
     private static final Font manropeFont2 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
+    private final ImageView arrow = new ImageView(BaseDisplayer.class.getResource("/images/SquareAltArrowDown2.png").toExternalForm());
     protected final List<Speaker> speakers;
     protected VBox textAreaContainer = new VBox();
     protected final Insets basePaneInsets = new Insets(10, 50, 0, 50);
     private final EditStory editStory = new EditStory();
     private final String name;
     private EventHandler<KeyEvent> keyEventHandler;
-    private Pane buttonsOverlay;
 
     protected Button delete;
     protected Button file;
     protected Pane filePane;
     protected Button save;
     protected Button saveAs;
+    protected final BaseController baseController;
 
-    public BaseDisplayer(String name, List<Speaker> speakers) {
+    public BaseDisplayer(String name, List<Speaker> speakers, BaseController baseController) {
         this.name = name;
         this.speakers = speakers;
+        this.baseController = baseController;
         init();
     }
 
@@ -108,7 +105,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     public void setupOverlay(Pane overlay) {
-        overlay.getChildren().setAll(buttonsOverlay);
+        overlay.getChildren().setAll(delete, file, filePane);
         updateDeleteButtonVisibility();
     }
 
@@ -145,7 +142,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     protected BasePane formReplicaView(Replica replica) {
-        ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
+        ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker(), baseController);
         TextArea textArea = initTextArea(replica.getText());
         BasePane basepane = new TimeCodeBasePane(comboBox, textArea, TimeFormatter.format(replica.getTimecode()), this);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
@@ -153,17 +150,13 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     private void initButtonsOverlay() {
-        buttonsOverlay = new Pane();
-        buttonsOverlay.setMouseTransparent(false);
-        buttonsOverlay.setPrefSize(10, 10);
-
         delete = new Button("Удалить выбранные");
         delete.setLayoutY(160);
         delete.setLayoutX(850);
         delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
                 " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
         delete.setFont(manropeFont1);
-        delete.setVisible(true);
+        delete.setVisible(false);
         delete.setOnAction(e -> {
             removeReplicas();
         });
@@ -207,7 +200,6 @@ public abstract class BaseDisplayer implements EditableDisplayer {
 
         filePane.getChildren().addAll(save, saveAs);
         initButtonsActions(save, saveAs);
-        buttonsOverlay.getChildren().addAll(delete, file, filePane);
     }
 
     private void removeReplicas() {
