@@ -132,3 +132,34 @@
 .vbox-transparent {
     -fx-background-color: rgba(255, 255, 255, 0.6);
 }
+
+.spinner {
+    -fx-background-color: #6F88E5;
+    -fx-text-fill: white;
+}
+
+.spinner .text-field {
+    -fx-background-color: #6F88E5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #8AA1EE;
+}
+
+.spinner .increment-arrow-button .arrow,
+.spinner .decrement-arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.spinner .increment-arrow-button:hover .arrow,
+.spinner .decrement-arrow-button:hover .arrow {
+    -fx-background-color: #FFFFFF;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #4A6DB5;
+}
