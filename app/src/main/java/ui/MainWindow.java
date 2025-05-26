@@ -16,6 +16,14 @@ public class MainWindow extends Application {
         setStage(stage);
         stage.setResizable(false);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Light.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-ExtraLight.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Medium.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-SemiBold.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/fonts/Fyodor-BoldExpanded.ttf"), 12);
         stage.show();
     }
 

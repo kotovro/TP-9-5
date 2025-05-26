@@ -49,6 +49,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @FXML
     public void initialize() {
         tabPane.getStyleClass().add(STYLE);
+        tabPane.getStyleClass().add("tab-scroll-pane");
         replicas.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         tabPane.setContent(tabRow);
         initSize();

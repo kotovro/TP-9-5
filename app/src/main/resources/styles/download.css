@@ -30,7 +30,7 @@
 }
 
 .progress-bar .track {
-    -fx-background-color: #B8D0FF; /* цвет фона под прогрессом */
+    -fx-background-color: #B8D0FF;
     -fx-background-insets: 0;
     -fx-background-radius: 10;
 }

@@ -1,10 +1,12 @@
 package ui.custom_elements;
 
+import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import logic.general.Replica;
 import logic.general.Speaker;
 
@@ -32,10 +34,20 @@ public class BasePane extends Pane {
         this.textarea.prefHeightProperty().addListener((obs, oldHeight, newHeight) -> {
             p.setPrefHeight(newHeight.doubleValue() + 40);
         });
+
         this.textarea.setPrefWidth(800);
         this.textarea.setPrefHeight(59);
         this.textarea.setLayoutX(18);
         this.textarea.setLayoutY(18);
+
+        this.textarea.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.textarea.setPrefHeight(computeTextHeight(this.textarea));
+        });
+
+        Platform.runLater(() -> {
+            resizeTextAreaToFitContent(this.textarea);
+        });
+
         //textarea.setStyle("-fx-background-radius: 10; -fx-border-radius: 10;");
         p.setStyle("-fx-background-color: #6F9AE5; -fx-background-radius: 10;");
         p.getChildren().add(textarea);
@@ -106,5 +118,21 @@ public class BasePane extends Pane {
 
         addPane.getChildren().addAll(up, down);
         return addPane;
+    }
+
+    private double computeTextHeight(TextArea textArea) {
+        Text text = new Text(textArea.getText());
+        text.setFont(textArea.getFont());
+        text.setWrappingWidth(textArea.getWidth() - 10);
+        return text.getLayoutBounds().getHeight() + 40;
+    }
+
+    private void resizeTextAreaToFitContent(TextArea textArea) {
+        Text text = new Text(textArea.getText());
+        text.setFont(textArea.getFont());
+        text.setWrappingWidth(textArea.getWidth() - 10);
+        double height = text.getLayoutBounds().getHeight() + 20;
+
+        textArea.setPrefHeight(height);
     }
 }
