@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import logic.general.*;
 import logic.persistence.DBManager;
 import logic.video_processing.queue.listeners.SummarizeListener;
@@ -25,11 +26,12 @@ public class EditWindowController implements PaneController, TranscriptListener,
 
     @FXML
     private Pane pane;
-
     @FXML
     private Pane paneReplicas;
     @FXML
     private ScrollPane tabPane;
+    @FXML
+    private Pane overlayPane;
 
     private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
 
@@ -56,33 +58,11 @@ public class EditWindowController implements PaneController, TranscriptListener,
             this.active.setInactive();
         }
 
-        if (this.active != null && this.active.getTranscriptDisplayer().delete != null) {
-            paneReplicas.getChildren().remove(this.active.getTranscriptDisplayer().delete);
-        }
-
-        if (this.active != null && this.active.getTranscriptDisplayer().file != null) {
-            paneReplicas.getChildren().remove(this.active.getTranscriptDisplayer().file);
-        }
-
-        if (this.active != null && this.active.getTranscriptDisplayer().filePane != null) {
-            paneReplicas.getChildren().remove(this.active.getTranscriptDisplayer().filePane);
-        }
-
         if (active != null) {
             active.setActive();
             active.getTranscriptDisplayer().setupPane(replicas);
-            active.getTranscriptDisplayer().setupDelete(paneReplicas);
-            active.getTranscriptDisplayer().setupMenu(paneReplicas);
-            active.getTranscriptDisplayer().file.setOnAction(e ->
-            {
-                active.getTranscriptDisplayer().isOpen = !active.getTranscriptDisplayer().isOpen;
-                active.getTranscriptDisplayer().filePane.setVisible(active.getTranscriptDisplayer().isOpen);
-                pane.toFront();
-                //pane.setMouseTransparent(active.getTranscriptDisplayer().isOpen);
-            });
+            active.getTranscriptDisplayer().setupOverlay(overlayPane);
         }
-
-
         this.active = active;
     }
 
@@ -102,7 +82,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
         }
         if (active != null) {
             active.getTranscriptDisplayer().setupPane(replicas);
-            active.getTranscriptDisplayer().setupDelete(paneReplicas);
+            active.getTranscriptDisplayer().setupOverlay(overlayPane);
         } else {
             replicas.setContent(null);
             load();

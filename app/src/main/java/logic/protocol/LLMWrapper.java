@@ -86,7 +86,7 @@ public class LLMWrapper {
                 0.10f,
                 "<<END>>");
 
-        return new Protocol(summary);
+        return new Protocol(transcript.getId(), summary);
     }
 
 

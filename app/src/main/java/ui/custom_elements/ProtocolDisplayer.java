@@ -2,16 +2,15 @@ package ui.custom_elements;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import logic.general.*;
 import logic.persistence.DBManager;
-import logic.utils.TimeFormatter;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,11 +53,35 @@ public class ProtocolDisplayer extends BaseDisplayer {
         }
     }
 
+    @Override
+    protected void initButtonsActions(Button save, Button saveAs) {
+        save.setOnAction(e -> {
+            save();
+        });
+
+        saveAs.setDisable(true);
+    }
+
     protected BasePane formReplicaView(Replica replica) {
         ComboBox<Speaker> comboBox = new SearchableComboBox(speakers, replica.getSpeaker());
         TextArea textArea = initTextArea(replica.getText());
         BasePane basepane = new BasePane(comboBox, textArea, this);
         VBox.setMargin(basepane, new Insets(10, 50, 0, 50));
         return basepane;
+    }
+
+    private void save() {
+        List<Node> nodes = textAreaContainer.getChildren();
+        Protocol newProtocol = new Protocol(meetingMaterials.getTranscript().getId(), ((BasePane)nodes.getFirst()).textarea.getText());
+        List<Task> tasks = new ArrayList<>();
+        for (int i = 1; i < nodes.size(); i++) {
+            BasePane pane = (BasePane) nodes.get(i);
+            tasks.addLast(new Task(meetingMaterials.getTranscript().getId(),
+                    pane.combobox.getSelectionModel().getSelectedItem().getId(), pane.textarea.getText()));
+        }
+        DBManager.getProtocolDao().addProtocol(newProtocol);
+        for (Task task : tasks) {
+            DBManager.getTaskDao().addTask(task);
+        }
     }
 }

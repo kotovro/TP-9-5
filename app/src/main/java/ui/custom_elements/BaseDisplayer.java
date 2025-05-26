@@ -8,7 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import logic.general.Replica;
@@ -19,6 +21,7 @@ import logic.text_edit.action.RemoveReplicas;
 import logic.text_edit.action.StoryPoint;
 import logic.utils.TimeCode;
 import logic.utils.TimeFormatter;
+import ui.BaseController;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
@@ -26,17 +29,22 @@ import java.util.List;
 
 public abstract class BaseDisplayer implements EditableDisplayer {
     private static final String STYLE = TranscriptDisplayer.class.getResource("/styles/style.css").toExternalForm();
+    private static final ImageView arrow = new ImageView(BaseDisplayer.class.getResource("/images/SquareAltArrowDown2.png").toExternalForm());
+    private static final Font manropeFont1 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+    private static final Font manropeFont2 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
     protected final List<Speaker> speakers;
     protected VBox textAreaContainer = new VBox();
     protected final Insets basePaneInsets = new Insets(10, 50, 0, 50);
     private final EditStory editStory = new EditStory();
     private final String name;
     private EventHandler<KeyEvent> keyEventHandler;
-    public Button delete;
-    public Button file;
-    public Button edit;
-    public boolean isOpen = false;
-    public Pane filePane;
+    private Pane buttonsOverlay;
+
+    protected Button delete;
+    protected Button file;
+    protected Pane filePane;
+    protected Button save;
+    protected Button saveAs;
 
     public BaseDisplayer(String name, List<Speaker> speakers) {
         this.name = name;
@@ -95,86 +103,13 @@ public abstract class BaseDisplayer implements EditableDisplayer {
                 addNewReplica(0);
             }
         };
+
+        initButtonsOverlay();
     }
 
-    public void setupDelete(Pane paneReplicas) {
-        if (this.delete != null && paneReplicas.getChildren().contains(this.delete)) {
-            paneReplicas.getChildren().remove(this.delete);
-        }
-
-        Button delete = new Button("Удалить выбранные");
-        delete.setLayoutY(-38);
-        delete.setLayoutX(850);
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
-        delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
-                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
-        delete.setFont(manropeFont2);
-        delete.setVisible(false); // Сначала скрыта
-
-        delete.setOnAction(e -> {
-            removeReplicas();
-        });
-
-        this.delete = delete;
-        paneReplicas.getChildren().add(delete);
-
-        for (Node node : textAreaContainer.getChildren()) {
-            BasePane basePane = (BasePane) node;
-        }
+    public void setupOverlay(Pane overlay) {
+        overlay.getChildren().setAll(buttonsOverlay);
         updateDeleteButtonVisibility();
-    }
-
-    public void setupMenu(Pane paneReplicas) {
-        ImageView im = new ImageView("/images/SquareAltArrowDown2.png");
-        im.setFitHeight(18);
-        im.setFitWidth(18);
-
-        Button file = new Button("Файл", im);
-        file.setLayoutY(-180);
-        file.setLayoutX(230);
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
-        file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
-                " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
-        file.setFont(manropeFont2);
-        file.setContentDisplay(ContentDisplay.RIGHT);
-
-        Pane filePane = new Pane();
-        filePane.setLayoutY(-140);
-        filePane.setLayoutX(230);
-        filePane.setPrefSize(200, 100);
-        filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
-        filePane.setVisible(false);
-
-        Button save = new Button("Сохранить");
-        Button saveAs = new Button("Сохранить как");
-
-        save.setLayoutX(15);
-        save.setLayoutY(15);
-        saveAs.setLayoutX(15);
-        saveAs.setLayoutY(55);
-
-        saveAs.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
-                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
-        saveAs.setFont(manropeFont2);
-
-        save.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
-                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
-        save.setFont(manropeFont2);
-
-        filePane.getChildren().addAll(save, saveAs);
-
-        save.setOnAction(e -> {
-            // как ты тут сохраняешь
-        });
-
-        saveAs.setOnAction(e -> {
-            // вызов DialogSave
-        });
-
-
-        this.file = file;
-        this.filePane = filePane;
-        paneReplicas.getChildren().addAll(file, filePane);
     }
 
     public void updateDeleteButtonVisibility() {
@@ -217,6 +152,64 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         return basepane;
     }
 
+    private void initButtonsOverlay() {
+        buttonsOverlay = new Pane();
+        buttonsOverlay.setMouseTransparent(false);
+        buttonsOverlay.setPrefSize(10, 10);
+
+        delete = new Button("Удалить выбранные");
+        delete.setLayoutY(160);
+        delete.setLayoutX(850);
+        delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        delete.setFont(manropeFont1);
+        delete.setVisible(true);
+        delete.setOnAction(e -> {
+            removeReplicas();
+        });
+
+        arrow.setFitHeight(18);
+        arrow.setFitWidth(18);
+
+        file = new Button("Файл", arrow);
+        file.setLayoutY(-45);
+        file.setLayoutX(230);
+        file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
+                " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
+        file.setFont(manropeFont2);
+        file.setContentDisplay(ContentDisplay.RIGHT);
+        file.setOnAction(e -> {
+            filePane.setVisible(!filePane.isVisible());
+        });
+
+        filePane = new Pane();
+        filePane.setLayoutY(-5);
+        filePane.setLayoutX(230);
+        filePane.setPrefSize(200, 100);
+        filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
+        filePane.setVisible(false);
+
+        save = new Button("Сохранить");
+        saveAs = new Button("Сохранить как");
+
+        save.setLayoutX(15);
+        save.setLayoutY(15);
+        saveAs.setLayoutX(15);
+        saveAs.setLayoutY(55);
+
+        saveAs.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        saveAs.setFont(manropeFont2);
+
+        save.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        save.setFont(manropeFont2);
+
+        filePane.getChildren().addAll(save, saveAs);
+        initButtonsActions(save, saveAs);
+        buttonsOverlay.getChildren().addAll(delete, file, filePane);
+    }
+
     private void removeReplicas() {
         StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
         storyPoint.apply();
@@ -238,4 +231,5 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     protected abstract void initTextArea();
+    protected abstract void initButtonsActions(Button save, Button saveAs);
 }

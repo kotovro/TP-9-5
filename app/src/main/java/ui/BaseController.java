@@ -55,6 +55,7 @@ public class BaseController {
     private final SavesPane savesPane = new SavesPane(editPane.getController(), processingQueue, this);
     private final DialogNoEdit dialogNoEdit = new DialogNoEdit(this);
     private final DialogExit dialogExit = new DialogExit(this);
+    private final DialogSave dialogSave = new DialogSave(this);
     private final DialogRecord dialogRecord = new DialogRecord();
     DownloadScrollPane downloadScrollPane = new DownloadScrollPane();
 
@@ -109,6 +110,30 @@ public class BaseController {
         dialog.show();
     }
 
+    public void loadEditDialog() {
+        try {
+            dialog = new DialogWindow(menuButton.getScene().getWindow());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        dialog.setDialogStage(dialogNoEdit);
+        dialog.show();
+    }
+
+    public void loadSaveAsDialog() {
+        try {
+            dialog = new DialogWindow(menuButton.getScene().getWindow());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        dialog.setDialogStage(dialogSave);
+        dialog.show();
+    }
+
+    public void closeDialog() {
+        dialog.close();
+    }
+
     public void switchToEditPane() {
         setContent(editPane);
     }
@@ -128,20 +153,6 @@ public class BaseController {
             this.contentPane.getChildren().add(contentPane);
             paneController = contentPane.getController();
         }
-    }
-
-    public void loadEditDialog() {
-        try {
-            dialog = new DialogWindow(menuButton.getScene().getWindow());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        dialog.setDialogStage(dialogNoEdit);
-        dialog.show();
-    }
-
-    public void closeDialog() {
-        dialog.close();
     }
 
     private void toggleDownloads() {
