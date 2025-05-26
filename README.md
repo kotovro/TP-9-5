@@ -42,6 +42,7 @@
 - Отчет за период с 08.04 по 21.04 [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9E%D1%82%D1%87%D0%B5%D1%82_%D0%B7%D0%B0_%D0%BF%D0%B5%D1%80%D0%B8%D0%BE%D0%B4_%D1%81_08_04_%D0%BF%D0%BE_21_04.pdf)
 - Отчет за период с 21.04 по 03.05 [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9E%D1%82%D1%87%D0%B5%D1%82_%D0%B7%D0%B0_%D0%BF%D0%B5%D1%80%D0%B8%D0%BE%D0%B4_%D1%81_21_04_%D0%BF%D0%BE_03_05.pdf)
 - Отчет за период с 04.05 по 11.05 [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9E%D1%82%D1%87%D0%B5%D1%82_%D0%B7%D0%B0_%D0%BF%D0%B5%D1%80%D0%B8%D0%BE%D0%B4_%D1%81_4_05_%D0%BF%D0%BE_11_05.pdf)
+- Отчет за период с 12.05 по 24.05 [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%9E%D1%82%D1%87%D0%B5%D1%82_%D0%B7%D0%B0_%D0%BF%D0%B5%D1%80%D0%B8%D0%BE%D0%B4_%D1%81_12.05_%D0%BF%D0%BE_24.05.pdf) 
 ### Работа с репозиторием
 
 - Правила коммитов [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/commitrules.txt)
