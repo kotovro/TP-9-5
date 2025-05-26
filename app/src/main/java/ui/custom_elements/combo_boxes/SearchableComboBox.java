@@ -13,19 +13,45 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import logic.general.Speaker;
+import logic.persistence.DBInitializer;
+import logic.persistence.DBManager;
+import ui.BaseController;
 
 import java.util.List;
 
 public class SearchableComboBox extends ComboBox<Speaker> {
-    private final FilteredList<Speaker> filteredSpeakers;
+    private static final Speaker ADD_NEW_SPEAKER = new Speaker("Добавить нового...", DBInitializer.getAddNew(), -1);
+
+    private final List<Speaker> speakers;
+    private FilteredList<Speaker> filteredSpeakers;
     private final TextField searchField = new TextField();
     private String defaultText;
+    private Speaker selectedSpeaker = null;
+    private final BaseController baseController;
 
-    public SearchableComboBox(List<Speaker> speakers, String defaultText) {
+    public SearchableComboBox(List<Speaker> speakers, Speaker defaultSpeaker, BaseController baseController) {
+        this.baseController = baseController;
+        this.speakers = speakers;
+        selectedSpeaker = defaultSpeaker;
+        ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
+        this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
+        this.defaultText = "";
+        init();
+        this.getSelectionModel().select(defaultSpeaker);
+    }
+
+    public SearchableComboBox(List<Speaker> speakers, String defaultText, BaseController baseController) {
+        this.baseController = baseController;
+        this.speakers = speakers;
         ObservableList<Speaker> originalSpeakers = FXCollections.observableArrayList(speakers);
         this.filteredSpeakers = new FilteredList<>(originalSpeakers, p -> true);
         this.defaultText = defaultText;
+        init();
+    }
 
+    private void init() {
+        setPrefWidth(250);
+        setMinWidth(250);
         configureSearchField();
         configureCellFactory();
         setupEventHandlers();
@@ -63,6 +89,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         ObservableList<Speaker> items = FXCollections.observableArrayList();
         items.add(null);
         items.addAll(filteredSpeakers);
+        items.add(ADD_NEW_SPEAKER);
         setItems(items);
 
         adjustDropdownHeight();
@@ -96,7 +123,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                     imageView.setImage(speaker.getImage());
                     setGraphic(imageView);
                     setText(speaker.getName());
-                    setStyle("-fx-background-color: #9DA0FA; -fx-text-fill: white; -fx-border-color: #6366B5; -fx-border-width: 0 0 1px 0;");
+                    setStyle("-fx-background-color: #7AA3FA; -fx-text-fill: white; -fx-border-color: #4A6DB5; -fx-border-width: 0 0 2px 0;");
                 }
             }
         });
@@ -114,13 +141,23 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             public void updateItem(Speaker speaker, boolean empty) {
                 super.updateItem(speaker, empty);
                 if (empty || speaker == null) {
-                    setGraphic(null);
-                    if (defaultText.isEmpty()) {
-                        getSelectionModel().select(0);
-                    } else {
+                    if (!defaultText.isEmpty()) {
                         setText(defaultText);
+                        return;
+                    }
+                    if (selectedSpeaker == null) {
+                        setGraphic(null);
+                    } else {
+                        imageView.setImage(selectedSpeaker.getImage());
+                        setText(selectedSpeaker.getName());
                     }
                 } else {
+                    if (speaker == ADD_NEW_SPEAKER) {
+                        addNewSpeaker();
+                        getSelectionModel().clearSelection();
+                        return;
+                    }
+                    selectedSpeaker = speaker;
                     imageView.setImage(speaker.getImage());
                     setGraphic(imageView);
                     setText(speaker.getName());
@@ -128,9 +165,6 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                 setStyle("-fx-text-fill: white;");
             }
         });
-
-        setPrefWidth(160);
-        setPrefHeight(32);
         getStyleClass().add("custom-combobox");
         VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
     }
@@ -144,11 +178,13 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         });
 
         searchField.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && !filteredSpeakers.isEmpty()) {
-                this.setValue(filteredSpeakers.getFirst());
-                this.hide();
-            } else {
-                //TODO: make add speaker
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!filteredSpeakers.isEmpty()) {
+                    this.setValue(filteredSpeakers.getFirst());
+                    this.hide();
+                } else {
+                    addNewSpeaker();
+                }
             }
         });
 
@@ -158,9 +194,17 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             }
         });
 
-        this.setOnShowing(e -> Platform.runLater(() -> {
-            searchField.requestFocus();
-            searchField.selectAll();
-        }));
+        this.setOnShowing(e -> {
+            filteredSpeakers = new FilteredList<>(FXCollections.observableArrayList(speakers), p -> true);
+            updateComboBoxItems();
+            Platform.runLater(() -> {
+                searchField.requestFocus();
+                searchField.selectAll();
+            });
+        });
+    }
+
+    private void addNewSpeaker() {
+        baseController.loadSpeakerDialog();
     }
 }

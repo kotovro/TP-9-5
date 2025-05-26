@@ -9,10 +9,6 @@ public class Protocol {
         this.text = text;
     }
 
-    public Protocol(String text) {
-        this.text = text;
-    }
-
     public int getTranscriptId() {
         return transcriptId;
     }

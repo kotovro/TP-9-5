@@ -56,6 +56,10 @@ public class DBManager {
         return TAG_DAO;
     }
 
+    public static ProtocolDao getProtocolDao() {
+        return PROTOCOL_DAO;
+    }
+
     public static MeetingMaterialsDao getMeetingMaterialsDao() {
         return MEETING_MATERIALS_DAO;
     }

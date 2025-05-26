@@ -1,10 +1,12 @@
 package logic.video_processing.queue.listeners;
 
+import logic.general.MeetingMaterials;
 import logic.general.Protocol;
 import logic.general.Task;
+import logic.general.Transcript;
 
 import java.util.List;
 
 public interface SummarizeListener {
-    void onResultReady(Protocol protocol, List<Task> tasks);
+    void onResultReady(MeetingMaterials meetingMaterials);
 }

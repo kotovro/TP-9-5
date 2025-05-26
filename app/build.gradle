@@ -71,7 +71,7 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainClass = 'ui.DownloadingApp'
+    mainClass = 'ui.MainWindow'
     applicationDefaultJvmArgs = [
             '-Xms5G',
             '-Xmx5G',
@@ -94,7 +94,8 @@ jlink {
     jpackage() {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico'
+                    '--icon', 'src/main/resources/icon.ico',
+                    '--win-console'
             ]
             installerOptions += [
                     '--win-dir-chooser',

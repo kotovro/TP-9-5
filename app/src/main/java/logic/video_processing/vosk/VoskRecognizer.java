@@ -37,6 +37,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private boolean inSpeech = false;
 
     private Model model;
+    private SpeakerModel speakerModel;
     private Recognizer recognizer;
     private List<RawSpeaker> speakers;
     private List<RawReplica> replicas;
@@ -49,9 +50,9 @@ public class VoskRecognizer implements AudioStreamConsumer {
     public void init() {
         try {
             model = new Model(PlatformDependent.getPrefix() + SPEECH_PATH);
-            recognizer = new Recognizer(model, 16000);
-            SpeakerModel speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
-            recognizer.setSpeakerModel(speakerModel);
+            speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
+            recognizer = new Recognizer(model, 16000, speakerModel);
+
             speakers = new ArrayList<>();
             replicas = new ArrayList<>();
         } catch (IOException e) {
@@ -60,10 +61,13 @@ public class VoskRecognizer implements AudioStreamConsumer {
     }
 
     public void freeResources() {
+        if (recognizer == null) return;
         recognizer.close();
         model.close();
+        speakerModel.close();
         recognizer = null;
         model = null;
+        speakerModel = null;
     }
 
     @Override
@@ -140,7 +144,10 @@ public class VoskRecognizer implements AudioStreamConsumer {
         } catch (JsonProcessingException ignored) {}
 
         correctSpeakers();
-        return new RawTranscript(speakers.size(), replicas);
+        RawTranscript transcript = new RawTranscript(speakers.size(), replicas);
+        speakers = new ArrayList<>();
+        replicas = new ArrayList<>();
+        return transcript;
     }
 
     //Не оптимально

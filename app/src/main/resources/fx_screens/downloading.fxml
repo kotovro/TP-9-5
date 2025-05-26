@@ -14,9 +14,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<?import ui.custom_elements.ListenProgressBar?>
-<?import ui.custom_elements.Notification?>
-<AnchorPane prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DownloadingController">
+<AnchorPane prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.DownloadingController">
     <children>
         <Circle fill="#9da0fa" layoutX="85.0" radius="100.0" strokeType="INSIDE">
             <effect>

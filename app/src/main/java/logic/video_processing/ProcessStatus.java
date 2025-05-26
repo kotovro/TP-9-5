@@ -5,7 +5,9 @@ public enum ProcessStatus {
     TASK_PROCESSING("Видео обрабатывается"),
     TASK_FINISHED("Задача завершена"),
     MODEL_UNLOAD("Модель выгружается"),
-    WAITING_FOR_START("Ожидание начала");
+    WAITING_FOR_START("Ожидание начала"),
+    DOWNLOAD_LECTURE("Скачивание лекции"),
+    TASK_FAILED("Не удалось выполнить");
 
     private final String message;
 

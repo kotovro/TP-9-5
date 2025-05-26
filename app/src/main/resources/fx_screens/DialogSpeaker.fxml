@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutX="86.0" layoutY="34.0" text="Укажите имя говорящего" textFill="WHITE">
+            <font>
+                <Font name="Manrope SemiBold" size="20.0" />
+            </font>
+        </Label>
+        <TextField fx:id="textSpeaker" layoutX="39.0" layoutY="143.0" prefHeight="37.0" prefWidth="342.0" promptText="говорящий" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+      <Button fx:id="addButton" layoutX="167.0" layoutY="209.0" mnemonicParsing="false" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="Добавить" textFill="WHITE">
+         <font>
+            <Font name="Manrope SemiBold" size="14.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>
