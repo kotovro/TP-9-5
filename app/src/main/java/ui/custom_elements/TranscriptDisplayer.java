@@ -35,7 +35,7 @@ public class TranscriptDisplayer extends BaseDisplayer {
         });
 
         saveAs.setOnAction(e -> {
-            baseController.
+            baseController.loadSaveAsDialog(this::saveAs);
         });
     }
 

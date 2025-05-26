@@ -43,7 +43,7 @@ public class RawTranscriptDisplayer extends BaseDisplayer {
     protected void initButtonsActions(Button save, Button saveAs) {
         save.setDisable(true);
         saveAs.setOnAction(e -> {
-            baseController.
+            baseController.loadSaveAsDialog(this::saveAsToDB);
         });
     }
 

@@ -13,6 +13,7 @@ import javafx.util.Duration;
 import logic.video_processing.queue.ProcessingQueue;
 import ui.custom_elements.DownloadScrollPane;
 import ui.custom_elements.ListenProgressBar;
+import ui.custom_elements.SaveAsProvider;
 import ui.custom_elements.StatusLabel;
 import ui.main_panes.*;
 
@@ -120,13 +121,14 @@ public class BaseController {
         dialog.show();
     }
 
-    public void loadSaveAsDialog() {
+    public void loadSaveAsDialog(SaveAsProvider saveAsProvider) {
         try {
             dialog = new DialogWindow(menuButton.getScene().getWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         dialog.setDialogStage(dialogSave);
+        dialogSave.setSaveAsProvider(saveAsProvider);
         dialog.show();
     }
 
