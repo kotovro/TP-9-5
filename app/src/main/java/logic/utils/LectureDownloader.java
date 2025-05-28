@@ -10,13 +10,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LectureDownloader implements Processor {
     private long bytesDownloaded = 0;
     private long totalBytes = -1;
     private ProcessListener processListener = new DeafProcessListener();
 
+    private static final Pattern VIDEO_URL_PATTERN = Pattern.compile("^https?://bbb\\.edu\\.vsu\\.ru/presentation/.+/video/.*\\.(webm|mp4)$");
+
     public File downloadLectureVideo(String lectureURL) throws IOException {
+        if (!isValidVideoUrl(lectureURL)) {
+            throw new IllegalArgumentException("Invalid lecture video URL format: " + lectureURL);
+        }
+        if (!isDownloadable(lectureURL)) {
+            throw new IOException("Lecture video resource is not downloadable from URL: " + lectureURL);
+        }
         File outputFile = new File("dynamic-resources/lectures/lecture.webm");
         try {
             downloadFile(lectureURL, outputFile);
@@ -30,6 +40,7 @@ public class LectureDownloader implements Processor {
     }
 
     private void downloadFile(String urlString, File outputFile) throws IOException {
+        @SuppressWarnings("deprecation")
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -49,6 +60,31 @@ public class LectureDownloader implements Processor {
         } finally {
             processListener.notifyStop(this);
         }
+    }
+
+    private boolean isDownloadable(String lectureURL) {
+        if (lectureURL == null || lectureURL.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            @SuppressWarnings("deprecation")
+            URL url = new URL(lectureURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            return responseCode >= 200 && responseCode < 300;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean isValidVideoUrl(String lectureURL) {
+        if (lectureURL == null) {
+            return false;
+        }
+        Matcher matcher = VIDEO_URL_PATTERN.matcher(lectureURL);
+        return matcher.matches();
     }
 
     @Override
