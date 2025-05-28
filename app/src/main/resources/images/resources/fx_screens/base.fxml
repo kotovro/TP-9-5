@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="778.0" maxWidth="1137.0" prefHeight="778.0" prefWidth="1137.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.BaseController">
+   <children>
+      <ImageView fitHeight="778.0" fitWidth="1137.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/fon1.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="contentPane" layoutY="65.0" prefHeight="618.0" prefWidth="1138.0" />
+      <Pane fx:id="downloadPane" layoutX="732.0" layoutY="600.0" opacity="0.0" prefHeight="93.0" prefWidth="334.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 20;" />
+      <Pane fx:id="disablePane" layoutY="63.0" opacity="0.2" prefHeight="717.0" prefWidth="1137.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 20;" visible="false">
+         <effect>
+            <GaussianBlur radius="2.0" />
+         </effect>
+      </Pane>
+      <Group fx:id="menuButton" layoutX="25.0" layoutY="20.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#14165a" height="6.0" layoutY="10.0" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#14165a" height="6.0" strokeType="INSIDE" width="32.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#14165a" height="6.0" layoutY="20.0" strokeType="INSIDE" width="32.0" />
+         </children>
+      </Group>
+      <Label layoutX="81.0" layoutY="17.0" text="Встречеслав" textFill="#0a0c31">
+         <font>
+            <Font name="Fyodor Bold Expanded" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="1083.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Bell.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1075.0" layoutY="696.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/CloseCircle.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="downloadLane" layoutX="733.0" layoutY="700.0" prefHeight="18.0" prefWidth="334.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 5;" />
+      <VBox fx:id="sideMenu" layoutX="0.0" layoutY="65.0" prefHeight="715.0" prefWidth="363.0" style="-fx-background-color: #0B0F85; -fx-background-radius: 0 30 30 0;" translateX="-363.0">
+         <children>
+            <Pane prefHeight="419.0" prefWidth="363.0">
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <children>
+                  <Pane layoutX="28.0" layoutY="25.0" prefHeight="60.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 30;">
+                     <children>
+                        <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="21.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Widget4.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="80.0" layoutY="16.0" text="ГЛАВНАЯ СТРАНИЦА">
+                           <font>
+                              <Font name="Manrope ExtraBold" size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="28.0" layoutY="117.0" prefHeight="60.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 30;">
+                     <children>
+                        <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="21.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ArchiveDownMinimlistic.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="80.0" layoutY="16.0" text="ЗАГРУЗИТЬ">
+                           <font>
+                              <Font name="Manrope ExtraBold" size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="28.0" layoutY="210.0" prefHeight="78.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 40;">
+                     <children>
+                        <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="20.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/DocumentAdd2.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="80.0" layoutY="13.0" text="РЕДАКТИРОВАТЬ">
+                           <font>
+                              <Font name="Manrope ExtraBold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="81.0" layoutY="37.0" text="СТЕНОГРАММУ">
+                           <font>
+                              <Font name="Manrope ExtraBold" size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="28.0" layoutY="321.0" prefHeight="78.0" prefWidth="308.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 40;">
+                     <children>
+                        <ImageView fitHeight="43.0" fitWidth="47.0" layoutX="20.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Notebook.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="80.0" layoutY="13.0" text="СОХРАНЕННЫЕ">
+                           <font>
+                              <Font name="Manrope ExtraBold" size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="81.0" layoutY="37.0" text="СТЕНОГРАММЫ">
+                           <font>
+                              <Font name="Manrope ExtraBold" size="19.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane prefHeight="255.0" prefWidth="363.0">
+               <children>
+                  <ImageView fitHeight="191.0" fitWidth="178.0" layoutX="93.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Group3.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="65.0" layoutY="179.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="220.0" style="-fx-background-color: #CDCEFF; -fx-background-radius: 30;" text="ВЫХОД">
+                     <font>
+                        <Font name="Manrope ExtraBold" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
