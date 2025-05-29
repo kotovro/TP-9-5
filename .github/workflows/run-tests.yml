@@ -18,11 +18,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
+      checks: write  
+      actions: read  
 
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+
+    - name: Очистка рабочей директории
+      run: rm -f app/database.db
+      working-directory: ./
 
     - name: Change to app directory
       run: cd app
@@ -32,7 +38,7 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         chmod +x gradlew
-        ls -la gradlew*  # Verify permissions
+        ls -la gradlew*
       working-directory: ./app
 
     - name: Verify Gradle
