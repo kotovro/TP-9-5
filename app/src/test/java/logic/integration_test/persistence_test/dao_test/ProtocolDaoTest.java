@@ -7,7 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,10 +19,7 @@ public class ProtocolDaoTest {
     private ProtocolDao protocolDao;
 
     @BeforeEach
-    void setUp() throws IOException, SQLException {
-        DBInitializer.deleteIfExist();
-        DBInitializer.reinitDB();
-
+    void setUp() throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
         protocolDao = new ProtocolDao(connection);
 
@@ -35,9 +31,12 @@ public class ProtocolDaoTest {
     @AfterEach
     void tearDown() throws SQLException {
         if (connection != null && !connection.isClosed()) {
+            try (var stmt = connection.createStatement()) {
+                stmt.execute("DELETE FROM transcript");
+                stmt.execute("DELETE FROM protocol");
+            }
             connection.close();
         }
-        DBInitializer.deleteIfExist();
     }
 
     @Test

@@ -1,13 +1,12 @@
 package logic.integration_test.persistence_test.dao_test;
 
 import logic.general.Task;
-import logic.persistence.DBInitializer;
+
 import logic.persistence.dao.TaskDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -20,14 +19,15 @@ public class TaskDaoTest {
     private TaskDao taskDao;
 
     @BeforeEach
-    void setUp() throws IOException, SQLException {
-        DBInitializer.deleteIfExist();
-        DBInitializer.reinitDB();
-
+    void setUp() throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
         taskDao = new TaskDao(connection);
 
         try (var stmt = connection.createStatement()) {
+            // Clear tables to ensure clean state
+            stmt.execute("DELETE FROM task");
+            stmt.execute("DELETE FROM transcript");
+            // Insert test transcript
             stmt.execute("INSERT INTO transcript (name, date) VALUES ('Test Transcript', '01-01-2025')");
         }
     }
@@ -35,13 +35,17 @@ public class TaskDaoTest {
     @AfterEach
     void tearDown() throws SQLException {
         if (connection != null && !connection.isClosed()) {
+            try (var stmt = connection.createStatement()) {
+                // Clean up tables
+                stmt.execute("DELETE FROM task");
+                stmt.execute("DELETE FROM transcript");
+            }
             connection.close();
         }
-        DBInitializer.deleteIfExist();
     }
 
     @Test
-    void testAddTask() {
+    void testAddTask() throws SQLException {
         Task task = new Task(1, "Test Task");
         taskDao.addTask(task);
 
@@ -52,7 +56,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    void testDeleteTask() {
+    void testDeleteTask() throws SQLException {
         Task task = new Task(1, "Test Task");
         taskDao.addTask(task);
 
@@ -61,7 +65,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    void testUpdateTask() {
+    void testUpdateTask() throws SQLException {
         Task task = new Task(1, "Initial Task");
         taskDao.addTask(task);
 
@@ -74,7 +78,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    void testGetTasksByTranscriptId() {
+    void testGetTasksByTranscriptId() throws SQLException {
         Task task1 = new Task(1, "Task 1");
         Task task2 = new Task(1, "Task 2");
         taskDao.addTask(task1);
@@ -87,7 +91,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    void testGetTaskById() {
+    void testGetTaskById() throws SQLException {
         Task task = new Task(1, "Test Task");
         taskDao.addTask(task);
 
@@ -97,7 +101,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    void testGetTaskByIdNotFound() {
+    void testGetTaskByIdNotFound() throws SQLException {
         assertNull(taskDao.getTaskById(999), "Non-existent task should return null");
     }
 }

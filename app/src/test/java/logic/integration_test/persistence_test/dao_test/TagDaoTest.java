@@ -20,10 +20,7 @@ public class TagDaoTest {
     private TagDao tagDao;
 
     @BeforeEach
-    void setUp() throws IOException, SQLException {
-        DBInitializer.deleteIfExist();
-        DBInitializer.reinitDB();
-
+    void setUp() throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
         tagDao = new TagDao(connection);
     }
@@ -33,7 +30,6 @@ public class TagDaoTest {
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
-        DBInitializer.deleteIfExist();
     }
 
     @Test

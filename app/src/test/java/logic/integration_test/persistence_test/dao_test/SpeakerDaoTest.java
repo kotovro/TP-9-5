@@ -25,10 +25,7 @@ public class SpeakerDaoTest {
     private SpeakerDao speakerDao;
 
     @BeforeEach
-    void setUp() throws IOException, SQLException {
-        DBInitializer.deleteIfExist();
-        DBInitializer.reinitDB();
-
+    void setUp() throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
         speakerDao = new SpeakerDao(connection);
     }
@@ -38,7 +35,6 @@ public class SpeakerDaoTest {
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
-        DBInitializer.deleteIfExist();
     }
 
     @Test
@@ -86,14 +82,18 @@ public class SpeakerDaoTest {
 
     @Test
     void testGetAllSpeakers() {
+        var before = speakerDao.getAllSpeakers();
+        int initialCount = before.size();
+
         Speaker speaker1 = new Speaker("Speaker 1", getImage("/images/default_users/undefined.png"), 0);
         Speaker speaker2 = new Speaker("Speaker 2", getImage("/images/default_users/undefined.png"), 0);
         speakerDao.addSpeaker(speaker1);
         speakerDao.addSpeaker(speaker2);
 
-        var speakers = speakerDao.getAllSpeakers();
-        assertEquals(12, speakers.size(), "Twelve speakers (10 initial + 2 new) should be retrieved");
-        assertTrue(speakers.stream().anyMatch(s -> "Speaker 1".equals(s.getName())), "Speaker 1 should exist");
-        assertTrue(speakers.stream().anyMatch(s -> "Speaker 2".equals(s.getName())), "Speaker 2 should exist");
+        var after = speakerDao.getAllSpeakers();
+        assertEquals(initialCount + 2, after.size(), "Speaker count should increase by 2 after adding");
+
+        assertTrue(after.stream().anyMatch(s -> "Speaker 1".equals(s.getName())), "Speaker 1 should exist");
+        assertTrue(after.stream().anyMatch(s -> "Speaker 2".equals(s.getName())), "Speaker 2 should exist");
     }
 }

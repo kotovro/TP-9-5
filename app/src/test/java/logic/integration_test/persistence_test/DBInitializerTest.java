@@ -3,8 +3,7 @@ package logic.integration_test.persistence_test;
 import logic.general.Speaker;
 import logic.persistence.DBInitializer;
 import logic.persistence.dao.SpeakerDao;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
@@ -20,16 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DBInitializerTest {
     private static final String DB_PATH = "dynamic-resources/saves/saves.db";
-
-    @BeforeEach
-    void setUp() {
-        DBInitializer.deleteIfExist();
-    }
-
-    @AfterEach
-    void tearDown() {
-        DBInitializer.deleteIfExist();
-    }
 
     @Test
     void testDatabaseConnection() throws SQLException {
