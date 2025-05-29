@@ -50,6 +50,7 @@ Thumbs.db
 .settings/
 
 # Gradle Wrapper files
+gradle-wrapper.jar
 #gradle-wrapper.jar
 
 # Java temporary files
