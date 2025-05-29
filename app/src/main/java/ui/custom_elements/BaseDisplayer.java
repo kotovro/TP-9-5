@@ -1,5 +1,6 @@
 package ui.custom_elements;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -7,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -104,8 +106,9 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         initButtonsOverlay();
     }
 
-    public void setupOverlay(Pane overlay) {
-        overlay.getChildren().setAll(delete, file, filePane);
+    public void setupOverlay(Pane fileOverlayPane, Pane deleteOverlayPane) {
+        fileOverlayPane.getChildren().setAll(file, filePane);
+        deleteOverlayPane.getChildren().setAll(delete);
         updateDeleteButtonVisibility();
     }
 
@@ -151,8 +154,6 @@ public abstract class BaseDisplayer implements EditableDisplayer {
 
     private void initButtonsOverlay() {
         delete = new Button("Удалить выбранные");
-        delete.setLayoutY(95);
-        delete.setLayoutX(850);
         delete.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
                 " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
         delete.setFont(manropeFont1);
@@ -165,19 +166,19 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         arrow.setFitWidth(18);
 
         file = new Button("Файл", arrow);
-        file.setLayoutY(-47);
-        file.setLayoutX(280);
         file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
                 " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
         file.setFont(manropeFont2);
         file.setContentDisplay(ContentDisplay.RIGHT);
         file.setOnAction(e -> {
-            filePane.setVisible(!filePane.isVisible());
+            boolean isFilePaneVisible = filePane.isVisible();
+            Platform.runLater(() -> {
+                filePane.setVisible(!isFilePaneVisible);
+            });
         });
 
         filePane = new Pane();
-        filePane.setLayoutY(-7);
-        filePane.setLayoutX(280);
+        filePane.setLayoutY(40);
         filePane.setPrefSize(200, 100);
         filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
         filePane.setVisible(false);
@@ -199,7 +200,23 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         save.setFont(manropeFont2);
 
         filePane.getChildren().addAll(save, saveAs);
+
+        if (filePane.getScene() != null) {
+            addFilePaneAutoClose();
+        } else {
+            filePane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    addFilePaneAutoClose();
+                }
+            });
+        }
         initButtonsActions(save, saveAs);
+    }
+
+    private void addFilePaneAutoClose() {
+        filePane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            filePane.setVisible(false);
+        });
     }
 
     private void removeReplicas() {

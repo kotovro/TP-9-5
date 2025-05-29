@@ -48,7 +48,7 @@ public class TaskDao {
         }
     }
 
-    public void deleteTaskByTranscript(int transcriptId) {
+    public void deleteTasksByTranscript(int transcriptId) {
         try {
             String sql = "DELETE FROM task WHERE transcript_id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {

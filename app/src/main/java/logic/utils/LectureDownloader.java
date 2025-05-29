@@ -20,6 +20,10 @@ public class LectureDownloader implements Processor {
 
     private static final Pattern VIDEO_URL_PATTERN = Pattern.compile("^https?://bbb\\.edu\\.vsu\\.ru/presentation/.+/video/.*\\.(webm|mp4)$");
 
+    public static boolean isURLValid(String lectureUrl) {
+        return isValidVideoUrl(lectureUrl) && isDownloadable(lectureUrl);
+    }
+
     public File downloadLectureVideo(String lectureURL) throws IOException {
         if (!isValidVideoUrl(lectureURL)) {
             throw new IllegalArgumentException("Invalid lecture video URL format: " + lectureURL);
@@ -62,7 +66,7 @@ public class LectureDownloader implements Processor {
         }
     }
 
-    private boolean isDownloadable(String lectureURL) {
+    private static boolean isDownloadable(String lectureURL) {
         if (lectureURL == null || lectureURL.trim().isEmpty()) {
             return false;
         }
@@ -73,13 +77,12 @@ public class LectureDownloader implements Processor {
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
             return responseCode >= 200 && responseCode < 300;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return false;
         }
     }
 
-    private boolean isValidVideoUrl(String lectureURL) {
+    private static boolean isValidVideoUrl(String lectureURL) {
         if (lectureURL == null) {
             return false;
         }

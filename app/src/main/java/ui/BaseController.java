@@ -63,7 +63,7 @@ public class BaseController {
     private final DialogSave dialogSave = new DialogSave(this);
     private final DialogSpeaker dialogSpeaker = new DialogSpeaker(this, speakers);
     private final DialogRecord dialogRecord = new DialogRecord();
-    DownloadScrollPane downloadScrollPane = new DownloadScrollPane();
+    DownloadScrollPane downloadScrollPane = new DownloadScrollPane(this);
 
     DialogWindow dialog;
 
@@ -137,13 +137,14 @@ public class BaseController {
         dialog.show();
     }
 
-    public void loadSpeakerDialog() {
+    public void loadSpeakerDialog(String name) {
         try {
             dialog = new DialogWindow(menuButton.getScene().getWindow());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         dialog.setDialogStage(dialogSpeaker);
+        dialogSpeaker.setName(name);
         dialog.show();
     }
 
@@ -172,7 +173,11 @@ public class BaseController {
         }
     }
 
-    private void toggleDownloads() {
+    public boolean isDownloadsOpen() {
+        return isDownloadsOpen;
+    }
+
+    public void toggleDownloads() {
         if (downloadScrollPane.isEmpty()) return;
 
         isDownloadsOpen = !isDownloadsOpen;
@@ -183,8 +188,7 @@ public class BaseController {
             fade.setFromValue(0.0);
             fade.setToValue(1.0);
 
-        }
-        else {
+        } else {
             fade.setFromValue(1.0);
             fade.setToValue(0.0);
             fade.setOnFinished(e -> downloadPane.setVisible(isDownloadsOpen));

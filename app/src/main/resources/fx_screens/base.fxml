@@ -46,11 +46,11 @@
             <Image url="@../images/Bell.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1075.0" layoutY="696.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/CloseCircle.png" />
-         </image>
-      </ImageView>
+<!--      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="1075.0" layoutY="696.0" pickOnBounds="true" preserveRatio="true">-->
+<!--         <image>-->
+<!--            <Image url="@../images/CloseCircle.png" />-->
+<!--         </image>-->
+<!--      </ImageView>-->
       <Pane fx:id="downloadLane" layoutX="723.0" layoutY="690.0" prefHeight="38.0" prefWidth="347.0" style="-fx-background-color: #B8D0FF; -fx-background-radius: 20;" />
       <VBox fx:id="sideMenu" layoutX="0.0" layoutY="65.0" prefHeight="715.0" prefWidth="363.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 0 30 30 0;" translateX="-363.0">
          <children>

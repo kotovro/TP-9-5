@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import logic.video_processing.queue.ProcessingQueue;
+import ui.BaseController;
 import ui.EditWindowController;
 import ui.LoadController;
 import ui.PaneController;

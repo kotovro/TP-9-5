@@ -12,20 +12,29 @@ import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
 import logic.general.MeetingMaterials;
 import logic.video_processing.queue.ProcessingQueue;
+import logic.video_processing.queue.listeners.SummarizeListener;
 
 import java.text.SimpleDateFormat;
 
 public class StAndPrBuilder extends HBox {
+    private static final Font manropeFont = Font.loadFont(StAndPrBuilder.class.getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 16);
+    private static final Font manropeFont2 = Font.loadFont(StAndPrBuilder.class.getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
+    private static final Font manropeFont3 = Font.loadFont(StAndPrBuilder.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+    private static final Image ARROW = new Image(StAndPrBuilder.class.getResource("/images/SquareAltArrowRight.png").toString());
     private Pane transcriptPane = new Pane();
     private Button protocolButton = new Button();
-    private static final Image ARROW = new Image(StAndPrBuilder.class.getResource("/images/SquareAltArrowRight.png").toString());
+
+    private MeetingMaterials meetingMaterials;
+    private EditWindowController editWindowController;
+    private BaseController baseController;
 
     public StAndPrBuilder(MeetingMaterials meetingMaterials, EditWindowController editWindowController,
-                          ProcessingQueue processingQueue, BaseController baseController) {
+                          ProcessingQueue processingQueue, BaseController baseController, SavesController savesController) {
+        this.meetingMaterials = meetingMaterials;
+        this.editWindowController = editWindowController;
+        this.baseController = baseController;
+
         Label name = new Label(meetingMaterials.getTranscript().getName());
-        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 16);
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
-        Font manropeFont3 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
         name.setStyle("-fx-font-family: \"Manrope ExtraBold\"; -fx-font-size: 18; -fx-text-fill: black;");
         name.setFont(manropeFont);
         name.setLayoutY(24);
@@ -85,7 +94,10 @@ public class StAndPrBuilder extends HBox {
             protocolButton.setText("Создать\nпротокол");
             protocolButton.setOnAction(e -> {
                 processingQueue.add(meetingMaterials.getTranscript());
+                savesController.addToProcessing(meetingMaterials);
+                protocolButton.setDisable(true);
             });
+            protocolButton.setDisable(savesController.isProcessing(meetingMaterials));
         }
         protocolButton.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 10; -fx-text-fill: white;");
         protocolButton.setPrefSize(154, 50);

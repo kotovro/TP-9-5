@@ -33,4 +33,8 @@ public class DialogSpeakerController {
             baseController.dialog.close();
         });
     }
+
+    public void setName(String name) {
+        textSpeaker.setText(name);
+    }
 }

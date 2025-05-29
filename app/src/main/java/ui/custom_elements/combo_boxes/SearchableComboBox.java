@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import logic.general.Speaker;
 import logic.persistence.DBInitializer;
-import logic.persistence.DBManager;
 import ui.BaseController;
 
 import java.util.List;
@@ -101,9 +100,6 @@ public class SearchableComboBox extends ComboBox<Speaker> {
     }
 
     private void configureCellFactory() {
-        getStyleClass().add("custom-combobox");
-        VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
-
         setCellFactory(lv -> new ListCell<>() {
             private final ImageView imageView = new ImageView();
             {
@@ -143,6 +139,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
             @Override
             public void updateItem(Speaker speaker, boolean empty) {
                 super.updateItem(speaker, empty);
+                setStyle("-fx-text-fill: white;");
                 if (empty || speaker == null) {
                     if (!defaultText.isEmpty()) {
                         setText(defaultText);
@@ -156,7 +153,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                     }
                 } else {
                     if (speaker == ADD_NEW_SPEAKER) {
-                        addNewSpeaker();
+                        addNewSpeaker(searchField.getText());
                         getSelectionModel().clearSelection();
                         return;
                     }
@@ -165,9 +162,10 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                     setGraphic(imageView);
                     setText(speaker.getName());
                 }
-                setStyle("-fx-text-fill: white;");
             }
         });
+        getStyleClass().add("custom-combobox");
+        VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
     }
 
     private void setupEventHandlers() {
@@ -181,10 +179,10 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         searchField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 if (!filteredSpeakers.isEmpty()) {
-                    this.setValue(filteredSpeakers.getFirst());
-                    this.hide();
+                    setValue(filteredSpeakers.getFirst());
+                    hide();
                 } else {
-                    addNewSpeaker();
+                    addNewSpeaker(searchField.getText());
                 }
             }
         });
@@ -205,7 +203,7 @@ public class SearchableComboBox extends ComboBox<Speaker> {
         });
     }
 
-    private void addNewSpeaker() {
-        baseController.loadSpeakerDialog();
+    private void addNewSpeaker(String name) {
+        baseController.loadSpeakerDialog(name);
     }
 }

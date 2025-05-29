@@ -139,6 +139,7 @@ public class ProcessingQueue implements Processor {
 
     private void processTask() {
         initModelForTask();
+        System.out.println(state);
         setProcessStatus(ProcessStatus.TASK_PROCESSING);
 
         if (state == QueueState.TRANSCRIPT_ACTIVE) {
@@ -152,16 +153,18 @@ public class ProcessingQueue implements Processor {
             String url = downloadLectureQueue.poll();
             queueChangeListener.onQueueChange(getTaskPlan());
             setProcessStatus(ProcessStatus.DOWNLOAD_LECTURE);
+            File file;
             try {
-                File file = lectureDownloader.downloadLectureVideo(url);
-                setProcessStatus(ProcessStatus.TASK_PROCESSING);
-                audioExtractorStreamer.processAudio(file.getAbsolutePath(), voskRecognizer);
-                RawTranscript rawTranscript = voskRecognizer.getFinalResult();
-                transcriptListener.onResultReady(rawTranscript);
+                file = lectureDownloader.downloadLectureVideo(url);
             } catch (Exception e) {
                 setProcessStatus(ProcessStatus.TASK_FAILED);
+                if (!isTasksReady()) closeModels();
                 return;
             }
+            setProcessStatus(ProcessStatus.TASK_PROCESSING);
+            audioExtractorStreamer.processAudio(file.getAbsolutePath(), voskRecognizer);
+            RawTranscript rawTranscript = voskRecognizer.getFinalResult();
+            transcriptListener.onResultReady(rawTranscript);
         }
         if (state == QueueState.PROTOCOL_ACTIVE) {
             Transcript transcript = makeProtocolQueue.poll();
@@ -192,7 +195,7 @@ public class ProcessingQueue implements Processor {
             }
         } else if (state == QueueState.TRANSCRIPT_ACTIVE && makeTranscriptQueue.isEmpty() && !downloadLectureQueue.isEmpty()) {
             state = QueueState.LECTURE_ACTIVE;
-        } else if (state != QueueState.PROTOCOL_ACTIVE && makeTranscriptQueue.isEmpty()) {
+        } else if (state != QueueState.PROTOCOL_ACTIVE && !makeProtocolQueue.isEmpty()) {
                 setProcessStatus(ProcessStatus.MODEL_UNLOAD);
                 voskRecognizer.freeResources();
                 setProcessStatus(ProcessStatus.MODEL_UPLOAD);

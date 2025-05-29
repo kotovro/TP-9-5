@@ -31,7 +31,9 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @FXML
     private ScrollPane tabPane;
     @FXML
-    private Pane overlayPane;
+    private Pane overlayFilePane;
+    @FXML
+    private Pane overlayDeletePane;
 
     private static final String STYLE = BaseController.class.getResource("/styles/style.css").toExternalForm();
 
@@ -64,7 +66,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
         if (active != null) {
             active.setActive();
             active.getTranscriptDisplayer().setupPane(replicas);
-            active.getTranscriptDisplayer().setupOverlay(overlayPane);
+            active.getTranscriptDisplayer().setupOverlay(overlayFilePane, overlayDeletePane);
         }
         this.active = active;
     }
@@ -85,7 +87,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
         }
         if (active != null) {
             active.getTranscriptDisplayer().setupPane(replicas);
-            active.getTranscriptDisplayer().setupOverlay(overlayPane);
+            active.getTranscriptDisplayer().setupOverlay(overlayFilePane, overlayDeletePane);
         } else {
             replicas.setContent(null);
             load();
@@ -141,6 +143,10 @@ public class EditWindowController implements PaneController, TranscriptListener,
     public void onResultReady(MeetingMaterials meetingMaterials) {
         Platform.runLater(() -> {
             addTab(new Tab(new ProtocolDisplayer(meetingMaterials, speakers, baseController), this));
+            DBManager.getProtocolDao().addProtocol(meetingMaterials.getProtocol().get());
+            for (Task task : meetingMaterials.getTasks()) {
+                DBManager.getTaskDao().addTask(task);
+            }
         });
     }
 }

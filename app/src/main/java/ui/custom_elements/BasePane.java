@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -69,8 +70,26 @@ public class BasePane extends Pane {
 
         addPane = getAddPane(baseDisplayer);
         addButton.setOnMouseClicked(e -> {
-            addPane.setVisible(!addPane.isVisible());
+            boolean isAddPaneVisible = addPane.isVisible();
+            Platform.runLater(() -> {
+                addPane.setVisible(!isAddPaneVisible);
+            });
         });
+
+        // Autoclose if click anywhere
+        if (addPane.getScene() != null) {
+            addPane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                addPane.setVisible(false);
+            });
+        } else {
+            addPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    addPane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                        addPane.setVisible(false);
+                    });
+                }
+            });
+        }
 
         checkBox.setLayoutX(0);
         checkBox.setLayoutY(110);
@@ -117,6 +136,7 @@ public class BasePane extends Pane {
         });
 
         addPane.getChildren().addAll(up, down);
+
         return addPane;
     }
 
