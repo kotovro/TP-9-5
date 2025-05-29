@@ -3,7 +3,6 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'org.beryx.jlink' version '3.0.0'
-    id 'jacoco'
 }
 
 allprojects {
@@ -32,8 +31,8 @@ dependencies {
     implementation "org.bytedeco:javacv-platform:1.5.8"
     implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
     implementation 'org.slf4j:slf4j-api:2.0.12'
-    implementation 'ch.qos.logback:logback-classic:1.5.13'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'ch.qos.logback:logback-classic:1.5.13'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     testImplementation 'junit:junit:4.13.1'
@@ -61,27 +60,6 @@ test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
-        showStandardStreams = true
-        exceptionFormat = 'full'
-    }
-    maxParallelForks = 4
-    finalizedBy jacocoTestReport // Генерировать JaCoCo-отчёт после тестов
-}
-
-jacocoTestReport {
-    dependsOn test // Отчёт зависит от выполнения тестов
-    reports {
-        xml.required = true  // Для CI-анализа
-        html.required = true // Для чтения человеком
-        csv.required = false
-    }
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    '**/*Test*', // Исключить тестовые классы
-                    '**/ui/**'   // Исключить UI-классы, если нужно
-            ])
-        }))
     }
 }
 
@@ -90,7 +68,6 @@ tasks.withType(JavaCompile) {
             '--module-path', classpath.asPath,
             '--add-modules', 'vosk'
     ]
-    options.encoding = 'UTF-8' // Установить кодировку
 }
 
 application {
@@ -147,6 +124,7 @@ jlink {
                 '--vendor', 'Vsu Production',
                 '--app-content', "src/main/resources",
                 '--app-content', "dynamic-resources"
+
         ]
         installerOptions += [
                 '--about-url', 'https://vk.com/vstrecheslav?from=groups',
