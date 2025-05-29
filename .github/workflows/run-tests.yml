@@ -2,13 +2,13 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: 
-      - "**"  
+    branches:
+      - "**"
   pull_request:
     branches:
-      - "develop" 
+      - "develop"
     types: [opened, synchronize, reopened, ready_for_review]
-  workflow_dispatch:  
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0 
+        fetch-depth: 0
 
     - name: Change to app directory
       run: cd app
@@ -53,12 +53,8 @@ jobs:
         cache-enabled: true
         build-root-directory: app
 
-    - name: Run tests
-      run: ./gradlew test --stacktrace --info --scan
-      working-directory: ./app
-
-    - name: Build with Gradle
-      run: ./gradlew build -x test
+    - name: Run tests with JaCoCo
+      run: ./gradlew test jacocoTestReport --stacktrace --info
       working-directory: ./app
 
     - name: Upload test reports
@@ -71,9 +67,29 @@ jobs:
           app/build/test-results/
         retention-days: 7
 
+    - name: Upload JaCoCo report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: jacoco-report-${{ matrix.os }}
+        path: app/build/reports/jacoco/
+        retention-days: 7
+
+    - name: Publish test results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: app/build/test-results/**/*.xml
+        check_name: Test Results (${{ matrix.os }})
+        comment_mode: off
+
+    - name: Build with Gradle
+      run: ./gradlew build -x test
+      working-directory: ./app
+
   dependency-submission:
     runs-on: ubuntu-latest
-    needs: build-and-test 
+    needs: build-and-test
     permissions:
       contents: write
 
