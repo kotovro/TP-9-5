@@ -48,6 +48,18 @@ public class TaskDao {
         }
     }
 
+    public void deleteTaskByTranscript(int transcriptId) {
+        try {
+            String sql = "DELETE FROM task WHERE transcript_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, transcriptId);
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateTask(Task task) {
         try {
             String sql = "UPDATE task SET description = ?, transcript_id = ?, assignee_id = ? WHERE id = ?";
