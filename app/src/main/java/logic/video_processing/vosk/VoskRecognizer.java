@@ -139,8 +139,11 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public RawTranscript getFinalResult() {
         try {
-            var result = parseReplica(recognizer.getFinalResult());
-            result.ifPresent(replicas::add);
+            var opt = parseReplica(recognizer.getFinalResult());
+            opt.ifPresent(replica -> {
+                replica.setStartTime(lastReplicaStartTime);
+                replicas.add(replica);
+            });
         } catch (JsonProcessingException ignored) {}
 
         correctSpeakers();
@@ -288,4 +291,13 @@ public class VoskRecognizer implements AudioStreamConsumer {
         speakers.add(new RawSpeaker(speakers.size(), sample));
         currentSpeaker = speakers.getLast();
     }
+
+    public void resetSession() {
+        audioTime = 0.0;
+        lastReplicaStartTime = 0.0;
+        inSpeech = false;
+        replicas.clear();
+        speakers.clear();
+    }
+
 }

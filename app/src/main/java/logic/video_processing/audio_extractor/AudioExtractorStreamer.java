@@ -2,6 +2,7 @@ package logic.video_processing.audio_extractor;
 
 import logic.video_processing.audioInput.AudioStreamConsumer;
 import logic.video_processing.queue.Processor;
+import logic.video_processing.vosk.VoskRecognizer;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 
@@ -28,6 +29,11 @@ public class AudioExtractorStreamer implements Processor {
      * @return итоговый AudioInputStream после завершения
      */
     public void processAudio(String filePath, AudioStreamConsumer audioConsumer) {
+
+        if (audioConsumer instanceof VoskRecognizer) {
+            ((VoskRecognizer) audioConsumer).resetSession();
+        }
+
         processedFrames = 0;
         totalFrames = 1;
         processListener.notifyStart(this);
@@ -71,6 +77,11 @@ public class AudioExtractorStreamer implements Processor {
             }
 
             grabber.stop();
+
+            byte[] silence = new byte[CHUNK_SIZE_FRAMES * format.getFrameSize()];
+            for (int i = 0; i < 5; i++) {
+                audioConsumer.onAudioChunkReceived(silence, silence.length);
+            }
         } catch (Exception e) {
             System.err.println("Ошибка при извлечении аудио: " + e.getMessage());
             throw new RuntimeException("Не удалось извлечь аудио", e);
