@@ -38,8 +38,8 @@ public class GeneralIntegrationTest {
         speaker1 = new Speaker("Алиса", image, 1);
         speaker2 = new Speaker("Борис", image, 2);
 
-        replica1 = new Replica("Здравствуйте, это говорит Алиса.", speaker1);
-        replica2 = new Replica("Привет, Алиса, это Борис.", speaker2);
+        replica1 = new Replica("Здравствуйте, это говорит Алиса.", speaker1, 1);
+        replica2 = new Replica("Привет, Алиса, это Борис.", speaker2, 1);
 
         tag = new Tag("Совещание");
         tag.setId(1);
@@ -104,7 +104,7 @@ public class GeneralIntegrationTest {
 
     @Test
     void testSpeakerEqualityAndReplicaAssignment() {
-        Replica replica3 = new Replica("Другое сообщение", new Speaker("Алиса", image, 1));
+        Replica replica3 = new Replica("Другое сообщение", new Speaker("Алиса", image, 1), 1);
         transcript.addReplica(replica1);
         transcript.addReplica(replica3);
 

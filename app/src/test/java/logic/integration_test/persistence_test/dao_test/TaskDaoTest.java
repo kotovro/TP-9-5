@@ -27,7 +27,6 @@ public class TaskDaoTest {
         connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
         taskDao = new TaskDao(connection);
 
-        // Insert a test transcript for foreign key constraint
         try (var stmt = connection.createStatement()) {
             stmt.execute("INSERT INTO transcript (name, date) VALUES ('Test Transcript', '01-01-2025')");
         }
@@ -67,7 +66,7 @@ public class TaskDaoTest {
         taskDao.addTask(task);
 
         task.setDescription("Updated Task");
-        taskDao.updateTask(task); // Здесь вызывается updateTask, но описание не меняется
+        taskDao.updateTask(task);
 
         Task updatedTask = taskDao.getTaskById(task.getId());
         assertEquals("Updated Task", updatedTask.getDescription(), "Task description should be updated");

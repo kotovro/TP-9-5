@@ -14,13 +14,6 @@ public class ProtocolTest {
     }
 
     @Test
-    void testConstructorWithTextOnly() {
-        Protocol protocol = new Protocol("Sample text");
-        assertEquals(0, protocol.getTranscriptId());
-        assertEquals("Sample text", protocol.getText());
-    }
-
-    @Test
     void testGetTextWithNullText() {
         Protocol protocol = new Protocol(1, null);
         assertNull(protocol.getText());

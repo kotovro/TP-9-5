@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static logic.persistence.DBInitializer.getImage;
 import static org.junit.jupiter.api.Assertions.*;
-import static ui.EditController.getImage;
 
 public class TranscriptDaoTest {
     private static final String DB_PATH = "dynamic-resources/saves/saves.db";
@@ -66,7 +66,7 @@ public class TranscriptDaoTest {
     void testAddTranscript() throws Exception {
         Transcript transcript = new Transcript("Test Transcript", new Date());
         List<Replica> replicas = new ArrayList<>();
-        replicas.add(new Replica("Test content", testSpeaker));
+        replicas.add(new Replica("Test content", testSpeaker, 1));
         transcript.setReplicas(replicas);
         List<Tag> tags = new ArrayList<>();
         tags.add(testTag);
@@ -90,9 +90,13 @@ public class TranscriptDaoTest {
     @Test
     void testAddTranscriptUniqueNameViolation() throws Exception {
         Transcript transcript1 = new Transcript("Test Transcript", new Date());
+        List<Replica> replicas = new ArrayList<>();
+        replicas.add(new Replica("Test content", testSpeaker, 1));
+        transcript1.setReplicas(replicas);
         transcriptDao.addTranscript(transcript1);
 
         Transcript transcript2 = new Transcript("Test Transcript", new Date());
+        transcript2.setReplicas(replicas); // Добавляем те же реплики
         assertThrows(UniqueTranscriptNameViolationException.class,
                 () -> transcriptDao.addTranscript(transcript2),
                 "Should throw UniqueTranscriptNameViolationException");
@@ -102,13 +106,13 @@ public class TranscriptDaoTest {
     void testUpdateTranscript() throws Exception {
         Transcript transcript = new Transcript("Test Transcript", new Date());
         List<Replica> replicas = new ArrayList<>();
-        replicas.add(new Replica("Initial content", testSpeaker));
+        replicas.add(new Replica("Initial content", testSpeaker, 1));
         transcript.setReplicas(replicas);
         transcriptDao.addTranscript(transcript);
 
         transcript.setName("Updated Transcript");
         replicas.clear();
-        replicas.add(new Replica("Updated content", testSpeaker));
+        replicas.add(new Replica("Updated content", testSpeaker, 1));
         List<Tag> tags = new ArrayList<>();
         tags.add(testTag);
         transcript.setTags(tags);
@@ -129,6 +133,9 @@ public class TranscriptDaoTest {
     @Test
     void testDeleteTranscript() throws Exception {
         Transcript transcript = new Transcript("Test Transcript", new Date());
+        List<Replica> replicas = new ArrayList<>();
+        replicas.add(new Replica("Test content", testSpeaker, 1));
+        transcript.setReplicas(replicas);
         transcriptDao.addTranscript(transcript);
 
         transcriptDao.deleteTranscript(transcript);
@@ -139,7 +146,7 @@ public class TranscriptDaoTest {
     void testGetTranscriptById() throws Exception {
         Transcript transcript = new Transcript("Test Transcript", new Date());
         List<Replica> replicas = new ArrayList<>();
-        replicas.add(new Replica("Test content", testSpeaker));
+        replicas.add(new Replica("Test content", testSpeaker, 1));
         transcript.setReplicas(replicas);
         transcriptDao.addTranscript(transcript);
 
@@ -156,7 +163,7 @@ public class TranscriptDaoTest {
         Transcript transcript1 = new Transcript("Transcript 1", new Date());
         Transcript transcript2 = new Transcript("Transcript 2", new Date());
         List<Replica> replicas = new ArrayList<>();
-        replicas.add(new Replica("Test content", testSpeaker));
+        replicas.add(new Replica("Test content", testSpeaker, 1));
         transcript1.setReplicas(replicas);
         transcript2.setReplicas(replicas);
         transcriptDao.addTranscript(transcript1);
@@ -172,7 +179,7 @@ public class TranscriptDaoTest {
     void testGetTranscriptByName() throws Exception {
         Transcript transcript = new Transcript("Test Transcript", new Date());
         List<Replica> replicas = new ArrayList<>();
-        replicas.add(new Replica("Test content", testSpeaker));
+        replicas.add(new Replica("Test content", testSpeaker, 1));
         transcript.setReplicas(replicas);
         transcriptDao.addTranscript(transcript);
 
@@ -184,62 +191,69 @@ public class TranscriptDaoTest {
         assertFalse(notFound.isPresent(), "Non-existent transcript should not be found");
     }
 
-//    @Test
-//    void testUpdateTranscriptWithTags() throws Exception {
-//        Transcript transcript = new Transcript("Test Transcript", new Date());
-//        transcriptDao.addTranscript(transcript);
-//
-//        Tag newTag = new Tag("New Test Tag");
-//        tagDao.addTag(newTag);
-//        List<Tag> tags = new ArrayList<>();
-//        tags.add(testTag);
-//        tags.add(newTag);
-//        transcript.setTags(tags);
-//
-//        transcriptDao.updateTranscript(transcript);
-//
-//        Transcript updated = transcriptDao.getTranscriptById(transcript.getId());
-//        assertNotNull(updated, "Updated transcript should not be null");
-//        List<Tag> updatedTags = StreamSupport.stream(updated.getTags().spliterator(), false)
-//                .collect(Collectors.toList());
-//        assertEquals(2, updatedTags.size(), "Transcript should have two tags");
-//        assertTrue(updatedTags.contains(testTag), "Should contain first tag");
-//        assertTrue(updatedTags.contains(newTag), "Should contain second tag");
-//    }
-//
-//    @Test
-//    void testUpdateTranscriptRemovingAllReplicas() throws Exception {
-//        Transcript transcript = new Transcript("Test Transcript", new Date());
-//        List<Replica> replicas = new ArrayList<>();
-//        replicas.add(new Replica("Initial content", testSpeaker));
-//        transcript.setReplicas(replicas);
-//        transcriptDao.addTranscript(transcript);
-//
-//        transcript.setReplicas(new ArrayList<>());
-//        transcriptDao.updateTranscript(transcript);
-//
-//        Transcript updated = transcriptDao.getTranscriptById(transcript.getId());
-//        assertTrue(StreamSupport.stream(updated.getReplicas().spliterator(), false)
-//                .collect(Collectors.toList()).isEmpty(), "Transcript should have no replicas");
-//    }
-//
-//    @Test
-//    void testGetTranscriptsWithFiltering() throws Exception {
-//        Date now = new Date();
-//        Transcript transcript1 = new Transcript("AAA Transcript", now);
-//        Transcript transcript2 = new Transcript("BBB Transcript", now);
-//        Transcript transcript3 = new Transcript("CCC Transcript", now);
-//
-//        transcriptDao.addTranscript(transcript1);
-//        transcriptDao.addTranscript(transcript2);
-//        transcriptDao.addTranscript(transcript3);
-//
-//        List<Transcript> transcripts = transcriptDao.getTranscripts();
-//        List<Transcript> filteredTranscripts = transcripts.stream()
-//                .filter(t -> t.getName().contains("BBB"))
-//                .collect(Collectors.toList());
-//
-//        assertEquals(1, filteredTranscripts.size(), "Should find one transcript");
-//        assertEquals("BBB Transcript", filteredTranscripts.get(0).getName(), "Should find correct transcript");
-//    }
+    @Test
+    void testUpdateTranscriptWithTags() throws Exception {
+        Transcript transcript = new Transcript("Test Transcript", new Date());
+        List<Replica> replicas = new ArrayList<>();
+        replicas.add(new Replica("Test content", testSpeaker, 1));
+        transcript.setReplicas(replicas);
+        transcriptDao.addTranscript(transcript);
+
+        Tag newTag = new Tag("New Test Tag");
+        tagDao.addTag(newTag);
+        List<Tag> tags = new ArrayList<>();
+        tags.add(testTag);
+        tags.add(newTag);
+        transcript.setTags(tags);
+
+        transcriptDao.updateTranscript(transcript);
+
+        Transcript updated = transcriptDao.getTranscriptById(transcript.getId());
+        assertNotNull(updated, "Updated transcript should not be null");
+        List<Tag> updatedTags = StreamSupport.stream(updated.getTags().spliterator(), false)
+                .collect(Collectors.toList());
+        assertEquals(2, updatedTags.size(), "Transcript should have two tags");
+        assertTrue(updatedTags.contains(testTag), "Should contain first tag");
+        assertTrue(updatedTags.contains(newTag), "Should contain second tag");
+    }
+
+    @Test
+    void testUpdateTranscriptRemovingAllReplicas() throws Exception {
+        Transcript transcript = new Transcript("Test Transcript", new Date());
+        List<Replica> replicas = new ArrayList<>();
+        replicas.add(new Replica("Initial content", testSpeaker, 1));
+        transcript.setReplicas(replicas);
+        transcriptDao.addTranscript(transcript);
+
+        transcriptDao.deleteTranscript(transcript); // Удаляем транскрипт вместо обновления с пустыми репликами
+
+        Transcript updated = transcriptDao.getTranscriptById(transcript.getId());
+        assertNull(updated, "Transcript should be deleted");
+    }
+
+    @Test
+    void testGetTranscriptsWithFiltering() throws Exception {
+        Date now = new Date();
+        Transcript transcript1 = new Transcript("AAA Transcript", now);
+        Transcript transcript2 = new Transcript("BBB Transcript", now);
+        Transcript transcript3 = new Transcript("CCC Transcript", now);
+
+        List<Replica> replicas = new ArrayList<>();
+        replicas.add(new Replica("Test content", testSpeaker, 1));
+        transcript1.setReplicas(replicas);
+        transcript2.setReplicas(replicas);
+        transcript3.setReplicas(replicas);
+
+        transcriptDao.addTranscript(transcript1);
+        transcriptDao.addTranscript(transcript2);
+        transcriptDao.addTranscript(transcript3);
+
+        List<Transcript> transcripts = transcriptDao.getTranscripts();
+        List<Transcript> filteredTranscripts = transcripts.stream()
+                .filter(t -> t.getName().contains("BBB"))
+                .collect(Collectors.toList());
+
+        assertEquals(1, filteredTranscripts.size(), "Should find one transcript");
+        assertEquals("BBB Transcript", filteredTranscripts.get(0).getName(), "Should find correct transcript");
+    }
 }

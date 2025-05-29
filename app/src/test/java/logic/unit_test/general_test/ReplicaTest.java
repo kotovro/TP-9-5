@@ -23,7 +23,7 @@ public class ReplicaTest {
 
     @BeforeEach
     void setUp() {
-        replica = new Replica("Sample text", speaker);
+        replica = new Replica("Sample text", speaker, 1);
     }
 
     @Test

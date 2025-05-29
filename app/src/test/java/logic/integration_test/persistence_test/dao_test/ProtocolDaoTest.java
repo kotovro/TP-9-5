@@ -27,7 +27,6 @@ public class ProtocolDaoTest {
         connection = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
         protocolDao = new ProtocolDao(connection);
 
-        // Insert a test transcript for foreign key constraint
         try (var stmt = connection.createStatement()) {
             stmt.execute("INSERT INTO transcript (name, date) VALUES ('Test Transcript', '01-01-2025')");
         }

@@ -1,6 +1,7 @@
 package logic.protocol;
 
 import logic.general.*;
+import logic.utils.JsonTaskFiller;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class LLMWrapper {
                 0.10f,
                 "<<END>>");
 
-        return new Protocol(summary);
+        return new Protocol(transcript.getId(), summary);
     }
 
 
@@ -98,7 +99,7 @@ public class LLMWrapper {
     }
 
     public void freeResources() {
-        service.freeResources();
+        if (service != null) service.freeResources();
         service = null;
     }
 

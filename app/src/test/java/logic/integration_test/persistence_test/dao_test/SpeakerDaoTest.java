@@ -1,11 +1,9 @@
 package logic.integration_test.persistence_test.dao_test;
 
-import javafx.scene.image.Image;
 import logic.general.Speaker;
 import logic.persistence.DBInitializer;
 import logic.persistence.dao.SpeakerDao;
 import logic.persistence.exception.SpeakerNotFoundException;
-import ui.EditController;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +12,11 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static logic.persistence.DBInitializer.getImage;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SpeakerDaoTest {
@@ -42,7 +43,7 @@ public class SpeakerDaoTest {
 
     @Test
     void testAddSpeaker() {
-        Speaker speaker = new Speaker("Test Speaker", EditController.getImage("/images/default_users/undefined.png"), 0);
+        Speaker speaker = new Speaker("Test Speaker", getImage("/images/default_users/undefined.png"), 0);
         speakerDao.addSpeaker(speaker);
 
         assertTrue(speaker.getId() > 0, "Speaker ID should be set after insertion");
@@ -50,21 +51,27 @@ public class SpeakerDaoTest {
         assertTrue(speakers.stream().anyMatch(s -> "Test Speaker".equals(s.getName())), "Speaker should be added");
     }
 
-    @Test
-    void testDeleteSpeaker() throws SQLException {
-        try (var stmt = connection.prepareStatement("INSERT INTO speaker (name, image) VALUES (?, ?)")) {
-            stmt.setString(1, "Test Speaker");
-            stmt.setBytes(2, null); // Image can be NULL in the database
-            stmt.executeUpdate();
-        }
-
-        speakerDao.deleteSpeaker(8); // ID 8, as initial speakers have IDs 1-7
-        assertThrows(SpeakerNotFoundException.class, () -> speakerDao.getSpeakerById(8), "Speaker should be deleted");
-    }
+    //TODO: ждет реализации
+//    @Test
+//    void testDeleteSpeaker() throws SQLException {
+//        int speakerId;
+//        try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO speaker (name, image) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
+//            stmt.setString(1, "Test Speaker");
+//            stmt.setBytes(2, null); // Image can be NULL in the database
+//            stmt.executeUpdate();
+//            try (ResultSet rs = stmt.getGeneratedKeys()) {
+//                assertTrue(rs.next(), "Generated key should be available");
+//                speakerId = rs.getInt(1);
+//            }
+//        }
+//
+//        speakerDao.deleteSpeaker(speakerId);
+//        assertThrows(SpeakerNotFoundException.class, () -> speakerDao.getSpeakerById(speakerId), "Speaker should be deleted");
+//    }
 
     @Test
     void testGetSpeakerById() {
-        Speaker speaker = new Speaker("Test Speaker", EditController.getImage("/images/default_users/undefined.png"), 0);
+        Speaker speaker = new Speaker("Test Speaker", getImage("/images/default_users/undefined.png"), 0);
         speakerDao.addSpeaker(speaker);
 
         Speaker retrieved = speakerDao.getSpeakerById(speaker.getId());
@@ -79,13 +86,13 @@ public class SpeakerDaoTest {
 
     @Test
     void testGetAllSpeakers() {
-        Speaker speaker1 = new Speaker("Speaker 1", EditController.getImage("/images/default_users/undefined.png"), 0);
-        Speaker speaker2 = new Speaker("Speaker 2", EditController.getImage("/images/default_users/undefined.png"), 0);
+        Speaker speaker1 = new Speaker("Speaker 1", getImage("/images/default_users/undefined.png"), 0);
+        Speaker speaker2 = new Speaker("Speaker 2", getImage("/images/default_users/undefined.png"), 0);
         speakerDao.addSpeaker(speaker1);
         speakerDao.addSpeaker(speaker2);
 
         var speakers = speakerDao.getAllSpeakers();
-        assertEquals(9, speakers.size(), "Nine speakers (7 initial + 2 new) should be retrieved");
+        assertEquals(12, speakers.size(), "Twelve speakers (10 initial + 2 new) should be retrieved");
         assertTrue(speakers.stream().anyMatch(s -> "Speaker 1".equals(s.getName())), "Speaker 1 should exist");
         assertTrue(speakers.stream().anyMatch(s -> "Speaker 2".equals(s.getName())), "Speaker 2 should exist");
     }

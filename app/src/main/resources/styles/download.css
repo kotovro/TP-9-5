@@ -1,0 +1,36 @@
+.download-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-background-radius: 18;
+}
+
+.download-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.download-scroll-pane .scroll-bar:vertical,
+.download-scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 1;
+}
+
+.download-scroll-pane .scroll-bar:vertical {
+    -fx-translate-x: -2px;
+}
+
+.download-scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgba(10, 42, 133, 0.75);
+}
+
+.download-scroll-pane .scroll-bar .track {
+    -fx-background-color: #B8D0FF;
+}
+
+.download-scroll-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+
+.progress-bar .track {
+    -fx-background-color: #B8D0FF;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+}

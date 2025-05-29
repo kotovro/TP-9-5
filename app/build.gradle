@@ -65,6 +65,24 @@ test {
         exceptionFormat = 'full'
     }
     maxParallelForks = 4
+    finalizedBy jacocoTestReport // Генерировать JaCoCo-отчёт после тестов
+}
+
+jacocoTestReport {
+    dependsOn test // Отчёт зависит от выполнения тестов
+    reports {
+        xml.required = true  // Для CI-анализа
+        html.required = true // Для чтения человеком
+        csv.required = false
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/*Test*', // Исключить тестовые классы
+                    '**/ui/**'   // Исключить UI-классы, если нужно
+            ])
+        }))
+    }
 }
 
 tasks.withType(JavaCompile) {
@@ -72,10 +90,11 @@ tasks.withType(JavaCompile) {
             '--module-path', classpath.asPath,
             '--add-modules', 'vosk'
     ]
+    options.encoding = 'UTF-8' // Установить кодировку
 }
 
 application {
-    mainClass = 'ui.DownloadingApp'
+    mainClass = 'ui.MainWindow'
     applicationDefaultJvmArgs = [
             '-Xms5G',
             '-Xmx5G',
@@ -98,7 +117,8 @@ jlink {
     jpackage() {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico'
+                    '--icon', 'src/main/resources/icon.ico',
+                    '--win-console'
             ]
             installerOptions += [
                     '--win-dir-chooser',

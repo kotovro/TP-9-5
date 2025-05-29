@@ -15,11 +15,12 @@ public class TaskDao {
 
     public void addTask(Task task) {
         try {
-            String sql = "INSERT INTO task (description, transcript_id) values(?, ?)";
+            String sql = "INSERT INTO task (description, transcript_id, assignee_id) values(?, ?, ?)";
 
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, task.getDescription());
                 stmt.setInt(2, task.getTranscriptId());
+                stmt.setInt(3, task.getAssigneeId());
                 stmt.execute();
             }
 
@@ -49,11 +50,12 @@ public class TaskDao {
 
     public void updateTask(Task task) {
         try {
-            String sql = "UPDATE task SET description = ?, transcript_id = ? WHERE id = ?";
+            String sql = "UPDATE task SET description = ?, transcript_id = ?, assignee_id = ? WHERE id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, task.getDescription());
                 stmt.setInt(2, task.getTranscriptId());
-                stmt.setInt(3, task.getId());
+                stmt.setInt(3, task.getAssigneeId());
+                stmt.setInt(4, task.getId());
                 stmt.executeUpdate();
             }
         } catch (SQLException e) {
@@ -64,12 +66,12 @@ public class TaskDao {
     public List<Task> getTasksByTranscriptId(int transcriptId) {
         List<Task> tasks = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM task WHERE transcript_id = ?";
+            String sql = "SELECT * FROM task WHERE transcript_id = ? ORDER BY transcript_id";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setInt(1, transcriptId);
                 try (ResultSet rs = stmt.executeQuery()) {
                     while (rs.next()) {
-                        Task task = new Task(rs.getInt("transcript_id"), rs.getString("description"));
+                        Task task = new Task(rs.getInt("transcript_id"), rs.getInt("assignee_id"), rs.getString("description"));
                         task.setId(rs.getInt("id"));
                         tasks.add(task);
                     }
@@ -88,7 +90,7 @@ public class TaskDao {
                 stmt.setInt(1, taskId);
                 try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
-                        Task task = new Task(rs.getInt("transcript_id"), rs.getString("description"));
+                        Task task = new Task(rs.getInt("transcript_id"), rs.getInt("assignee_id"), rs.getString("description"));
                         task.setId(rs.getInt("id"));
                         return task;
                     }

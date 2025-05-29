@@ -17,7 +17,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ui.EditController.getImage;
 
 public class DBInitializerTest {
     private static final String DB_PATH = "dynamic-resources/saves/saves.db";
@@ -74,7 +73,7 @@ public class DBInitializerTest {
 
             assertTrue(rs.next(), "ResultSet should have a row");
             int count = rs.getInt("count");
-            assertEquals(7, count, "Seven speakers should be inserted");
+            assertEquals(10, count, "Ten speakers should be inserted");
         }
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH);
@@ -83,7 +82,7 @@ public class DBInitializerTest {
 
             assertTrue(rs.next(), "Speaker 'Соня' should exist");
             assertEquals("Соня", rs.getString("name"), "Speaker name should be 'Соня'");
-            assertEquals(2, rs.getInt("id"), "Speaker ID should be 1");
+            assertEquals(5, rs.getInt("id"), "Speaker ID should be 5");
         }
     }
 
@@ -95,11 +94,11 @@ public class DBInitializerTest {
             SpeakerDao speakerDao = new SpeakerDao(conn);
             List<Speaker> speakers = speakerDao.getAllSpeakers();
 
-            assertEquals(7, speakers.size(), "Seven speakers should be retrieved");
+            assertEquals(10, speakers.size(), "Ten speakers should be retrieved");
 
             boolean foundSonya = speakers.stream()
-                    .anyMatch(speaker -> "Соня".equals(speaker.getName()) && speaker.getId() == 2);
-            assertTrue(foundSonya, "Speaker 'Соня' with ID 1 should exist");
+                    .anyMatch(speaker -> "Соня".equals(speaker.getName()) && speaker.getId() == 5);
+            assertTrue(foundSonya, "Speaker 'Соня' with ID 5 should exist");
         }
     }
 
@@ -109,11 +108,11 @@ public class DBInitializerTest {
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + DB_PATH)) {
             SpeakerDao speakerDao = new SpeakerDao(conn);
-            Speaker newSpeaker = new Speaker("Тест", getImage("/images/default_users/undefined.png"), 8); // Заглушка вместо getImage
+            Speaker newSpeaker = new Speaker("Тест", DBInitializer.getImage("/images/default_users/undefined.png"), -1);
             speakerDao.addSpeaker(newSpeaker);
 
             List<Speaker> speakers = speakerDao.getAllSpeakers();
-            assertEquals(8, speakers.size(), "Eight speakers should exist after adding one");
+            assertEquals(11, speakers.size(), "Eleven speakers should exist after adding one");
 
             boolean foundTest = speakers.stream()
                     .anyMatch(speaker -> "Тест".equals(speaker.getName()));

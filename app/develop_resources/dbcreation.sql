@@ -20,6 +20,7 @@ CREATE TABLE replica (
                          order_number INTEGER,
                          speaker_id INTEGER NOT NULL,
                          content TEXT NOT NULL,
+                         timecode DOUBLE,
                          PRIMARY KEY (transcript_id, order_number),
                          FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE,
                          FOREIGN KEY (speaker_id) REFERENCES speaker(id) ON DELETE CASCADE
@@ -38,6 +39,8 @@ CREATE TABLE task (
                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                       description TEXT NOT NULL,
                       transcript_id INTEGER,
+                      assignee_id INTEGER DEFAULT 1,
+                      FOREIGN KEY (assignee_id) REFERENCES speaker(id) ON DELETE SET DEFAULT,
                       FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE
 );
 

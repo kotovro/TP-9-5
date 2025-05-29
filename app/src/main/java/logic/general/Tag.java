@@ -23,4 +23,13 @@ public class Tag {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+        return id == tag.id && name.equals(tag.name);
+    }
 }

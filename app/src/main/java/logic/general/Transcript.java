@@ -49,7 +49,7 @@ public class Transcript {
         removeReplica(index);
     }
 
-    public Iterable<Replica> getReplicas() {
+    public List<Replica> getReplicas() {
         return replicas;
     }
 
