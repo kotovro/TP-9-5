@@ -16,6 +16,8 @@ public class AudioExtractorStreamer implements Processor {
     private long totalFrames = -1;
     private long processedFrames = 0;
     private ProcessListener processListener = new DeafProcessListener();
+    private AudioValidator audioValidator;
+
 
     public AudioExtractorStreamer() {
         this.format = new AudioFormat(16000, 16, 1, true, false);
@@ -37,7 +39,10 @@ public class AudioExtractorStreamer implements Processor {
             grabber.setSampleRate(16000);
             grabber.setAudioChannels(1);
             grabber.start();
-
+            if (!AudioValidator.validate(grabber)) {
+                processListener.notifyStop(this);
+                return;
+            }
             long duration = grabber.getLengthInTime() / 1000;
             totalFrames = duration * 16000 / 1000;
 
