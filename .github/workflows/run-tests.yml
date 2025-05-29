@@ -57,8 +57,10 @@ jobs:
       with:
         cache-read-only: false
         cache-write-only: false
-        gradle-home-cache-cleanup: true  # Очистка кэша Gradle для экономии места
-      working-directory: app  # Указываем рабочую директорию
+        gradle-home-cache-cleanup: true
+        gradle-home-cache-excludes: |
+          caches/*/fileHashes/
+          caches/*/scripts/
 
     - name: Запустить тесты с JaCoCo
       run: ./gradlew test jacocoTestReport --stacktrace --info
