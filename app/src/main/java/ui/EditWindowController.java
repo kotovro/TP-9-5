@@ -33,7 +33,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @FXML
     private Pane overlayPane;
 
-    private static final String STYLE = BaseController.class.getResource("/styles/download.css").toExternalForm();
+    private static final String STYLE = BaseController.class.getResource("/styles/style.css").toExternalForm();
 
     private HBox tabRow = new HBox();
     private final List<Speaker> speakers;
@@ -49,6 +49,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @FXML
     public void initialize() {
         tabPane.getStyleClass().add(STYLE);
+//        System.out.println(STYLE);
         tabPane.getStyleClass().add("tab-scroll-pane");
         replicas.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         tabPane.setContent(tabRow);

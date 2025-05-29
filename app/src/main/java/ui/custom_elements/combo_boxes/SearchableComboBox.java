@@ -101,6 +101,9 @@ public class SearchableComboBox extends ComboBox<Speaker> {
     }
 
     private void configureCellFactory() {
+        getStyleClass().add("custom-combobox");
+        VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
+
         setCellFactory(lv -> new ListCell<>() {
             private final ImageView imageView = new ImageView();
             {
@@ -165,8 +168,6 @@ public class SearchableComboBox extends ComboBox<Speaker> {
                 setStyle("-fx-text-fill: white;");
             }
         });
-        getStyleClass().add("custom-combobox");
-        VBox.setMargin(this, new javafx.geometry.Insets(0, 0, 5, 0));
     }
 
     private void setupEventHandlers() {
