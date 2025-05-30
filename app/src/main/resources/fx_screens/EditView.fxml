@@ -16,7 +16,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane prefHeight="70.0" prefWidth="1138.0">
+      <Pane prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: rgba(58, 92, 185, 0.7);">
          <children>
             <ScrollPane fx:id="tabPane" styleClass="tab-scroll-pane" prefHeight="88.0" prefWidth="1138.0" />
          </children>

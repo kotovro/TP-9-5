@@ -1,5 +1,6 @@
 package logic.utils;
 
+import logic.PlatformDependent;
 import logic.video_processing.audio_extractor.DeafProcessListener;
 import logic.video_processing.audio_extractor.ProcessListener;
 import logic.video_processing.queue.Processor;
@@ -31,13 +32,13 @@ public class LectureDownloader implements Processor {
         if (!isDownloadable(lectureURL)) {
             throw new IOException("Lecture video resource is not downloadable from URL: " + lectureURL);
         }
-        File outputFile = new File("dynamic-resources/lectures/lecture.webm");
+        File outputFile = new File(PlatformDependent.getPathToSaves() + "lecture.webm");
         try {
             downloadFile(lectureURL, outputFile);
             return outputFile;
         } catch (IOException e) {
             String mp4Url = lectureURL.replace("webm", "mp4");
-            outputFile = new File("dynamic-resources/lectures/lecture.mp4");
+            outputFile = new File(PlatformDependent.getPathToSaves() + "lecture.mp4");
             downloadFile(mp4Url, outputFile);
             return outputFile;
         }
@@ -54,7 +55,7 @@ public class LectureDownloader implements Processor {
 
         try (BufferedInputStream in = new BufferedInputStream(url.openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            byte dataBuffer[] = new byte[8192];
+            byte[] dataBuffer = new byte[8192];
             int bytesRead;
 
             while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
