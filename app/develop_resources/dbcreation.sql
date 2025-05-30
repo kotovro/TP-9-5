@@ -20,6 +20,7 @@ CREATE TABLE replica (
                          order_number INTEGER,
                          speaker_id INTEGER NOT NULL,
                          content TEXT NOT NULL,
+                         timecode DOUBLE,
                          PRIMARY KEY (transcript_id, order_number),
                          FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE,
                          FOREIGN KEY (speaker_id) REFERENCES speaker(id) ON DELETE CASCADE
@@ -28,7 +29,7 @@ CREATE TABLE replica (
 
 
 CREATE TABLE protocol (
-                          id INTEGER PRIMARY KEY AUTOINCREMENT,
+                          protocol_id INTEGER PRIMARY KEY AUTOINCREMENT,
                           transcript_id INTEGER UNIQUE,
                           conclusion TEXT,
                           FOREIGN KEY (transcript_id) REFERENCES transcript(id)
@@ -37,15 +38,16 @@ CREATE TABLE protocol (
 CREATE TABLE task (
                       id INTEGER PRIMARY KEY AUTOINCREMENT,
                       description TEXT NOT NULL,
-                      conclusion TEXT,
-                      protocol_id INTEGER,
-                      FOREIGN KEY (protocol_id) REFERENCES protocol(id) ON DELETE CASCADE
+                      transcript_id INTEGER,
+                      assignee_id INTEGER DEFAULT 1,
+                      FOREIGN KEY (assignee_id) REFERENCES speaker(id) ON DELETE SET DEFAULT,
+                      FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE
 );
 
-CREATE TABLE speaker_tag (
-                                 speaker_id INTEGER,
+CREATE TABLE transcript_tag (
+                                 transcript_id INTEGER,
                                  tag_id INTEGER,
-                                 PRIMARY KEY (speaker_id, tag_id),
-                                 FOREIGN KEY (speaker_id) REFERENCES speaker(id) ON DELETE CASCADE,
+                                 PRIMARY KEY (transcript_id, tag_id),
+                                 FOREIGN KEY (transcript_id) REFERENCES transcript(id) ON DELETE CASCADE,
                                  FOREIGN KEY (tag_id) REFERENCES tag(id) ON DELETE CASCADE
 );

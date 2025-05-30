@@ -8,6 +8,7 @@ import logic.video_processing.vosk.analiseDTO.RawReplica;
 import logic.video_processing.vosk.analiseDTO.RawSpeaker;
 import logic.Platform;
 import logic.PlatformDependent;
+import logic.video_processing.vosk.analiseDTO.RawTranscript;
 import org.vosk.Model;
 import org.vosk.Recognizer;
 import org.vosk.SpeakerModel;
@@ -16,6 +17,7 @@ import javax.sound.sampled.AudioInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +33,13 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private static final double MINIMUM_FRAME_COUNT = 200;
     private static final int CHUNK_SIZE = 4096;
     private static final int MINIMUM_FREQUENCY = 3;
+    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private double audioTime;
+    private double lastReplicaStartTime;
+    private boolean inSpeech = false;
 
     private Model model;
+    private SpeakerModel speakerModel;
     private Recognizer recognizer;
     private List<RawSpeaker> speakers;
     private List<RawReplica> replicas;
@@ -45,9 +52,9 @@ public class VoskRecognizer implements AudioStreamConsumer {
     public void init() {
         try {
             model = new Model(PlatformDependent.getPrefix() + SPEECH_PATH);
-            recognizer = new Recognizer(model, 16000);
-            SpeakerModel speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
-            recognizer.setSpeakerModel(speakerModel);
+            speakerModel = new SpeakerModel(PlatformDependent.getPrefix() + SPEAKER_PATH);
+            recognizer = new Recognizer(model, 16000, speakerModel);
+
             speakers = new ArrayList<>();
             replicas = new ArrayList<>();
         } catch (IOException e) {
@@ -56,10 +63,13 @@ public class VoskRecognizer implements AudioStreamConsumer {
     }
 
     public void freeResources() {
+        if (recognizer == null) return;
         recognizer.close();
         model.close();
+        speakerModel.close();
         recognizer = null;
         model = null;
+        speakerModel = null;
     }
 
     @Override
@@ -78,7 +88,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
         }
     }
 
-    @Override
+   /* @Override
     public void onAudioChunkReceived(byte[] audioData, int bytesRead) {
         try {
             if (recognizer.acceptWaveForm(audioData, bytesRead)) {
@@ -88,20 +98,58 @@ public class VoskRecognizer implements AudioStreamConsumer {
         } catch (Exception e) {
             System.err.println("Can't read file");
         }
+    }*/
+
+    @Override
+    public void onAudioChunkReceived(byte[] audioData, int bytesRead) {
+        try {
+
+            boolean isFinal = recognizer.acceptWaveForm(audioData, bytesRead);
+            audioTime += (double) bytesRead / 2 / 16000;
+
+            String partialJson = recognizer.getPartialResult();
+            String partialText = "";
+
+            try {
+                JsonNode root = jsonMapper.readTree(partialJson);
+                JsonNode p = root.get("partial");
+                partialText = (p != null ? p.asText().trim() : "");
+            } catch (Exception ignore) { }
+
+            if (!inSpeech && !partialText.isEmpty()) {
+                lastReplicaStartTime = audioTime;
+                inSpeech = true;
+            }
+
+            if (isFinal) {
+                Optional<RawReplica> opt = parseReplica(recognizer.getResult());
+                opt.ifPresent(replica -> {
+                    replica.setStartTime(lastReplicaStartTime);
+                    replicas.add(replica);
+                });
+                inSpeech = false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Can't read file");
+        }
     }
 
     public void processStream(AudioInputStream audioStream) {
         onAudioChunkReceived(audioStream);
     }
 
-    public List<RawReplica> getFinalResult() {
+    public RawTranscript getFinalResult() {
         try {
             var result = parseReplica(recognizer.getFinalResult());
             result.ifPresent(replicas::add);
-        } catch (JsonProcessingException e) {
-        }
+        } catch (JsonProcessingException ignored) {}
+
         correctSpeakers();
-        return replicas;
+        RawTranscript transcript = new RawTranscript(speakers.size(), replicas);
+        speakers = new ArrayList<>();
+        replicas = new ArrayList<>();
+        return transcript;
     }
 
     //Не оптимально

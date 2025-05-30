@@ -1,3 +1,9 @@
+dynamic-resources/ai-models/speech-recognition-model/*
+gradle/*
+build
+gradlew
+gradlew.bat
+db_examples/*.db
 .gradle/
 build/
 out/
@@ -6,7 +12,10 @@ out/
 
 
 dynamic-resources/ai-models/speech-recognition-model/*
-src/main/resources/ai-models/speech-recognition-model/*
+
+dynamic-resources/ai-models/LLM/*
+dynamic-resources/lectures/*
+
 db_examples/*.db
 
 

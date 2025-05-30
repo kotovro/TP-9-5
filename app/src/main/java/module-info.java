@@ -18,9 +18,12 @@ module vstrecheslav {
     requires org.bytedeco.ffmpeg.macosx.x86_64;
     requires org.bytedeco.ffmpeg.linux.arm64;
     requires org.bytedeco.ffmpeg.linux.x86_64;
+    requires llama;
 
     opens ui to javafx.fxml;
     opens ui.custom_elements to javafx.fxml;
+    opens ui.custom_elements.combo_boxes to javafx.fxml;
+    opens ui.main_panes to javafx.fxml;
 
     opens logic.persistence to java.sql, org.xerial.sqlitejdbc;
     opens logic.persistence.dao to java.sql, org.xerial.sqlitejdbc;
@@ -34,4 +37,5 @@ module vstrecheslav {
 
     exports ui;
     exports ui.custom_elements;
+    exports ui.custom_elements.combo_boxes;
 }

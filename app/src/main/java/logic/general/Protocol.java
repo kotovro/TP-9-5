@@ -4,15 +4,8 @@ public class Protocol {
     private String text;
     private int transcriptId;
 
-    public Protocol() {
-    }
-
     public Protocol(int transcriptId, String text) {
         this.transcriptId = transcriptId;
-        this.text = text;
-    }
-
-    public Protocol(String text) {
         this.text = text;
     }
 

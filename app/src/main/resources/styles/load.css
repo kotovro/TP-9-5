@@ -1,31 +1,31 @@
-.scroll-pane {
+.saves-scroll-pane {
     -fx-background-color: transparent;
     -fx-background: transparent;
-    -fx-text-fill: black;
+    -fx-background-radius: 18;
 }
 
-.scroll-pane .viewport {
+.saves-scroll-pane .viewport {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
 }
 
-.scroll-pane .scroll-bar:vertical,
-.scroll-pane .scroll-bar:horizontal {
+.saves-scroll-pane .scroll-bar:vertical,
+.saves-scroll-pane .scroll-bar:horizontal {
     -fx-opacity: 1;
-    -fx-text-fill: black;
 }
 
-.scroll-pane .scroll-bar .thumb {
-    -fx-background-color: rgba(100, 100, 255, 0.6);
-    -fx-text-fill: black;
+.saves-scroll-pane .scroll-bar:vertical {
+    -fx-translate-x: -15px;
 }
 
-.scroll-pane .scroll-bar .track {
-    -fx-background-color: rgba(150, 150, 150, 0.4);
-    -fx-text-fill: black;
+.saves-scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgba(10, 42, 133, 0.75);
 }
 
-.flowpane-transparent {
+.saves-scroll-pane .scroll-bar .track {
+    -fx-background-color: #B8D0FF;
+}
+
+.vbox-transparent {
     -fx-background-color: rgba(255, 255, 255, 0.6);
-    -fx-text-fill: black;
 }
+

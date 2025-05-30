@@ -30,7 +30,7 @@ public class AudioExtractorStreamer implements Processor {
     public void processAudio(String filePath, AudioStreamConsumer audioConsumer) {
         processedFrames = 0;
         totalFrames = 1;
-        processListener.notifyStart();
+        processListener.notifyStart(this);
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)) {
             grabber.setSampleRate(16000);
@@ -76,7 +76,7 @@ public class AudioExtractorStreamer implements Processor {
         } finally {
             totalFrames = -1;
             processedFrames = 0;
-            processListener.notifyStop();
+            processListener.notifyStop(this);
         }
     }
 

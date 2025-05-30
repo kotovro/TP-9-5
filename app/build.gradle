@@ -41,6 +41,7 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.25.3'
     testImplementation 'org.mockito:mockito-core:3.12.4'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
+    implementation group: 'de.kherud', name: 'llama', version: '4.1.0'
 }
 
 java {
@@ -70,7 +71,7 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainClass = 'ui.DownloadingApp'
+    mainClass = 'ui.MainWindow'
     applicationDefaultJvmArgs = [
             '-Xms5G',
             '-Xmx5G',
@@ -93,7 +94,8 @@ jlink {
     jpackage() {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico'
+                    '--icon', 'src/main/resources/icon.ico',
+                    '--win-console'
             ]
             installerOptions += [
                     '--win-dir-chooser',
