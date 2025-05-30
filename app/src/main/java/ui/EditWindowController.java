@@ -35,7 +35,7 @@ public class EditWindowController implements PaneController, TranscriptListener,
     @FXML
     private Pane overlayDeletePane;
 
-    private static final String STYLE = BaseController.class.getResource("/styles/style.css").toExternalForm();
+    private static final String STYLE = TranscriptDisplayer.class.getResource("/styles/load.css").toExternalForm();
 
     private HBox tabRow = new HBox();
     private final List<Speaker> speakers;
@@ -50,9 +50,16 @@ public class EditWindowController implements PaneController, TranscriptListener,
 
     @FXML
     public void initialize() {
-        tabPane.getStyleClass().add(STYLE);
-//        System.out.println(STYLE);
-        tabPane.getStyleClass().add("tab-scroll-pane");
+        if (tabPane.getScene() != null) {
+            tabPane.getScene().getStylesheets().add(STYLE);
+        } else {
+            tabPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    newScene.getStylesheets().add(STYLE);
+                }
+            });
+        }
+
         replicas.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         tabPane.setContent(tabRow);
         initSize();

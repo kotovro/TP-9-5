@@ -29,3 +29,151 @@
     -fx-background-color: rgba(255, 255, 255, 0.6);
 }
 
+@font-face {
+    font-family: 'Manrope';
+    src: url('/fonts/Manrope-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Manrope-medium';
+    src: url('/fonts/Manrope-Medium.ttf');
+}
+
+.custom-text-area {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #5A7CF1;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 3px;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+}
+
+.check-box .box {
+    -fx-background-color: #6F9AE5;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #0A2A85;
+}
+
+.custom-text-area:focused {
+    -fx-border-width: 3;
+    -fx-border-color: #2A55D5;
+}
+
+.custom-text-area .content {
+    -fx-background-color: #F5F5F5;
+    -fx-background-radius: 10;
+}
+
+.custom-text-area:focused .content {
+    -fx-border-width: 3px;
+}
+
+.custom-combobox {
+    -fx-background-color: rgb(62,89,163);
+    -fx-background-radius: 10px;
+    -fx-text-fill: #F5F5F5;
+    -fx-font-family: 'Manrope';
+    -fx-font-size: 14px;
+}
+
+.custom-combobox .arrow-button {
+    -fx-background-color: rgba(122, 163, 250, 0.3);
+    -fx-background-radius: 10;
+    -fx-translate-x: -8px;
+    -fx-scale-x: 0.75;
+    -fx-scale-y: 0.75;
+}
+
+.custom-combobox .arrow {
+    -fx-background-color: white;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #7AA3FA;
+    -fx-background-radius: 15px;
+    -fx-border-color: #4A6DB5;
+    -fx-border-radius: 15;
+    -fx-border-width: 3;
+    -fx-font-family: 'Manrope-medium';
+    -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #7AA3FA;
+    -fx-background-radius: 15px;
+    -fx-text-fill: white;
+    -fx-border-color: #4A6DB5;
+    -fx-border-width: 0 0 3px 0;
+    -fx-font-family: 'Manrope-medium';
+    -fx-font-size: 14px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #8c8ef0;
+}
+
+.tab-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-background-radius: 25;
+}
+
+.tab-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.tab-scroll-pane .scroll-bar:vertical,
+.tab-scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 1;
+}
+
+.tab-scroll-pane .scroll-bar:vertical {
+    -fx-translate-x: -16px;
+}
+
+.tab-scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgba(10, 42, 133, 0.75);
+}
+
+.tab-scroll-pane .scroll-bar .track {
+    -fx-background-color: #B8D0FF;
+}
+
+.vbox-transparent {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+
+.spinner {
+    -fx-background-color: #6F88E5;
+    -fx-text-fill: white;
+}
+
+.spinner .text-field {
+    -fx-background-color: #6F88E5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #8AA1EE;
+}
+
+.spinner .increment-arrow-button .arrow,
+.spinner .decrement-arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.spinner .increment-arrow-button:hover .arrow,
+.spinner .decrement-arrow-button:hover .arrow {
+    -fx-background-color: #FFFFFF;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #4A6DB5;
+}
+

@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseDisplayer implements EditableDisplayer {
-    private static final String STYLE = TranscriptDisplayer.class.getResource("/styles/style.css").toExternalForm();
     private static final Font manropeFont1 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
     private static final Font manropeFont2 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
     private final ImageView arrow = new ImageView(BaseDisplayer.class.getResource("/images/SquareAltArrowDown2.png").toExternalForm());
@@ -85,16 +84,6 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     private void init() {
-        if (textAreaContainer.getScene() != null) {
-            textAreaContainer.getScene().getStylesheets().add(STYLE);
-        } else {
-            textAreaContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
-                if (newScene != null) {
-                    newScene.getStylesheets().add(STYLE);
-                }
-            });
-        }
-
         this.keyEventHandler = event -> {
             if (event.getCode() == KeyCode.DELETE) {
                 removeReplicas();

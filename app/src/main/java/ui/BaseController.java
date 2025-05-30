@@ -53,9 +53,9 @@ public class BaseController {
     private PaneController DialogController;
     private final ProcessingQueue processingQueue = new ProcessingQueue();
 
-    private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();;
-    private final EditPane editPane = new EditPane(this, processingQueue, speakers);
+    private final List<Speaker> speakers = DBManager.getSpeakerDao().getAllSpeakers();
     private final MainPane mainPane = new MainPane();
+    private final EditPane editPane = new EditPane(this, processingQueue, speakers);
     private final LoadPane loadPane = new LoadPane(processingQueue);
     private final SavesPane savesPane = new SavesPane(editPane.getController(), processingQueue, this);
     private final DialogNoEdit dialogNoEdit = new DialogNoEdit(this);
