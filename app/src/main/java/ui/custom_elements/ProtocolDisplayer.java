@@ -39,6 +39,21 @@ public class ProtocolDisplayer extends BaseDisplayer {
             textAreaContainer.getChildren().add(formReplicaView(new Replica(task.getDescription(),
                     speakers.get(speakerIndex), 0)));
         }
+        if (textAreaContainer.getChildren().isEmpty()) {
+            lockSave();
+        }
+    }
+
+    @Override
+    protected void unlockSave() {
+        save.setDisable(false);
+        export.setDisable(false);
+    }
+
+    @Override
+    protected void lockSave() {
+        save.setDisable(true);
+        export.setDisable(true);
     }
 
     @Override

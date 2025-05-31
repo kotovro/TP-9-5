@@ -36,6 +36,19 @@ public class RawTranscriptDisplayer extends BaseDisplayer {
         for (int i = 0; i < rawTranscript.getPhraseCount(); i++) {
             textAreaContainer.getChildren().add(formReplicaView(rawTranscript, comboBoxCreator, i));
         }
+        if (textAreaContainer.getChildren().isEmpty()) {
+            lockSave();
+        }
+    }
+
+    @Override
+    protected void unlockSave() {
+        saveAs.setDisable(false);
+    }
+
+    @Override
+    protected void lockSave() {
+        saveAs.setDisable(true);
     }
 
     @Override

@@ -150,6 +150,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         storyPoint.apply();
         editStory.addLast(storyPoint);
         updateStoryButtonsState();
+        unlockSave();
     }
 
     public int getIndex(BasePane basePane) {
@@ -248,6 +249,8 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         undo.setOnAction(e -> {
             if (editStory.canUndo()) editStory.undoLast();
             updateStoryButtonsState();
+            if (textAreaContainer.getChildren().isEmpty()) lockSave();
+            if (!textAreaContainer.getChildren().isEmpty()) unlockSave();
             Platform.runLater(() -> {
                 editPane.setVisible(true);
             });
@@ -256,6 +259,8 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         redo.setOnAction(e -> {
             if (editStory.canRedo()) editStory.redoLast();
             updateStoryButtonsState();
+            if (textAreaContainer.getChildren().isEmpty()) lockSave();
+            if (!textAreaContainer.getChildren().isEmpty()) unlockSave();
             Platform.runLater(() -> {
                 editPane.setVisible(true);
             });
@@ -289,6 +294,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         editStory.addLast(storyPoint);
         updateStoryButtonsState();
         updateDeleteButtonVisibility();
+        lockSave();
     }
 
     private List<Integer> getToRemove() {
@@ -305,5 +311,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     protected abstract void initTextArea();
+    protected abstract void unlockSave();
+    protected abstract void lockSave();
     protected abstract void initButtonsActions(Button save, Button saveAs, Button export);
 }

@@ -27,6 +27,21 @@ public class TranscriptDisplayer extends BaseDisplayer {
         for (Replica replica : transcript.getReplicas()) {
             textAreaContainer.getChildren().add(formReplicaView(replica));
         }
+        if (textAreaContainer.getChildren().isEmpty()) lockSave();
+    }
+
+    @Override
+    protected void unlockSave() {
+        save.setDisable(false);
+        saveAs.setDisable(false);
+        export.setDisable(false);
+    }
+
+    @Override
+    protected void lockSave() {
+        save.setDisable(true);
+        saveAs.setDisable(true);
+        export.setDisable(true);
     }
 
     @Override
