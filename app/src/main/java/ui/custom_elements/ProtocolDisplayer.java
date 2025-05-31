@@ -7,11 +7,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import logic.general.*;
 import logic.persistence.DBManager;
+import logic.utils.EntitiesExporter;
 import ui.BaseController;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +42,23 @@ public class ProtocolDisplayer extends BaseDisplayer {
     }
 
     @Override
-    protected void initButtonsActions(Button save, Button saveAs) {
+    protected void initButtonsActions(Button save, Button saveAs, Button export) {
         save.setOnAction(e -> {
             save();
         });
-
         saveAs.setDisable(true);
+        export.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+            fileChooser.setInitialFileName("protocol.txt");
+            File file = fileChooser.showSaveDialog(export.getScene().getWindow());
+
+            List<Node> nodes = textAreaContainer.getChildren();
+            Protocol newProtocol = new Protocol(meetingMaterials.getTranscript().getId(), ((BasePane)nodes.getFirst()).textarea.getText());
+            EntitiesExporter.exportProtocolToTextFile(meetingMaterials.getTranscript(), newProtocol, file);
+        });
     }
 
     protected BasePane formReplicaView(Replica replica) {

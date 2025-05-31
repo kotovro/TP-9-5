@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -18,6 +19,7 @@ import logic.text_edit.EditStory;
 import logic.text_edit.action.AddReplica;
 import logic.text_edit.action.RemoveReplicas;
 import logic.text_edit.action.StoryPoint;
+import logic.utils.EntitiesExporter;
 import logic.utils.TimeFormatter;
 import ui.BaseController;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
@@ -28,7 +30,7 @@ import java.util.List;
 public abstract class BaseDisplayer implements EditableDisplayer {
     private static final Font manropeFont1 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
     private static final Font manropeFont2 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
-    private final ImageView arrow = new ImageView(BaseDisplayer.class.getResource("/images/SquareAltArrowDown2.png").toExternalForm());
+    private final Image arrow = new Image(BaseDisplayer.class.getResource("/images/SquareAltArrowDown2.png").toExternalForm());
     protected final List<Speaker> speakers;
     protected VBox textAreaContainer = new VBox();
     protected final Insets basePaneInsets = new Insets(10, 50, 0, 50);
@@ -37,10 +39,19 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     private EventHandler<KeyEvent> keyEventHandler;
 
     protected Button delete;
+
     protected Button file;
     protected Pane filePane;
     protected Button save;
     protected Button saveAs;
+    protected Button export;
+
+    protected Button edit;
+    protected Pane editPane;
+    protected Button undo;
+    protected Button redo;
+    protected Button addReplica;
+
     protected final BaseController baseController;
 
     public BaseDisplayer(String name, List<Speaker> speakers, BaseController baseController) {
@@ -89,14 +100,25 @@ public abstract class BaseDisplayer implements EditableDisplayer {
                 removeReplicas();
             } else if (event.getCode() == KeyCode.N && event.isControlDown()) {
                 addNewReplica(0);
+            } else if (event.getCode() == KeyCode.Z && event.isControlDown()) {
+                if (editStory.canUndo()) editStory.undoLast();
+                updateStoryButtonsState();
+            } else if (event.getCode() == KeyCode.Y && event.isControlDown()) {
+                if (editStory.canRedo()) editStory.redoLast();
+                updateStoryButtonsState();
             }
         };
 
         initButtonsOverlay();
     }
 
+    private void updateStoryButtonsState() {
+        redo.setDisable(!editStory.canRedo());
+        undo.setDisable(!editStory.canUndo());
+    }
+
     public void setupOverlay(Pane fileOverlayPane, Pane deleteOverlayPane) {
-        fileOverlayPane.getChildren().setAll(file, filePane);
+        fileOverlayPane.getChildren().setAll(file, filePane, edit, editPane);
         deleteOverlayPane.getChildren().setAll(delete);
         updateDeleteButtonVisibility();
     }
@@ -127,6 +149,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         StoryPoint storyPoint = new AddReplica(textAreaContainer, formReplicaView(replica), index);
         storyPoint.apply();
         editStory.addLast(storyPoint);
+        updateStoryButtonsState();
     }
 
     public int getIndex(BasePane basePane) {
@@ -151,10 +174,11 @@ public abstract class BaseDisplayer implements EditableDisplayer {
             removeReplicas();
         });
 
-        arrow.setFitHeight(18);
-        arrow.setFitWidth(18);
+        ImageView arrowView = new ImageView(arrow);
+        arrowView.setFitHeight(18);
+        arrowView.setFitWidth(18);
 
-        file = new Button("Файл", arrow);
+        file = new Button("Файл", arrowView);
         file.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 8; -fx-text-fill: white;" +
                 " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
         file.setFont(manropeFont2);
@@ -168,43 +192,94 @@ public abstract class BaseDisplayer implements EditableDisplayer {
 
         filePane = new Pane();
         filePane.setLayoutY(40);
-        filePane.setPrefSize(200, 100);
+        filePane.setPrefSize(150, 130);
         filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
         filePane.setVisible(false);
 
-        save = new Button("Сохранить");
-        saveAs = new Button("Сохранить как");
+        save = makeButton("Сохранить", 15, 10);
+        saveAs = makeButton("Сохранить как", 15, 50);
+        export = makeButton("Экспорт", 15, 90);
 
-        save.setLayoutX(15);
-        save.setLayoutY(15);
-        saveAs.setLayoutX(15);
-        saveAs.setLayoutY(55);
-
-        saveAs.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
-                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
-        saveAs.setFont(manropeFont2);
-
-        save.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
-                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
-        save.setFont(manropeFont2);
-
-        filePane.getChildren().addAll(save, saveAs);
+        filePane.getChildren().addAll(save, saveAs, export);
+        initButtonsActions(save, saveAs, export);
 
         if (filePane.getScene() != null) {
-            addFilePaneAutoClose();
+            addPanesAutoClose();
         } else {
             filePane.sceneProperty().addListener((obs, oldScene, newScene) -> {
                 if (newScene != null) {
-                    addFilePaneAutoClose();
+                    addPanesAutoClose();
                 }
             });
         }
-        initButtonsActions(save, saveAs);
+
+        editPane = new Pane();
+        editPane.setLayoutX(160);
+        editPane.setLayoutY(40);
+        editPane.setPrefSize(180, 130);
+        editPane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
+        editPane.setVisible(false);
+
+        arrowView = new ImageView(arrow);
+        arrowView.setFitHeight(18);
+        arrowView.setFitWidth(18);
+
+        edit = new Button("Редактирование", arrowView);
+        edit.setStyle("-fx-background-color: #2a55d5; -fx-background-radius: 8; -fx-text-fill: white;" +
+                " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
+        edit.setFont(manropeFont2);
+        edit.setLayoutX(160);
+        edit.setContentDisplay(ContentDisplay.RIGHT);
+        edit.setOnAction(e -> {
+            boolean isEditPaneVisible = editPane.isVisible();
+            Platform.runLater(() -> {
+                editPane.setVisible(!isEditPaneVisible);
+            });
+        });
+
+        addReplica = makeButton("Добавить реплику", 15, 90);
+        addReplica.setOnAction(e -> {
+            addNewReplica(0);
+            Platform.runLater(() -> {
+                editPane.setVisible(true);
+            });
+        });
+        undo = makeButton("Отменить", 15, 10);
+        undo.setOnAction(e -> {
+            if (editStory.canUndo()) editStory.undoLast();
+            updateStoryButtonsState();
+            Platform.runLater(() -> {
+                editPane.setVisible(true);
+            });
+        });
+        redo = makeButton("Повторить", 15, 50);
+        redo.setOnAction(e -> {
+            if (editStory.canRedo()) editStory.redoLast();
+            updateStoryButtonsState();
+            Platform.runLater(() -> {
+                editPane.setVisible(true);
+            });
+        });
+        undo.setDisable(true);
+        redo.setDisable(true);
+        editPane.getChildren().addAll(addReplica, undo, redo);
     }
 
-    private void addFilePaneAutoClose() {
+    private Button makeButton(String text, int x, int y) {
+        Button button = new Button(text);
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+
+        button.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+        button.setFont(manropeFont2);
+        return button;
+    }
+
+    private void addPanesAutoClose() {
         filePane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             filePane.setVisible(false);
+            editPane.setVisible(false);
         });
     }
 
@@ -212,6 +287,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
         storyPoint.apply();
         editStory.addLast(storyPoint);
+        updateStoryButtonsState();
         updateDeleteButtonVisibility();
     }
 
@@ -229,5 +305,5 @@ public abstract class BaseDisplayer implements EditableDisplayer {
     }
 
     protected abstract void initTextArea();
-    protected abstract void initButtonsActions(Button save, Button saveAs);
+    protected abstract void initButtonsActions(Button save, Button saveAs, Button export);
 }

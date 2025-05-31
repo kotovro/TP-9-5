@@ -31,7 +31,7 @@ public class DBManager {
     private static final MeetingMaterialsDao MEETING_MATERIALS_DAO = new MeetingMaterialsDao(connection, TRANSCRIPT_DAO, TASK_DAO, PROTOCOL_DAO);
 
     public static void copyDB() {
-        Path sourceFile = Paths.get(DEFAULT_DB_PATH);
+        Path sourceFile = Paths.get(PlatformDependent.getPrefix() + DEFAULT_DB_PATH);
         Path destinationFile = Path.of(PlatformDependent.getPathToSaves()).resolve(DB_NAME);
 
         try {

@@ -102,6 +102,10 @@ public class BasePane extends Pane {
         return checkBox.isSelected();
     }
 
+    public void setSelected(boolean selected) {
+        checkBox.setSelected(selected);
+    }
+
     public Replica getReplica() {
         Speaker selected = combobox.getSelectionModel().getSelectedItem();
         return new Replica(textarea.getText(), selected == null ? combobox.getItems().get(1) : selected, 0);

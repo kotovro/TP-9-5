@@ -30,7 +30,7 @@ public class PlatformDependent {
 
         if (new File(DEVELOP_RESOURCES_PATH).exists()) {
             PLATFORM_PREFIX = "";
-            SAVE_DIR = Paths.get(System.getenv("APPDATA"), APP_NAME).toAbsolutePath().toString() + "/";
+            SAVE_DIR = "dynamic-resources/saves/";
         } else if (CURRENT_PLATFORM == Platform.WINDOWS) {
             PLATFORM_PREFIX = getWindowsPrefix();
             SAVE_DIR = Paths.get(System.getenv("APPDATA"), APP_NAME).toAbsolutePath().toString() + "/";
