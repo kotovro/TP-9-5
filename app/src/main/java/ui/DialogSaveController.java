@@ -3,11 +3,15 @@ package ui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import ui.custom_elements.SaveAsProvider;
 
 public class DialogSaveController {
     @FXML
     private TextField fileName;
+
+    @FXML
+    private Pane errorPane;
     @FXML
     private Button saveButton;
 

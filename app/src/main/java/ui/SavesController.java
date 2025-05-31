@@ -55,7 +55,7 @@ public class SavesController implements PaneController{
         for (MeetingMaterials materials : meetingMaterials) {
             StAndPrBuilder stAndPrBuilder = new StAndPrBuilder(materials, editWindowController, processingQueue,
                     baseController, this);
-            VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 15));
+            VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 0));
             content.getChildren().add(stAndPrBuilder);
         }
     }
