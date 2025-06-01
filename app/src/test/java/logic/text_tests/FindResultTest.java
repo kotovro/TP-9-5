@@ -1,6 +1,5 @@
 package logic.text_tests;
 
-import javafx.util.Pair;
 import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
@@ -8,10 +7,9 @@ import logic.text_edit.FindResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static ui.EditController.getImage;
 
 class FindResultTest {

@@ -16,8 +16,6 @@ public class AudioExtractorStreamer implements Processor {
     private long totalFrames = -1;
     private long processedFrames = 0;
     private ProcessListener processListener = new DeafProcessListener();
-    private AudioValidator audioValidator;
-
 
     public AudioExtractorStreamer() {
         this.format = new AudioFormat(16000, 16, 1, true, false);
