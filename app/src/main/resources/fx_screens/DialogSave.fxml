@@ -3,7 +3,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="264.0" prefWidth="421.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -13,8 +16,22 @@
                 <Font name="Manrope SemiBold" size="20.0" />
             </font>
         </Label>
-      <TextField fx:id="fileName" layoutX="39.0" layoutY="143.0" prefHeight="37.0" prefWidth="342.0" promptText="название файла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
-      <Button fx:id="saveButton" layoutX="163.0" layoutY="211.0" mnemonicParsing="false" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
+      <TextField fx:id="fileName" layoutX="39.0" layoutY="121.0" prefHeight="37.0" prefWidth="342.0" promptText="название файла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
+        <Pane fx:id="errorPane" layoutX="35.0" layoutY="169.0" opacity="0.64" prefHeight="30.0" prefWidth="351.0" style="-fx-background-color: #D37065; -fx-background-radius: 10;" visible="false">
+            <children>
+                <ImageView fitHeight="26.0" fitWidth="24.0" layoutX="2.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/DangerCircle2.png" />
+                    </image>
+                </ImageView>
+                <Label layoutX="28.0" layoutY="4.0" text="Ошибка: файл с таким именем уже существует" textFill="WHITE">
+                    <font>
+                        <Font name="Manrope Regular" size="14.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
+        <Button fx:id="saveButton" layoutX="163.0" layoutY="211.0" mnemonicParsing="false" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="Сохранить" textFill="WHITE">
          <font>
             <Font name="Manrope SemiBold" size="14.0" />
          </font>

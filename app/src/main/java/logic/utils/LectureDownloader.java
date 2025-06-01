@@ -1,5 +1,6 @@
 package logic.utils;
 
+import logic.PlatformDependent;
 import logic.video_processing.audio_extractor.DeafProcessListener;
 import logic.video_processing.audio_extractor.ProcessListener;
 import logic.video_processing.queue.Processor;
@@ -20,6 +21,10 @@ public class LectureDownloader implements Processor {
 
     private static final Pattern VIDEO_URL_PATTERN = Pattern.compile("^https?://bbb\\.edu\\.vsu\\.ru/presentation/.+/video/.*\\.(webm|mp4)$");
 
+    public static boolean isURLValid(String lectureUrl) {
+        return isValidVideoUrl(lectureUrl) && isDownloadable(lectureUrl);
+    }
+
     public File downloadLectureVideo(String lectureURL) throws IOException {
         if (!isValidVideoUrl(lectureURL)) {
             throw new IllegalArgumentException("Invalid lecture video URL format: " + lectureURL);
@@ -27,13 +32,13 @@ public class LectureDownloader implements Processor {
         if (!isDownloadable(lectureURL)) {
             throw new IOException("Lecture video resource is not downloadable from URL: " + lectureURL);
         }
-        File outputFile = new File("dynamic-resources/lectures/lecture.webm");
+        File outputFile = new File(PlatformDependent.getPathToSaves() + "lecture.webm");
         try {
             downloadFile(lectureURL, outputFile);
             return outputFile;
         } catch (IOException e) {
             String mp4Url = lectureURL.replace("webm", "mp4");
-            outputFile = new File("dynamic-resources/lectures/lecture.mp4");
+            outputFile = new File(PlatformDependent.getPathToSaves() + "lecture.mp4");
             downloadFile(mp4Url, outputFile);
             return outputFile;
         }
@@ -50,7 +55,7 @@ public class LectureDownloader implements Processor {
 
         try (BufferedInputStream in = new BufferedInputStream(url.openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
-            byte dataBuffer[] = new byte[8192];
+            byte[] dataBuffer = new byte[8192];
             int bytesRead;
 
             while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
@@ -62,7 +67,7 @@ public class LectureDownloader implements Processor {
         }
     }
 
-    private boolean isDownloadable(String lectureURL) {
+    private static boolean isDownloadable(String lectureURL) {
         if (lectureURL == null || lectureURL.trim().isEmpty()) {
             return false;
         }
@@ -73,13 +78,12 @@ public class LectureDownloader implements Processor {
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
             return responseCode >= 200 && responseCode < 300;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return false;
         }
     }
 
-    private boolean isValidVideoUrl(String lectureURL) {
+    private static boolean isValidVideoUrl(String lectureURL) {
         if (lectureURL == null) {
             return false;
         }

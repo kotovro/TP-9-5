@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import logic.Platform;
 import logic.PlatformDependent;
 import logic.utils.LectureDownloader;
 import logic.video_processing.audio_extractor.VideoValidator;
@@ -45,15 +45,17 @@ public class LoadController implements PaneController{
     @FXML
     public void initialize() {
         initDropPaneEvents();
+        moodleField.textProperty().addListener((observable, oldValue, newValue) -> {
+            Platform.runLater(() -> {
+                moodleLoadButton.setDisable(!LectureDownloader.isURLValid(moodleField.getText()));
+            });
+        });
         moodleLoadButton.setOnAction(event -> {
-            if (!moodleField.getText().isEmpty()) {
-                try {
-                    processingQueue.addLecture(moodleField.getText());
-                } catch (Exception e) {
-                    System.out.println("Can't load using this link");
-                }
+            if (LectureDownloader.isURLValid(moodleField.getText())) {
+                processingQueue.addLecture(moodleField.getText());
             }
         });
+        moodleLoadButton.setDisable(true);
     }
 
     @FXML

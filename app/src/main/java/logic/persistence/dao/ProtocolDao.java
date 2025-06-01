@@ -39,7 +39,7 @@ public class ProtocolDao {
     
     public void updateProtocol(Protocol protocol) {
         try {
-            String sql = "UPDATE protocol SET conclusion = ?  WHERE protocol_id = ?";
+            String sql = "UPDATE protocol SET conclusion = ?  WHERE id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, protocol.getText());
                 stmt.setInt(2, protocol.getTranscriptId());
