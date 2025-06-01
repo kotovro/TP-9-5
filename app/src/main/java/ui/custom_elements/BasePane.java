@@ -37,19 +37,9 @@ public class BasePane extends Pane {
         });
 
         this.textarea.setPrefWidth(800);
-        this.textarea.setPrefHeight(59);
         this.textarea.setLayoutX(18);
         this.textarea.setLayoutY(18);
 
-        this.textarea.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.textarea.setPrefHeight(computeTextHeight(this.textarea));
-        });
-
-        Platform.runLater(() -> {
-            resizeTextAreaToFitContent(this.textarea);
-        });
-
-        //textarea.setStyle("-fx-background-radius: 10; -fx-border-radius: 10;");
         p.setStyle("-fx-background-color: #6F9AE5; -fx-background-radius: 10;");
         p.getChildren().add(textarea);
         p.setLayoutX(25);
@@ -142,21 +132,5 @@ public class BasePane extends Pane {
         addPane.getChildren().addAll(up, down);
 
         return addPane;
-    }
-
-    private double computeTextHeight(TextArea textArea) {
-        Text text = new Text(textArea.getText());
-        text.setFont(textArea.getFont());
-        text.setWrappingWidth(textArea.getWidth() - 10);
-        return text.getLayoutBounds().getHeight() + 40;
-    }
-
-    private void resizeTextAreaToFitContent(TextArea textArea) {
-        Text text = new Text(textArea.getText());
-        text.setFont(textArea.getFont());
-        text.setWrappingWidth(textArea.getWidth() - 10);
-        double height = text.getLayoutBounds().getHeight() + 20;
-
-        textArea.setPrefHeight(height);
     }
 }

@@ -215,7 +215,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         }
 
         editPane = new Pane();
-        editPane.setLayoutX(160);
+        editPane.setLayoutX(100);
         editPane.setLayoutY(40);
         editPane.setPrefSize(180, 130);
         editPane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
@@ -229,7 +229,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         edit.setStyle("-fx-background-color: #2a55d5; -fx-background-radius: 8; -fx-text-fill: white;" +
                 " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
         edit.setFont(manropeFont2);
-        edit.setLayoutX(160);
+        edit.setLayoutX(100);
         edit.setContentDisplay(ContentDisplay.RIGHT);
         edit.setOnAction(e -> {
             boolean isEditPaneVisible = editPane.isVisible();

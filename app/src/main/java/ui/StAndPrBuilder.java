@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
 import logic.general.MeetingMaterials;
+import logic.persistence.DBManager;
 import logic.video_processing.queue.ProcessingQueue;
 import logic.video_processing.queue.listeners.SummarizeListener;
 
@@ -111,7 +112,8 @@ public class StAndPrBuilder extends HBox {
         setMargin(close,  new Insets(39, 0, 5, 4));
 
         close.setOnMouseClicked(event -> {
-
+            DBManager.getTranscriptDao().deleteTranscript(meetingMaterials.getTranscript());
+            savesController.updateContent();
         });
 
         this.getChildren().addAll(transcriptPane, protocolButton, close);
