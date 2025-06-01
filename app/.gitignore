@@ -12,8 +12,10 @@ out/
 
 
 dynamic-resources/ai-models/speech-recognition-model/*
+
 dynamic-resources/ai-models/LLM/*
 dynamic-resources/lectures/*
+
 db_examples/*.db
 
 
