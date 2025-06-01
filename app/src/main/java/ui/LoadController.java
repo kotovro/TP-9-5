@@ -54,6 +54,7 @@ public class LoadController implements PaneController{
                 }
             }
         });
+        moodleLoadButton.setDisable(true);
     }
 
     @FXML
