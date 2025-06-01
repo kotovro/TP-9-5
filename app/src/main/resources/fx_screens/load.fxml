@@ -82,50 +82,51 @@
             <Font name="Manrope Medium" size="18.0" />
          </font>
       </Label>
-      <ImageView fitHeight="30.0" fitWidth="24.0" layoutX="1002.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/CloseCircle.png" />
-         </image>
-      </ImageView>
+<!--      <ImageView fitHeight="30.0" fitWidth="24.0" layoutX="1002.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">-->
+<!--         <image>-->
+<!--            <Image url="@../images/CloseCircle.png" />-->
+<!--         </image>-->
+<!--      </ImageView>-->
       <Button fx:id="moodleLoadButton" layoutX="517.0" layoutY="453.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #2A55D5; -fx-background-radius: 16;" text="загрузить" textFill="WHITE">
          <font>
             <Font name="Manrope Regular" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="149.0" layoutY="546.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="198.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 13;" text="Начать запись" textFill="WHITE">
-         <font>
-            <Font name="Manrope SemiBold" size="18.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="27.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/ClapperboardOpen.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button layoutX="458.0" layoutY="535.0" mnemonicParsing="false" style="-fx-background-color: null;">
-         <graphic>
-            <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/StopCircle.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
-      <Button layoutX="378.0" layoutY="535.0" mnemonicParsing="false" style="-fx-background-color: null;">
-         <graphic>
-            <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/PauseCircle.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Label layoutX="166.0" layoutY="513.0" text="Записать экран">
-         <font>
-            <Font name="Manrope Medium" size="18.0" />
-         </font>
-      </Label>
+<!--      <Button layoutX="149.0" layoutY="546.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="198.0" style="-fx-background-color: #0A2A85; -fx-background-radius: 13;" text="Начать запись" textFill="WHITE">-->
+<!--         <font>-->
+<!--            <Font name="Manrope SemiBold" size="18.0" />-->
+<!--         </font>-->
+<!--         <graphic>-->
+<!--            <ImageView fitHeight="27.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@../images/ClapperboardOpen.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+<!--         </graphic>-->
+<!--      </Button>-->
+<!--      <Button layoutX="458.0" layoutY="535.0" mnemonicParsing="false" style="-fx-background-color: null;">-->
+<!--         <graphic>-->
+<!--            <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@../images/StopCircle.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+<!--         </graphic></Button>-->
+<!--      <Button layoutX="378.0" layoutY="535.0" mnemonicParsing="false" style="-fx-background-color: null;">-->
+<!--         <graphic>-->
+<!--            <ImageView fitHeight="54.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">-->
+<!--               <image>-->
+<!--                  <Image url="@../images/PauseCircle.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+<!--         </graphic>-->
+<!--      </Button>-->
+<!--      <Label layoutX="166.0" layoutY="513.0" text="Записать экран">-->
+<!--         <font>-->
+<!--            <Font name="Manrope Medium" size="18.0" />-->
+<!--         </font>-->
+<!--      </Label>-->
+
       <TextField fx:id="moodleField" layoutX="149.0" layoutY="399.0" prefHeight="40.0" prefWidth="840.0" promptText="ссылка из мудла" style="-fx-border-color: #2A55D5; -fx-border-radius: 10; -fx-border-width: 2; -fx-background-color: #FFFFFF; -fx-background-radius: 10;" />
    </children>
 </AnchorPane>

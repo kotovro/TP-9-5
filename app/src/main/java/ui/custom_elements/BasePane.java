@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -36,19 +37,9 @@ public class BasePane extends Pane {
         });
 
         this.textarea.setPrefWidth(800);
-        this.textarea.setPrefHeight(59);
         this.textarea.setLayoutX(18);
         this.textarea.setLayoutY(18);
 
-        this.textarea.textProperty().addListener((observable, oldValue, newValue) -> {
-            this.textarea.setPrefHeight(computeTextHeight(this.textarea));
-        });
-
-        Platform.runLater(() -> {
-            resizeTextAreaToFitContent(this.textarea);
-        });
-
-        //textarea.setStyle("-fx-background-radius: 10; -fx-border-radius: 10;");
         p.setStyle("-fx-background-color: #6F9AE5; -fx-background-radius: 10;");
         p.getChildren().add(textarea);
         p.setLayoutX(25);
@@ -69,8 +60,26 @@ public class BasePane extends Pane {
 
         addPane = getAddPane(baseDisplayer);
         addButton.setOnMouseClicked(e -> {
-            addPane.setVisible(!addPane.isVisible());
+            boolean isAddPaneVisible = addPane.isVisible();
+            Platform.runLater(() -> {
+                addPane.setVisible(!isAddPaneVisible);
+            });
         });
+
+        // Autoclose if click anywhere
+        if (addPane.getScene() != null) {
+            addPane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                addPane.setVisible(false);
+            });
+        } else {
+            addPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    addPane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+                        addPane.setVisible(false);
+                    });
+                }
+            });
+        }
 
         checkBox.setLayoutX(0);
         checkBox.setLayoutY(110);
@@ -81,6 +90,10 @@ public class BasePane extends Pane {
 
     public boolean isSelected() {
         return checkBox.isSelected();
+    }
+
+    public void setSelected(boolean selected) {
+        checkBox.setSelected(selected);
     }
 
     public Replica getReplica() {
@@ -117,22 +130,7 @@ public class BasePane extends Pane {
         });
 
         addPane.getChildren().addAll(up, down);
+
         return addPane;
-    }
-
-    private double computeTextHeight(TextArea textArea) {
-        Text text = new Text(textArea.getText());
-        text.setFont(textArea.getFont());
-        text.setWrappingWidth(textArea.getWidth() - 10);
-        return text.getLayoutBounds().getHeight() + 40;
-    }
-
-    private void resizeTextAreaToFitContent(TextArea textArea) {
-        Text text = new Text(textArea.getText());
-        text.setFont(textArea.getFont());
-        text.setWrappingWidth(textArea.getWidth() - 10);
-        double height = text.getLayoutBounds().getHeight() + 20;
-
-        textArea.setPrefHeight(height);
     }
 }

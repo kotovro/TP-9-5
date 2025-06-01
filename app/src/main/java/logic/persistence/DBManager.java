@@ -3,11 +3,17 @@ package logic.persistence;
 import logic.PlatformDependent;
 import logic.persistence.dao.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBManager {
     private static final String DEFAULT_DB_PATH = "dynamic-resources/saves/saves.db";
+    private static final String DB_NAME = "saves.db";
 
     private static Connection connection;
     static {
@@ -24,10 +30,22 @@ public class DBManager {
     private static final TagDao TAG_DAO = new TagDao(connection);
     private static final MeetingMaterialsDao MEETING_MATERIALS_DAO = new MeetingMaterialsDao(connection, TRANSCRIPT_DAO, TASK_DAO, PROTOCOL_DAO);
 
+    public static void copyDB() {
+        Path sourceFile = Paths.get(PlatformDependent.getPrefix() + DEFAULT_DB_PATH);
+        Path destinationFile = Path.of(PlatformDependent.getPathToSaves()).resolve(DB_NAME);
 
+        try {
+            if (!Files.exists(destinationFile)) {
+                Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            System.err.println("Ошибка при копировании файла: " + e.getMessage());
+        }
+    }
 
     public static void initConnection() throws Exception {
-        String url = "jdbc:sqlite:" + PlatformDependent.getPrefix() + DEFAULT_DB_PATH;
+        copyDB();
+        String url = "jdbc:sqlite:" + PlatformDependent.getPathToSaves() + DB_NAME;
         connection = DriverManager.getConnection(url);
         connection.setAutoCommit(true);
     }

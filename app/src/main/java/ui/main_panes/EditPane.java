@@ -23,15 +23,13 @@ public class EditPane extends ContentPane {
     public EditPane(BaseController bc, ProcessingQueue processingQueue, List<Speaker> speakers) {
         try {
             this.bc = bc;
+            paneController = new EditWindowController(bc, speakers);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fx_screens/EditView.fxml"));
-            EditWindowController controller = new EditWindowController(bc, speakers);
-            loader.setController(controller);
-            processingQueue.setTranscriptListener(controller);
-            processingQueue.setSummarizeListener(controller);
+            loader.setController(paneController);
+            processingQueue.setTranscriptListener(paneController);
+            processingQueue.setSummarizeListener(paneController);
             Node node = loader.load();
             this.getChildren().setAll(node);
-
-            paneController = loader.getController();
         } catch (Exception e) {
             e.printStackTrace();
         }
