@@ -150,6 +150,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
         RawTranscript transcript = new RawTranscript(speakers.size(), replicas);
         speakers = new ArrayList<>();
         replicas = new ArrayList<>();
+        resetSession();
         return transcript;
     }
 
