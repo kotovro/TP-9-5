@@ -5,9 +5,7 @@ import logic.video_processing.queue.Processor;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 
-import javax.sound.sampled.*;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import javax.sound.sampled.AudioFormat;
 import java.nio.ShortBuffer;
 
 public class AudioExtractorStreamer implements Processor {
@@ -75,7 +73,6 @@ public class AudioExtractorStreamer implements Processor {
             if (bufferPos > 0) {
                 audioConsumer.onAudioChunkReceived(chunkBuffer, bufferPos);
             }
-
             grabber.stop();
         } catch (Exception e) {
             System.err.println("Ошибка при извлечении аудио: " + e.getMessage());
