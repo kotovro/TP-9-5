@@ -100,7 +100,7 @@ jlink {
                     '--win-menu',
                     '--win-shortcut',
                     '--win-dir-chooser',
-                    '--type', 'exe'
+                    '--type', 'msi'
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
             imageOptions += [
