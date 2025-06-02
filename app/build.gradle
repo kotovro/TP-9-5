@@ -11,7 +11,7 @@ allprojects {
     }
 }
 
-version = '1.0.1'
+version = '1.1.0'
 
 repositories {
     mavenCentral()
@@ -94,14 +94,13 @@ jlink {
     jpackage() {
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
             imageOptions += [
-                    '--icon', 'src/main/resources/icon.ico',
-                    '--win-console'
+                    '--icon', 'src/main/resources/icon.ico'
             ]
             installerOptions += [
-                    '--win-dir-chooser',
                     '--win-menu',
                     '--win-shortcut',
-                    '--type', 'msi'
+                    '--win-dir-chooser',
+                    '--type', 'exe'
             ]
         } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
             imageOptions += [
@@ -124,12 +123,12 @@ jlink {
                 '--vendor', 'Vsu Production',
                 '--app-content', "src/main/resources",
                 '--app-content', "dynamic-resources"
-
         ]
         installerOptions += [
                 '--about-url', 'https://vk.com/vstrecheslav?from=groups',
                 '--vendor', 'Vsu Production',
-                '--app-version', version,
+                '--verbose',
+                '--app-version', version
         ]
     }
 }

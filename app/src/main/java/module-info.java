@@ -18,11 +18,11 @@ module vstrecheslav {
     requires org.bytedeco.ffmpeg.macosx.x86_64;
     requires llama;
 
-    opens ui to javafx.fxml, javafx.graphics, javafx.base;
-    opens ui.custom_elements to javafx.fxml, javafx.graphics, javafx.base;
-    opens ui.custom_elements.combo_boxes to javafx.fxml, javafx.graphics, javafx.base;
-    opens ui.main_panes to javafx.fxml, javafx.graphics, javafx.base;
-    opens styles to javafx.fxml, javafx.graphics, javafx.base;
+    opens ui to javafx.fxml;
+    opens ui.custom_elements to javafx.fxml;
+    opens ui.custom_elements.combo_boxes to javafx.fxml;
+    opens ui.main_panes to javafx.fxml;
+    opens styles to javafx.fxml;
 
     opens logic.persistence to java.sql, org.xerial.sqlitejdbc;
     opens logic.persistence.dao to java.sql, org.xerial.sqlitejdbc;
