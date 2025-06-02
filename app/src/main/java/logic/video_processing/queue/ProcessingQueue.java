@@ -145,7 +145,13 @@ public class ProcessingQueue implements Processor {
         if (state == QueueState.TRANSCRIPT_ACTIVE) {
             String path = makeTranscriptQueue.poll();
             queueChangeListener.onQueueChange(getTaskPlan());
-            audioExtractorStreamer.processAudio(path, voskRecognizer);
+            try {
+                audioExtractorStreamer.processAudio(path, voskRecognizer);
+            } catch(RuntimeException e) {
+                setProcessStatus(ProcessStatus.TASK_FAILED);
+                if (!isTasksReady()) closeModels();
+                return;
+            }
             RawTranscript rawTranscript = voskRecognizer.getFinalResult();
             transcriptListener.onResultReady(rawTranscript);
         }
