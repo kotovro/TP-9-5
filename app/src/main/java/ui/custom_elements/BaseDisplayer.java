@@ -294,7 +294,7 @@ public abstract class BaseDisplayer implements EditableDisplayer {
         editStory.addLast(storyPoint);
         updateStoryButtonsState();
         updateDeleteButtonVisibility();
-        lockSave();
+        if (textAreaContainer.getChildren().isEmpty()) lockSave();
     }
 
     private List<Integer> getToRemove() {
