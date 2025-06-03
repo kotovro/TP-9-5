@@ -68,7 +68,12 @@ public class PlatformDependent {
     }
 
     private static String getLinuxPrefix() {
-        return "";
+        Path installedPath = Paths.get("/opt/vstrecheslav/lib");
+        if (Files.exists(installedPath)) {
+            return installedPath.toString() + "/";
+        }
+
+        return Paths.get("").toAbsolutePath().getParent().resolve("lib").toString() + "/";
     }
 
     public static String getPathToSaves() {
