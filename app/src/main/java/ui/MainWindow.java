@@ -26,13 +26,8 @@ public class MainWindow extends Application {
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
         setupTrayIcon(stage);
         stage.show();
-
-        stage.setOnCloseRequest(e -> {
-            e.consume();
-            stage.hide();
-        });
-        Platform.setImplicitExit(false);
     }
+
 
     private void setupTrayIcon(Stage stage) {
         if (!SystemTray.isSupported()) {
@@ -53,6 +48,7 @@ public class MainWindow extends Application {
             } else if (e.getSource() == exitItem) {
                 Platform.exit();
                 tray.remove(trayIcon);
+                System.exit(0);
             }
         };
 
@@ -76,6 +72,9 @@ public class MainWindow extends Application {
         } catch (AWTException e) {
             System.err.println("Не удалось добавить иконку в трей");
         }
+
+
+
     }
 
     public static void main(String[] args) {
