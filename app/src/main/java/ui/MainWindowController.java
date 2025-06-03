@@ -25,6 +25,8 @@ public class MainWindowController implements PaneController {
     @FXML
     private Rectangle scrollRectangle;
     @FXML
+    private Rectangle scrollRectangle1;
+    @FXML
     private Pane pane1;
     @FXML
     private Pane pane2;
@@ -32,6 +34,15 @@ public class MainWindowController implements PaneController {
     private Pane pane3;
     @FXML
     private Pane pane4;
+
+    @FXML
+    private Pane paneUpdate1;
+    @FXML
+    private Pane paneUpdate2;
+    @FXML
+    private Pane paneUpdate3;
+    @FXML
+    private Pane paneUpdate4;
 
     private Image image1;
     private Image image2;
@@ -41,7 +52,10 @@ public class MainWindowController implements PaneController {
     double[] widths = {51, 101, 161, 236};
     private Pane[] panes;
 
+    private Pane[] panesUpdate;
+
     private int cardIndex = 0;
+    private int cardIndexUpdate = 0;
 
     @FXML
     private void scroll() {
@@ -58,9 +72,27 @@ public class MainWindowController implements PaneController {
 
         cardIndex = (cardIndex + 1) % panes.length;
     }
+
+    @FXML
+    private void scrollUpdate() {
+        Timeline timeline = new Timeline();
+        KeyValue kv = new KeyValue(scrollRectangle1.widthProperty(), widths[cardIndexUpdate], Interpolator.EASE_BOTH);
+        KeyFrame kf = new KeyFrame(Duration.millis(300), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
+
+        for (Pane pane : panesUpdate) {
+            pane.setVisible(false);
+        }
+        panesUpdate[cardIndexUpdate].setVisible(true);
+
+        cardIndexUpdate = (cardIndexUpdate + 1) % panesUpdate.length;
+    }
+
     @FXML
     public void initialize() {
         panes = new Pane[]{pane1, pane2, pane3, pane4};
+        panesUpdate = new Pane[]{paneUpdate1, paneUpdate2, paneUpdate3, paneUpdate4};
         image1 = new Image(Objects.requireNonNull(getClass().getResource("/images/menuV.png")).toExternalForm());
         image2 = new Image(Objects.requireNonNull(getClass().getResource("/images/menuV2.png")).toExternalForm());
         animatedImageView.setImage(image1);

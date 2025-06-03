@@ -18,13 +18,15 @@ import java.util.List;
 
 public class DownloadScrollPane extends ScrollPane implements QueueChangeListener {
     private static final double MAX_HEIGHT_WITHOUT_SCROLL = 332;
-    private static final Image closeCircleImage = new Image(BaseController.class.getResource("/images/CloseCircle4.png").toExternalForm());
+//    private static final Image closeCircleImage = new Image(BaseController.class.getResource("/images/CloseCircle4.png").toExternalForm());
     private static final Image groupImage = new Image(BaseController.class.getResource("/images/Group9.png").toExternalForm());
     private static final Font manropeFont2 = Font.loadFont(DownloadScrollPane.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
     private static final Font manropeFont = Font.loadFont(DownloadScrollPane.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
     private final VBox contentContainer = new VBox();
+    private final BaseController baseController;
 
-    public DownloadScrollPane() {
+    public DownloadScrollPane(BaseController baseController) {
+        this.baseController = baseController;
         setPrefHeight(93);
         setFitToWidth(true);
 
@@ -101,7 +103,7 @@ public class DownloadScrollPane extends ScrollPane implements QueueChangeListene
 
         ProgressBar load = new ProgressBar();
         load.setPrefSize(200, 14);
-        load.setProgress(-1.0);
+        load.setProgress(0);
         load.setStyle("-fx-control-inner-background: #B8D0FF; -fx-accent: #131F5A; -fx-background-radius: 6;" +
                 "-fx-background-color: transparent; -fx-background-insets: 0; -fx-effect: null;");
         load.setLayoutY(30);
@@ -109,7 +111,7 @@ public class DownloadScrollPane extends ScrollPane implements QueueChangeListene
         getStyleClass().add("download-scroll-pane");
 
         Label status = new Label("В ожидании обработки");
-        status.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 12; -fx-text-fill: #131F5A;");
+        status.setStyle("-fx-font-family: \"Manrope Regular\"; -fx-font-size: 12; -fx-text-fill: #ffffff;");
         status.setFont(manropeFont2);
         status.setLayoutX(49);
         status.setLayoutY(50);
@@ -121,16 +123,20 @@ public class DownloadScrollPane extends ScrollPane implements QueueChangeListene
         im.setLayoutX(8);
         im.setLayoutY(15);
 
-        ImageView close = new ImageView();
-        close.setImage(closeCircleImage);
-        close.setFitHeight(27);
-        close.setFitWidth(27);
-        close.setLayoutX(265);
-        close.setLayoutY(25);
+//        ImageView close = new ImageView();
+//        close.setImage(closeCircleImage);
+//        close.setFitHeight(27);
+//        close.setFitWidth(27);
+//        close.setLayoutX(265);
+//        close.setLayoutY(25);
 
         VBox.setMargin(item, new javafx.geometry.Insets(7, 10, 7, 7));
-        item.getChildren().addAll(name, im, load, close, status);
+        item.getChildren().addAll(name, im, load, status);
         contentContainer.getChildren().add(item);
+
+        if (!baseController.isDownloadsOpen()) {
+            baseController.toggleDownloads();
+        }
     }
 
     public boolean isEmpty() {

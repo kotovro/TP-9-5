@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import logic.general.Replica;
 import logic.general.Speaker;
 import logic.general.Transcript;
 import logic.persistence.DBManager;
@@ -35,16 +36,30 @@ public class RawTranscriptDisplayer extends BaseDisplayer {
         for (int i = 0; i < rawTranscript.getPhraseCount(); i++) {
             textAreaContainer.getChildren().add(formReplicaView(rawTranscript, comboBoxCreator, i));
         }
+        if (textAreaContainer.getChildren().isEmpty()) {
+            lockSave();
+        }
     }
 
     @Override
-    protected void initButtonsActions(Button save, Button saveAs) {
+    protected void unlockSave() {
+        saveAs.setDisable(false);
+    }
+
+    @Override
+    protected void lockSave() {
+        saveAs.setDisable(true);
+    }
+
+    @Override
+    protected void initButtonsActions(Button save, Button saveAs, Button export) {
         save.setDisable(true);
         saveAs.setOnAction(e -> {
             baseController.loadSaveAsDialog(name -> {
                 saveAsToDB(name);
             });
         });
+        export.setDisable(true);
     }
 
     private BasePane formReplicaView(RawTranscript rawTranscript, ComboBoxCreator comboBoxCreator, int index) {
@@ -59,7 +74,9 @@ public class RawTranscriptDisplayer extends BaseDisplayer {
         Transcript transcript = new Transcript(name, new Date());
         for (Node node : textAreaContainer.getChildren()) {
             BasePane pane = (BasePane) node;
-            transcript.addReplica(pane.getReplica());
+            Replica replica = pane.getReplica();
+            if (replica.getSpeaker() == null) replica.setSpeaker(speakers.getFirst());
+            transcript.addReplica(replica);
         }
         DBManager.getTranscriptDao().addTranscript(transcript);
     }

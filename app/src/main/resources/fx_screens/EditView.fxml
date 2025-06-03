@@ -18,18 +18,27 @@
       </Pane>
       <Pane prefHeight="70.0" prefWidth="1138.0" style="-fx-background-color: rgba(58, 92, 185, 0.7);">
          <children>
-            <ScrollPane fx:id="tabPane" prefHeight="88.0" prefWidth="1138.0" />
+            <ScrollPane fx:id="tabPane" styleClass="tab-scroll-pane" prefHeight="88.0" prefWidth="1138.0" />
          </children>
       </Pane>
 
-      <Pane fx:id="overlayPane"
+      <Pane fx:id="overlayFilePane"
             prefHeight="0"
             prefWidth="0"
             maxWidth="0"
             maxHeight="0"
             style="-fx-background-color: transparent;"
-            AnchorPane.leftAnchor="0"
-            AnchorPane.topAnchor="0">
+            AnchorPane.leftAnchor="280"
+            AnchorPane.topAnchor="-47">
+      </Pane>
+      <Pane fx:id="overlayDeletePane"
+            prefHeight="0"
+            prefWidth="0"
+            maxWidth="0"
+            maxHeight="0"
+            style="-fx-background-color: transparent;"
+            AnchorPane.leftAnchor="850"
+            AnchorPane.topAnchor="95">
       </Pane>
    </children>
 </AnchorPane>

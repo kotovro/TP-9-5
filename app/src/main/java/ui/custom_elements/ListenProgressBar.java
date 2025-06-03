@@ -44,8 +44,8 @@ public class ListenProgressBar extends ProgressBar implements ProcessListener, S
 
     @Override
     public void notifyStop(Processor processor) {
-        requests.cancel();
         this.progressProperty().unbind();
+        requests.cancel();
     }
 
     @Override

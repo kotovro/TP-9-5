@@ -11,21 +11,33 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.image.ImageView;
 import logic.general.MeetingMaterials;
+import logic.persistence.DBManager;
 import logic.video_processing.queue.ProcessingQueue;
+import logic.video_processing.queue.listeners.SummarizeListener;
 
 import java.text.SimpleDateFormat;
 
 public class StAndPrBuilder extends HBox {
+    private static final Font manropeFont = Font.loadFont(StAndPrBuilder.class.getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 16);
+    private static final Font manropeFont2 = Font.loadFont(StAndPrBuilder.class.getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
+    private static final Font manropeFont3 = Font.loadFont(StAndPrBuilder.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
+    private static final Image CLOSE = new Image(StAndPrBuilder.class.getResource("/images/CloseCircle2.png").toString());
+
+    private static final Image ARROW = new Image(StAndPrBuilder.class.getResource("/images/SquareAltArrowRight.png").toString());
     private Pane transcriptPane = new Pane();
     private Button protocolButton = new Button();
-    private static final Image ARROW = new Image(StAndPrBuilder.class.getResource("/images/SquareAltArrowRight.png").toString());
+
+    private MeetingMaterials meetingMaterials;
+    private EditWindowController editWindowController;
+    private BaseController baseController;
 
     public StAndPrBuilder(MeetingMaterials meetingMaterials, EditWindowController editWindowController,
-                          ProcessingQueue processingQueue, BaseController baseController) {
+                          ProcessingQueue processingQueue, BaseController baseController, SavesController savesController) {
+        this.meetingMaterials = meetingMaterials;
+        this.editWindowController = editWindowController;
+        this.baseController = baseController;
+
         Label name = new Label(meetingMaterials.getTranscript().getName());
-        Font manropeFont = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-ExtraBold.ttf"), 16);
-        Font manropeFont2 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Bold.ttf"), 16);
-        Font manropeFont3 = Font.loadFont(getClass().getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
         name.setStyle("-fx-font-family: \"Manrope ExtraBold\"; -fx-font-size: 18; -fx-text-fill: black;");
         name.setFont(manropeFont);
         name.setLayoutY(24);
@@ -41,7 +53,7 @@ public class StAndPrBuilder extends HBox {
         date.setLayoutX(10);
 
         datePane.setLayoutY(76);
-        datePane.setLayoutX(578);
+        datePane.setLayoutX(560);
         datePane.setPrefSize(92, 37);
         datePane.setStyle("-fx-background-color: #E7EFFF; -fx-background-radius: 8;");
         datePane.getChildren().add(date);
@@ -67,9 +79,9 @@ public class StAndPrBuilder extends HBox {
             Platform.runLater(baseController::switchToEditPane);
         });
 
-        transcriptPane.setPrefSize(684, 123);
+        transcriptPane.setPrefSize(670, 123);
         transcriptPane.setLayoutY(27);
-        transcriptPane.setLayoutX(21);
+        transcriptPane.setLayoutX(0);
         transcriptPane.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 20; -fx-border-color: #2A55D5; -fx-border-width: 3; " +
                 "-fx-border-radius: 20;");
         transcriptPane.getChildren().addAll(name, datePane, arrowButton);
@@ -85,11 +97,25 @@ public class StAndPrBuilder extends HBox {
             protocolButton.setText("Создать\nпротокол");
             protocolButton.setOnAction(e -> {
                 processingQueue.add(meetingMaterials.getTranscript());
+                savesController.addToProcessing(meetingMaterials);
+                protocolButton.setDisable(true);
             });
+            protocolButton.setDisable(savesController.isProcessing(meetingMaterials));
         }
         protocolButton.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 10; -fx-text-fill: white;");
         protocolButton.setPrefSize(154, 50);
-        setMargin(protocolButton,  new Insets(30, 0, 5, 20));
-        this.getChildren().addAll(transcriptPane, protocolButton);
+        setMargin(protocolButton,  new Insets(30, 0, 5, 10));
+
+        ImageView close = new ImageView(CLOSE);
+        close.setFitWidth(30);
+        close.setFitHeight(30);
+        setMargin(close,  new Insets(39, 0, 5, 4));
+
+        close.setOnMouseClicked(event -> {
+            DBManager.getTranscriptDao().deleteTranscript(meetingMaterials.getTranscript());
+            savesController.updateContent();
+        });
+
+        this.getChildren().addAll(transcriptPane, protocolButton, close);
     }
 }
