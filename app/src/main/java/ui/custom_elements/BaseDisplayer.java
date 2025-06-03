@@ -26,7 +26,6 @@ import ui.custom_elements.combo_boxes.SearchableComboBox;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public abstract class BaseDisplayer implements EditableDisplayer {
     private static final Font manropeFont1 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Regular.ttf"), 16);
     private static final Font manropeFont2 = Font.loadFont(BaseDisplayer.class.getResourceAsStream("/fonts/Manrope-Medium.ttf"), 16);
@@ -190,128 +189,130 @@ public abstract class BaseDisplayer implements EditableDisplayer {
                 filePane.setVisible(!isFilePaneVisible);
             });
         });
+    });
 
-        filePane = new Pane();
+    filePane = new Pane();
         filePane.setLayoutY(40);
         filePane.setPrefSize(150, 130);
         filePane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
         filePane.setVisible(false);
 
-        save = makeButton("Сохранить", 15, 10);
-        saveAs = makeButton("Сохранить как", 15, 50);
-        export = makeButton("Экспорт", 15, 90);
+    save = makeButton("Сохранить", 15, 10);
+    saveAs = makeButton("Сохранить как", 15, 50);
+    export = makeButton("Экспорт", 15, 90);
 
         filePane.getChildren().addAll(save, saveAs, export);
-        initButtonsActions(save, saveAs, export);
+    initButtonsActions(save, saveAs, export);
 
         if (filePane.getScene() != null) {
-            addPanesAutoClose();
-        } else {
-            filePane.sceneProperty().addListener((obs, oldScene, newScene) -> {
-                if (newScene != null) {
-                    addPanesAutoClose();
-                }
-            });
-        }
+        addPanesAutoClose();
+    } else {
+        filePane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                addPanesAutoClose();
+            }
+        });
+    }
 
-        editPane = new Pane();
+    editPane = new Pane();
         editPane.setLayoutX(100);
         editPane.setLayoutY(40);
         editPane.setPrefSize(180, 130);
         editPane.setStyle("-fx-background-color: #0A2A85; -fx-background-radius: 24;");
         editPane.setVisible(false);
 
-        arrowView = new ImageView(arrow);
+    arrowView = new ImageView(arrow);
         arrowView.setFitHeight(18);
         arrowView.setFitWidth(18);
 
-        edit = new Button("Редактирование", arrowView);
+    edit = new Button("Редактирование", arrowView);
         edit.setStyle("-fx-background-color: #2a55d5; -fx-background-radius: 8; -fx-text-fill: white;" +
                 " -fx-font-size: 16px; -fx-font-family: \"Manrope Medium\";");
         edit.setFont(manropeFont2);
         edit.setLayoutX(100);
         edit.setContentDisplay(ContentDisplay.RIGHT);
         edit.setOnAction(e -> {
-            boolean isEditPaneVisible = editPane.isVisible();
-            Platform.runLater(() -> {
-                editPane.setVisible(!isEditPaneVisible);
-            });
+        boolean isEditPaneVisible = editPane.isVisible();
+        Platform.runLater(() -> {
+            editPane.setVisible(!isEditPaneVisible);
         });
+    });
 
-        addReplica = makeButton("Добавить реплику", 15, 90);
+    addReplica = makeButton("Добавить реплику", 15, 90);
         addReplica.setOnAction(e -> {
-            addNewReplica(0);
-            Platform.runLater(() -> {
-                editPane.setVisible(true);
-            });
+        addNewReplica(0);
+        Platform.runLater(() -> {
+            editPane.setVisible(true);
         });
-        undo = makeButton("Отменить", 15, 10);
+    });
+    undo = makeButton("Отменить", 15, 10);
         undo.setOnAction(e -> {
-            if (editStory.canUndo()) editStory.undoLast();
-            updateStoryButtonsState();
-            if (textAreaContainer.getChildren().isEmpty()) lockSave();
-            if (!textAreaContainer.getChildren().isEmpty()) unlockSave();
-            Platform.runLater(() -> {
-                editPane.setVisible(true);
-            });
+        if (editStory.canUndo()) editStory.undoLast();
+        updateStoryButtonsState();
+        if (textAreaContainer.getChildren().isEmpty()) lockSave();
+        if (!textAreaContainer.getChildren().isEmpty()) unlockSave();
+        Platform.runLater(() -> {
+            editPane.setVisible(true);
         });
-        redo = makeButton("Повторить", 15, 50);
+    });
+    redo = makeButton("Повторить", 15, 50);
         redo.setOnAction(e -> {
-            if (editStory.canRedo()) editStory.redoLast();
-            updateStoryButtonsState();
-            if (textAreaContainer.getChildren().isEmpty()) lockSave();
-            if (!textAreaContainer.getChildren().isEmpty()) unlockSave();
-            Platform.runLater(() -> {
-                editPane.setVisible(true);
-            });
+        if (editStory.canRedo()) editStory.redoLast();
+        updateStoryButtonsState();
+        if (textAreaContainer.getChildren().isEmpty()) lockSave();
+        if (!textAreaContainer.getChildren().isEmpty()) unlockSave();
+        Platform.runLater(() -> {
+            editPane.setVisible(true);
         });
+    });
         undo.setDisable(true);
         redo.setDisable(true);
         editPane.getChildren().addAll(addReplica, undo, redo);
-    }
-
-    private Button makeButton(String text, int x, int y) {
-        Button button = new Button(text);
-        button.setLayoutX(x);
-        button.setLayoutY(y);
-
-        button.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
-                " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
-        button.setFont(manropeFont2);
-        return button;
-    }
-
-    private void addPanesAutoClose() {
-        filePane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            filePane.setVisible(false);
-            editPane.setVisible(false);
-        });
-    }
-
-    private void removeReplicas() {
-        StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
-        storyPoint.apply();
-        editStory.addLast(storyPoint);
-        updateStoryButtonsState();
-        updateDeleteButtonVisibility();
-        lockSave();
-    }
-
-    private List<Integer> getToRemove() {
-        List<Integer> toRemove = new ArrayList<>();
-        int index = 0;
-        for (Node node : textAreaContainer.getChildren()) {
-            BasePane basePane = (BasePane) node;
-            if (basePane.isSelected()) {
-                toRemove.add(index);
-            }
-            index++;
-        }
-        return toRemove;
-    }
-
-    protected abstract void initTextArea();
-    protected abstract void unlockSave();
-    protected abstract void lockSave();
-    protected abstract void initButtonsActions(Button save, Button saveAs, Button export);
 }
+
+private Button makeButton(String text, int x, int y) {
+    Button button = new Button(text);
+    button.setLayoutX(x);
+    button.setLayoutY(y);
+
+    button.setStyle("-fx-background-color: #2A55D5; -fx-background-radius: 16; -fx-text-fill: white;" +
+            " -fx-font-size: 14px; -fx-font-family: \"Manrope Regular\";");
+    button.setFont(manropeFont2);
+    return button;
+}
+
+private void addPanesAutoClose() {
+    filePane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        filePane.setVisible(false);
+        editPane.setVisible(false);
+    });
+}
+
+private void removeReplicas() {
+    StoryPoint storyPoint = new RemoveReplicas(textAreaContainer, getToRemove());
+    storyPoint.apply();
+    editStory.addLast(storyPoint);
+    updateStoryButtonsState();
+    updateDeleteButtonVisibility();
+    if (textAreaContainer.getChildren().isEmpty()) lockSave();
+}
+
+private List<Integer> getToRemove() {
+    List<Integer> toRemove = new ArrayList<>();
+    int index = 0;
+    for (Node node : textAreaContainer.getChildren()) {
+        BasePane basePane = (BasePane) node;
+        if (basePane.isSelected()) {
+            toRemove.add(index);
+        }
+        index++;
+    }
+    return toRemove;
+}
+
+protected abstract void initTextArea();
+protected abstract void unlockSave();
+protected abstract void lockSave();
+protected abstract void initButtonsActions(Button save, Button saveAs, Button export);
+}
+
