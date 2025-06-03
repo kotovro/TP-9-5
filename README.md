@@ -3,6 +3,8 @@
 ## Репозиторий пятой команды девятой группы
 ### Тема: 
 Приложение-аналог Read.ai для персональных компьютеров
+### Цель проекта 
+Разработка настольного приложения, способного  осуществлять автоматическое стенографирование и последующий анализ записей видеоконференций без подключения к сети, обеспечивая конфиденциальность обработки данных пользователя.
 
 ### Команда
  - [Бондарева Софья](https://github.com/bebrusova "") - Project Manager
@@ -57,6 +59,7 @@
 ### Диаграммы, user story & use case
 - Sequence [DOCX](https://bit.ly/41Ozvno) [PDF](https://shorturl.at/uPZeM); [обновленная](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F_sequence_diagram.pdf)
 - ER [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/%D0%9E%D0%BA%D0%BE%D0%BD%D1%87%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_er_%D0%B4%D0%B8%D0%B0%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B0.pdf)
+- Class [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/Diagrams/Finilized_class_diagram.pdf)
 - [User stories](https://docs.google.com/document/d/1VI38AyJcwgZ0zJBAdn-Z_-T8HVos9nWfmZwtC185uNU/edit?usp=sharing), [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/User_stories_and_use_cases.pdf)  
  ## Материалы по аттестациям
  ### Аттестация 1
