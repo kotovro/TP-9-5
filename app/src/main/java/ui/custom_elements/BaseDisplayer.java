@@ -100,10 +100,10 @@ public abstract class BaseDisplayer implements EditableDisplayer {
                 removeReplicas();
             } else if (event.getCode() == KeyCode.N && event.isControlDown()) {
                 addNewReplica(0);
-            } else if (event.getCode() == KeyCode.Z && event.isControlDown()) {
+            } else if (event.getCode() == KeyCode.Z && event.isControlDown() && !(event.getTarget() instanceof TextArea)) {
                 if (editStory.canUndo()) editStory.undoLast();
                 updateStoryButtonsState();
-            } else if (event.getCode() == KeyCode.Y && event.isControlDown()) {
+            } else if (event.getCode() == KeyCode.Y && event.isControlDown() && !(event.getTarget() instanceof TextArea)) {
                 if (editStory.canRedo()) editStory.redoLast();
                 updateStoryButtonsState();
             }
