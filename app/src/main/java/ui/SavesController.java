@@ -25,6 +25,7 @@ public class SavesController implements PaneController{
     private ProcessingQueue processingQueue;
     private BaseController baseController;
     private VBox content = new VBox();
+    private List<MeetingMaterials> processedMaterials = new ArrayList<>();
 
     public SavesController(EditWindowController editWindowController, ProcessingQueue processingQueue, BaseController baseController) {
         this.editWindowController = editWindowController;
@@ -52,10 +53,19 @@ public class SavesController implements PaneController{
         content.getChildren().clear();
         List<MeetingMaterials> meetingMaterials = DBManager.getMeetingMaterialsDao().getAllMeetingMaterials();
         for (MeetingMaterials materials : meetingMaterials) {
-            StAndPrBuilder stAndPrBuilder = new StAndPrBuilder(materials, editWindowController, processingQueue, baseController);
-            VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 15));
+            StAndPrBuilder stAndPrBuilder = new StAndPrBuilder(materials, editWindowController, processingQueue,
+                    baseController, this);
+            VBox.setMargin(stAndPrBuilder, new Insets(20, 0, 10, 0));
             content.getChildren().add(stAndPrBuilder);
         }
+    }
+
+    public boolean isProcessing(MeetingMaterials materials) {
+        return processedMaterials.contains(materials);
+    }
+
+    public void addToProcessing(MeetingMaterials materials) {
+        processedMaterials.add(materials);
     }
 
     @Override

@@ -29,7 +29,7 @@ CREATE TABLE replica (
 
 
 CREATE TABLE protocol (
-                          id INTEGER PRIMARY KEY AUTOINCREMENT,
+                          protocol_id INTEGER PRIMARY KEY AUTOINCREMENT,
                           transcript_id INTEGER UNIQUE,
                           conclusion TEXT,
                           FOREIGN KEY (transcript_id) REFERENCES transcript(id)

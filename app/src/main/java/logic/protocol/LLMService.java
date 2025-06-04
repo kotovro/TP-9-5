@@ -4,11 +4,12 @@ import de.kherud.llama.InferenceParameters;
 import de.kherud.llama.LlamaModel;
 import de.kherud.llama.LlamaOutput;
 import de.kherud.llama.ModelParameters;
+import logic.PlatformDependent;
 
 
 public class LLMService {
     private static final int MAX_CONTEXT_TOKENS = 131072;
-    private final String MODEL_PATH = "dynamic-resources/ai-models/LLM/LLM.gguf";
+    private final String MODEL_PATH = PlatformDependent.getPrefix() + "dynamic-resources/ai-models/LLM/LLM.gguf";
     private final ModelParameters parameters = new ModelParameters()
                                                                     .setModel(MODEL_PATH)
                                                                     .setThreads(3)

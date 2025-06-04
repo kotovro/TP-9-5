@@ -21,6 +21,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VoskRecognizer implements AudioStreamConsumer {
     private static final String SPEECH_PATH = "dynamic-resources/ai-models/speech-recognition-model";
@@ -139,14 +141,18 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
     public RawTranscript getFinalResult() {
         try {
-            var result = parseReplica(recognizer.getFinalResult());
-            result.ifPresent(replicas::add);
+            var opt = parseReplica(recognizer.getFinalResult());
+            opt.ifPresent(replica -> {
+                replica.setStartTime(lastReplicaStartTime);
+                replicas.add(replica);
+            });
         } catch (JsonProcessingException ignored) {}
 
         correctSpeakers();
         RawTranscript transcript = new RawTranscript(speakers.size(), replicas);
         speakers = new ArrayList<>();
         replicas = new ArrayList<>();
+        resetSession();
         return transcript;
     }
 
@@ -201,6 +207,7 @@ public class VoskRecognizer implements AudioStreamConsumer {
     private Optional<RawReplica> parseReplica(String jsonString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
+        jsonString = fixDecimalSeparators(jsonString);
         JsonNode rootNode = mapper.readTree(jsonString);
 
         JsonNode spkNode = rootNode.get("spk");
@@ -223,6 +230,19 @@ public class VoskRecognizer implements AudioStreamConsumer {
 
         recognize(spk, spkFrames);
         return Optional.of(new RawReplica(text, currentSpeaker, spk, spkFrames));
+    }
+
+    private static String fixDecimalSeparators(String json) {
+        Pattern pattern = Pattern.compile("\\d+,\\d+");
+        Matcher matcher = pattern.matcher(json);
+        StringBuffer sb = new StringBuffer();
+
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group().replace(',', '.'));
+        }
+        matcher.appendTail(sb);
+
+        return sb.toString();
     }
 
     private static double norm(double[] data) {
@@ -288,4 +308,13 @@ public class VoskRecognizer implements AudioStreamConsumer {
         speakers.add(new RawSpeaker(speakers.size(), sample));
         currentSpeaker = speakers.getLast();
     }
+
+    public void resetSession() {
+        audioTime = 0.0;
+        lastReplicaStartTime = 0.0;
+        inSpeech = false;
+        replicas.clear();
+        speakers.clear();
+    }
+
 }

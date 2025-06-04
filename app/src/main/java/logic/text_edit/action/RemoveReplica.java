@@ -22,5 +22,6 @@ public class RemoveReplica implements StoryPoint {
     @Override
     public void unapply() {
         textAreaContainer.getChildren().add(index, basePane);
+        basePane.setSelected(false);
     }
 }

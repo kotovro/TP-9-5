@@ -5,14 +5,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import logic.general.*;
 import logic.persistence.DBManager;
+import logic.utils.EntitiesExporter;
 import ui.BaseController;
 import ui.custom_elements.combo_boxes.SearchableComboBox;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ProtocolDisplayer extends BaseDisplayer {
@@ -27,40 +30,50 @@ public class ProtocolDisplayer extends BaseDisplayer {
         initTextArea();
     }
 
-    public void saveToDB() {
-        Protocol protocol = meetingMaterials.getProtocol().get();
-
-        List<Replica> replicas = new LinkedList<>();
-        for (Node node : textAreaContainer.getChildren()) {
-            BasePane pane = (BasePane) node;
-            replicas.add(pane.getReplica());
-        }
-        Protocol newProtocol = new Protocol(protocol.getTranscriptId(), replicas.getFirst().getText());
-        DBManager.getProtocolDao().addProtocol(newProtocol);
-
-        replicas.removeFirst();
-        for (Replica replica : replicas) {
-            DBManager.getTaskDao().addTask(new Task(meetingMaterials.getTranscript().getId(), replica.getSpeaker().getId(), replica.getText()));
-        }
-    }
-
     @Override
     protected void initTextArea() {
         textAreaContainer.getChildren().add(formReplicaView(
                 new Replica(meetingMaterials.getProtocol().get().getText(), speakers.get(1), 0)));
         for (Task task : meetingMaterials.getTasks()) {
-            textAreaContainer.getChildren().add(formReplicaView(
-                    new Replica(task.getDescription(), speakers.get(2), 0)));
+            int speakerIndex = task.getAssigneeId() == 1 ? 2 : task.getAssigneeId() - 1;
+            textAreaContainer.getChildren().add(formReplicaView(new Replica(task.getDescription(),
+                    speakers.get(speakerIndex), 0)));
+        }
+        if (textAreaContainer.getChildren().isEmpty()) {
+            lockSave();
         }
     }
 
     @Override
-    protected void initButtonsActions(Button save, Button saveAs) {
+    protected void unlockSave() {
+        save.setDisable(false);
+        export.setDisable(false);
+    }
+
+    @Override
+    protected void lockSave() {
+        save.setDisable(true);
+        export.setDisable(true);
+    }
+
+    @Override
+    protected void initButtonsActions(Button save, Button saveAs, Button export) {
         save.setOnAction(e -> {
             save();
         });
-
         saveAs.setDisable(true);
+        export.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+            fileChooser.setInitialFileName("protocol.txt");
+            File file = fileChooser.showSaveDialog(export.getScene().getWindow());
+
+            List<Node> nodes = textAreaContainer.getChildren();
+            Protocol newProtocol = new Protocol(meetingMaterials.getTranscript().getId(), ((BasePane)nodes.getFirst()).textarea.getText());
+            EntitiesExporter.exportProtocolToTextFile(meetingMaterials.getTranscript(), newProtocol, file);
+        });
     }
 
     protected BasePane formReplicaView(Replica replica) {
@@ -80,7 +93,8 @@ public class ProtocolDisplayer extends BaseDisplayer {
             tasks.addLast(new Task(meetingMaterials.getTranscript().getId(),
                     pane.combobox.getSelectionModel().getSelectedItem().getId(), pane.textarea.getText()));
         }
-        DBManager.getProtocolDao().addProtocol(newProtocol);
+        DBManager.getProtocolDao().updateProtocol(newProtocol);
+        DBManager.getTaskDao().deleteTasksByTranscript(meetingMaterials.getTranscript().getId());
         for (Task task : tasks) {
             DBManager.getTaskDao().addTask(task);
         }

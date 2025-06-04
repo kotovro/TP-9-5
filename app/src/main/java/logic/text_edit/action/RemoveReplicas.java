@@ -32,6 +32,7 @@ public class RemoveReplicas implements StoryPoint {
     public void unapply() {
         for (int i = 0; i < basePanes.size(); i++) {
             textAreaContainer.getChildren().add(toRemove.get(i), basePanes.get(i));
+            basePanes.get(i).setSelected(false);
         }
     }
 }
