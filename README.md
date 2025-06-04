@@ -18,12 +18,11 @@
 
 ### Релизы 
 #### Общая информация
-- Руководства по установке приложения [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE_%D0%BF%D0%BE_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B5_%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.pdf) [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE_%D0%BF%D0%BE_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B5_%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.txt)
-- [Руководство для пользователя по установке и использованию приложения](https://vk.com/wall-230195371_2)
+- Руководства по установке приложения [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE_%D0%BF%D0%BE_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B5_%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.pdf) [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE_%D0%BF%D0%BE_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B5_%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.txt) [Видео, для релизов до 1.1.0](https://drive.google.com/drive/folders/1kQmYi_dAm2SjsIZNxMgL_ml9Yhrmx86N)
 #### Релизы
 - [Под MacOS](https://drive.google.com/drive/folders/1nTkTDtecOCQ5mTF0M8wHgQ7gzXp-Mz7l)
 - [Под Windows](https://drive.google.com/drive/folders/1kQmYi_dAm2SjsIZNxMgL_ml9Yhrmx86N)
-- [Под Ubuntu](https://drive.google.com/drive/folders/1GyXf4fBYMXr_mkTtreU01Jt8yPJfl6FK)
+- [Под Linux(Ubuntu)](https://drive.google.com/drive/folders/1GyXf4fBYMXr_mkTtreU01Jt8yPJfl6FK)
 ##
 
 ### Сервисы
