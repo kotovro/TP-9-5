@@ -18,15 +18,11 @@
 
 ### Релизы 
 #### Общая информация
-- [Руководство для пользователя по установке и использованию приложения](https://vk.com/wall-230195371_2)
-#### Актуальная версия[1.0.1]
-- [Релиз 1.0.1 под Windows 10](https://drive.google.com/file/d/15dtJjIcSMX09tpr1YzgqxvBS_qXRjlhn/view?usp=drive_link)
-- [Релиз 1.0.1 под macOS](https://drive.google.com/file/d/1AEuYtw0EjzJGn3Yn8vBzn8uOSS3WZiGi/view?usp=drive_link)
-- [Релиз 1.0.1 под Linux(Ubuntu)](https://drive.google.com/file/d/1fcwTLWJodw0yyQj6fdYjF-l6aD44hHoV/view?usp=drive_link)
-#### Прошлые версии
-##### Версия 1.0.0
-- [Релиз 1.0.0 под Windows 10](https://drive.google.com/file/d/1PQHqgqaMJc2b2YNO1almrWnZ6WpSnmWP/view) 
-
+- Руководства по установке приложения [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE_%D0%BF%D0%BE_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B5_%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.pdf) [TXT](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE_%D0%BF%D0%BE_%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B5_%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.txt) [Видео, для релизов до 1.1.0](https://drive.google.com/drive/folders/1kQmYi_dAm2SjsIZNxMgL_ml9Yhrmx86N)
+#### Релизы
+- [Под MacOS](https://drive.google.com/drive/folders/1nTkTDtecOCQ5mTF0M8wHgQ7gzXp-Mz7l)
+- [Под Windows](https://drive.google.com/drive/folders/1kQmYi_dAm2SjsIZNxMgL_ml9Yhrmx86N)
+- [Под Linux(Ubuntu)](https://drive.google.com/drive/folders/1GyXf4fBYMXr_mkTtreU01Jt8yPJfl6FK)
 ##
 
 ### Сервисы
@@ -37,6 +33,7 @@
 ### Документация
 
 - Техническое задание(обновлённое с учетом разработки) [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5_%D1%81_%D0%BF%D1%80%D0%B0%D0%B2%D0%BA%D0%B0%D0%BC%D0%B8.pdf); изменения [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_%D0%B2%D0%BD%D0%B5%D1%81%D0%B5%D0%BD%D0%BD%D1%8B%D1%85_%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D0%BA_%D0%B2_%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5.pdf)
+- Курсовой проект [PDF](https://github.com/kotovro/TP-9-5/blob/main/Documents/Course_work_project.pdf)
 
 ### Отчеты
 - Очтет за период с 18.03 по 24.03 [PDF](https://bit.ly/4lC3QNT)
